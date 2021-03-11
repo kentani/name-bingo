@@ -23,10 +23,14 @@
     </v-navigation-drawer>
     <v-app-bar
       clipped-left
+      dense
       fixed
+      flat
       app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title>
+        <nuxt-link to="/" tag="div" class="c-p">{{ title }}</nuxt-link>
+      </v-toolbar-title>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -47,14 +51,13 @@ export default {
     return {
       title: 'BINGO',
       drawer: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-      ]
     }
   }
 }
 </script>
+
+<style>
+.c-p {
+  cursor: pointer;
+}
+</style>
