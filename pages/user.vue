@@ -7,60 +7,33 @@
     </v-card-text>
     <v-card-subtitle>作成した部屋</v-card-subtitle>
     <v-card-text>
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items[0].items"
-          :key="i">
-          <v-list-item-content>
-            <v-list-item-title v-text="item" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <link-list :items="createdRoomList" />
     </v-card-text>
-        <v-card-subtitle>参加した部屋</v-card-subtitle>
+    <v-card-subtitle>参加した部屋</v-card-subtitle>
     <v-card-text>
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items[1].items"
-          :key="i">
-          <v-list-item-content>
-            <v-list-item-title v-text="item" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <link-list :items="joindRoomList" />
     </v-card-text>
     <v-card-subtitle>このサイトについて</v-card-subtitle>
     <v-card-text>
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in appItems"
-          :key="i"
-          :to="item.to"
-          color="deep-purple"
-          router
-          exact>
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <link-list :with-icon="true" :items="appItems" />
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import BasicList from '../components/link-list.vue'
 import RoomForm from '../components/room-form.vue'
 export default {
-  components: { RoomForm },
+  components: { RoomForm, BasicList },
   data () {
     return {
       tab: null,
-      items: [
-        { title: "作成した部屋", items: ["イベント盛り上げ隊！！"] },
-        { title: "参加した部屋", items: ["イベント盛り上げ隊！！", "ビンゴ！！"] },
+      createdRoomList: [
+        { title: "イベント盛り上げ隊！！", to: "/rooms/1/players/1/bingo-card" },
+      ],
+      joindRoomList: [
+        { title: "イベント盛り上げ隊！！", to: "/rooms/1/players/1/bingo-card" },
+        { title: "ビンゴ", to: "/rooms/1/players/1/bingo-card" },
       ],
       appItems: [
         {

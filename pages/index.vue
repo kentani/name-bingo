@@ -70,7 +70,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'players',
-          to: '/rooms/1/players/1'
+          to: '/rooms/1/players/1/bingo-card'
         }
       ]
     }
