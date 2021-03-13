@@ -12,6 +12,7 @@
       <v-btn
         text
         color="deep-purple"
+        :disabled="!inputName"
         :ripple="false"
         @click="handleCreateButtonClick">
         作成する
@@ -29,9 +30,8 @@
     },
     methods: {
       handleCreateButtonClick() {
-        if (this.inputName !== '') {
-          this.$emit("create-button-click", {name: this.inputName})
-        }
+        if (this.inputName === '') return
+        this.$emit("create-button-click", {name: this.inputName})
         this.inputName = ''
       },
     }
