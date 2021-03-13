@@ -3,23 +3,7 @@
     <v-card-title class="mt-2 mb-6">ゲストユーザー</v-card-title>
     <v-card-subtitle>新しく部屋を作成する</v-card-subtitle>
     <v-card-text>
-      <v-row>
-        <v-col cols="8" align="center">
-          <v-text-field
-            dense
-            color="deep-purple"
-            placeholder="部屋の名前を入力してください"
-            filled />
-        </v-col>
-        <v-col cols="4" align="center">
-          <v-btn
-            text
-            color="deep-purple"
-            :ripple="false">
-            作成する
-          </v-btn>
-        </v-col>
-      </v-row>
+      <room-form @create-button-click="handleCreateButtonClick" />
     </v-card-text>
     <v-card-subtitle>作成した部屋</v-card-subtitle>
     <v-card-text>
@@ -68,7 +52,9 @@
 </template>
 
 <script>
+import RoomForm from '../components/room-form.vue'
 export default {
+  components: { RoomForm },
   data () {
     return {
       tab: null,
@@ -96,10 +82,20 @@ export default {
     }
   },
   created () {
+    this.$store.dispatch('fetchCurrentUser')
   },
   computed: {
+    isLogind () {
+      return this.$store.getters.getIsLogind
+    },
+    userId () {
+      return this.$store.getters.getUserId
+    }
   },
   methods: {
+    handleCreateButtonClick (args) {
+      this.$store.dispatch('createRoom', { userId: this.userId, name: args.name })
+    },
   }
 }
 </script>

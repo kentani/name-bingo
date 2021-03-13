@@ -81,6 +81,10 @@ export default {
   computed: {
     isLogind () {
       return this.$store.getters.getIsLogind
+    },
+    userId () {
+      console.log("aaa", this.$store.getters.getUserId)
+      return this.$store.getters.getUserId
     }
   },
   methods: {
