@@ -14,7 +14,7 @@
       app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="px-0">
-        <nuxt-link to="/" tag="div" class="c-p">{{ title }}</nuxt-link>
+        <nuxt-link to="/" tag="div" class="c-p font-weight-bold">{{ title }}</nuxt-link>
       </v-toolbar-title>
       <v-spacer />
       <v-btn
@@ -33,6 +33,14 @@
         to="/user">
         <v-icon>mdi-account</v-icon>
       </v-btn>
+      <v-btn
+        icon
+        nuxt
+        :disabled="!isLogind"
+        :ripple="false"
+        to="/rooms/new">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -40,7 +48,7 @@
       </v-container>
     </v-main>
     <v-footer
-      fixed
+      absolute
       app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>

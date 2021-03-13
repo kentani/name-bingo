@@ -5,7 +5,8 @@ const roomsRef = db.collection('rooms');
 
 export const state = () => ({
   userId: null,
-  isLogind: false
+  isLogind: false,
+  room: {}
 })
 
 export const getters = {
@@ -14,6 +15,9 @@ export const getters = {
   },
   getIsLogind(state) {
     return state.isLogind
+  },
+  getRoom(state) {
+    return state.room
   }
 }
 
@@ -24,6 +28,9 @@ export const mutations = {
   setIsLogind(state, isLogind) {
     state.isLogind = isLogind
   },
+  setRoom(state, room) {
+    state.room = Object.assign({}, state.room, room)
+  }
 }
 
 export const actions = {
@@ -50,18 +57,30 @@ export const actions = {
       }
     });
   },
-  createRoom({ commit }, { userId, name }) {
-    console.log("createRoom", userId, name)
+  createRoom({ commit }, { name, userId }) {
     roomsRef
       .add({
-        createdUserId: userId,
         name: name,
+        createdUser: userId,
+        administrators: [userId],
       })
       .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
+        roomsRef
+          .doc(docRef.id)
+          .update({
+            id: docRef.id,
+          })
+          .then(() => {
+            roomsRef
+              .doc(docRef.id)
+              .get()
+              .then(function(doc) {
+                commit('setRoom', doc.data())
+              })
+          })
       })
       .catch((error) => {
-          console.error("Error adding document: ", error);
+        console.error("Error adding document: ", error);
       });
   },
 }
