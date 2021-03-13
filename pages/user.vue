@@ -1,27 +1,7 @@
 <template>
   <v-card>
     <v-card-title class="mt-2 mb-6">ゲストユーザー</v-card-title>
-    <v-card-subtitle>新しく部屋を作成する</v-card-subtitle>
-    <v-card-text>
-      <v-row>
-        <v-col cols="8" align="center">
-          <v-text-field
-            dense
-            color="deep-purple"
-            placeholder="部屋の名前を入力してください"
-            filled />
-        </v-col>
-        <v-col cols="4" align="center">
-          <v-btn
-            text
-            color="deep-purple"
-            :ripple="false">
-            作成する
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-card-subtitle>部屋情報</v-card-subtitle>
+    <v-card-subtitle>ユーザー情報</v-card-subtitle>
     <v-card-text>
       <v-tabs
         v-model="tab"
@@ -48,6 +28,26 @@
           </v-list>
         </v-tab-item>
       </v-tabs-items>
+    </v-card-text>
+    <v-card-subtitle>新しく部屋を作成する</v-card-subtitle>
+    <v-card-text>
+      <v-row>
+        <v-col cols="8" align="center">
+          <v-text-field
+            dense
+            color="deep-purple"
+            placeholder="部屋の名前を入力してください"
+            filled />
+        </v-col>
+        <v-col cols="4" align="center">
+          <v-btn
+            text
+            color="deep-purple"
+            :ripple="false">
+            作成する
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card-text>
     <v-card-subtitle>このサイトについて</v-card-subtitle>
     <v-card-text>
@@ -77,6 +77,7 @@ export default {
     return {
       tab: null,
       items: [
+        { title: "自己紹介", items: ["あああ"] },
         { title: "作成した部屋", items: ["イベント盛り上げ隊！！"] },
         { title: "参加した部屋", items: ["イベント盛り上げ隊！！", "ビンゴ！！"] },
       ],

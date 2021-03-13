@@ -69,13 +69,8 @@ export default {
         },
         {
           icon: 'mdi-apps',
-          title: 'profile',
-          to: '/rooms/1/players/1/profile'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'bingo-card',
-          to: '/rooms/1/players/1/bingo-card'
+          title: 'players',
+          to: '/rooms/1/players/1'
         }
       ]
     }
