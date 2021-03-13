@@ -13,9 +13,17 @@
       flat
       app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>
+      <v-toolbar-title class="px-0">
         <nuxt-link to="/" tag="div" class="c-p">{{ title }}</nuxt-link>
       </v-toolbar-title>
+      <v-spacer />
+      <v-btn
+        icon
+        nuxt
+        to="/settings"
+        :ripple="false">
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -35,8 +43,17 @@ export default {
   data () {
     return {
       title: 'BINGO',
-      drawer: false,
+      drawer: false
     }
+  },
+  mounted () {
+  },
+  computed: {
+    isLogind () {
+      return this.$store.getters.getIsLogind
+    }
+  },
+  methods: {
   }
 }
 </script>

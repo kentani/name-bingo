@@ -2,6 +2,21 @@
   <v-row>
     <v-col cols="12">root</v-col>
     <v-col cols="12">
+      <v-btn
+        v-if="isLogind"
+        disabled
+        :ripple="false">
+        ログイン済み
+      </v-btn>
+      <v-btn
+        v-else
+        nuxt
+        :ripple="false"
+        @click="login">
+        ゲストユーザーでログイン
+      </v-btn>
+    </v-col>
+    <v-col cols="12">
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -22,6 +37,7 @@
 </template>
 
 <script>
+import firebase from '~/plugins/firebase'
 export default {
   data () {
     return {
@@ -55,10 +71,23 @@ export default {
         },
         {
           icon: 'mdi-apps',
-          title: 'users/id',
-          to: '/users/1'
+          title: 'settings',
+          to: '/settings'
         },
       ]
+    }
+  },
+  created () {
+    this.$store.dispatch('fetchCurrentUser')
+  },
+  computed: {
+    isLogind () {
+      return this.$store.getters.getIsLogind
+    }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('login')
     }
   }
 }
