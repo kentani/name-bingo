@@ -14,6 +14,7 @@
               cols="3">
               <v-card
                 :flat="i !== 0 && i !== 7 && i !== 10"
+                :dark="i === 0 || i === 7 || i === 10"
                 :class="{ 'deep-purple lighten-2': i === 0 || i === 7 || i === 10, 'grey lighten-4': i !== 0 && i !== 7 && i !== 10 }"
                 height="100">
                 <v-card-title class="overline py-1">
@@ -36,7 +37,7 @@
         result: {name: '？？'},
         starting: false,
         userList: [
-          {name: ''},
+          {name: '齋藤'},
           {name: '白石'},
           {name: '堀'},
           {name: '星野'},
@@ -44,7 +45,7 @@
           {name: '若月'},
           {name: '桜井'},
           {name: '橋本'},
-          {name: ''},
+          {name: 'abc abc abc'},
           {name: 'abc abc abc'},
           {name: '佐藤'},
           {name: '田中'},
