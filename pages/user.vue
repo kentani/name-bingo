@@ -1,22 +1,20 @@
 <template>
-  <v-card flat>
+  <v-card>
     <v-card-title class="mt-2 mb-6">ゲストユーザー</v-card-title>
     <v-card-subtitle>新しく部屋を作成する</v-card-subtitle>
     <v-card-text>
-      <v-row no-gutters>
-        <v-col cols="10">
+      <v-row>
+        <v-col cols="8" align="center">
           <v-text-field
             dense
             color="deep-purple"
-            class="mx-1"
             placeholder="部屋の名前を入力してください"
             filled />
         </v-col>
-        <v-col cols="2">
+        <v-col cols="4" align="center">
           <v-btn
             text
             color="deep-purple"
-            class="mx-1"
             :ripple="false">
             作成する
           </v-btn>

@@ -2,19 +2,28 @@
   <v-row>
     <v-col cols="12">root</v-col>
     <v-col cols="12">
-      <v-btn
-        v-if="isLogind"
-        disabled
-        :ripple="false">
-        ログイン済み
-      </v-btn>
-      <v-btn
-        v-else
-        nuxt
-        :ripple="false"
-        @click="login">
-        ゲストユーザーでログイン
-      </v-btn>
+      <div v-if="isLogind">
+        <v-btn
+          readonly
+          dark
+          depressed
+          color="deep-purple deep-purple lighten-4"
+          :ripple="false">
+          ログイン済み
+        </v-btn>
+        <div>ゲストユーザーとしてログイン済み</div>
+      </div>
+      <div v-else>
+        <v-btn
+          nuxt
+          dark
+          color="deep-purple"
+          :ripple="false"
+          @click="login">
+          ログイン
+        </v-btn>
+        <div>ゲストユーザーとしてログインします</div>
+      </div>
     </v-col>
     <v-col cols="12">
       <v-list>
@@ -67,12 +76,7 @@ export default {
           icon: 'mdi-apps',
           title: 'bingo-card',
           to: '/rooms/1/players/1/bingo-card'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'settings',
-          to: '/settings'
-        },
+        }
       ]
     }
   },

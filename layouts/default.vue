@@ -20,8 +20,17 @@
       <v-btn
         icon
         nuxt
-        to="/settings"
-        :ripple="false">
+        :disabled="!isLogind"
+        :ripple="false"
+        to="/rooms/1/settings">
+        <v-icon>mdi-cog</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        nuxt
+        :disabled="!isLogind"
+        :ripple="false"
+        to="/user">
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-app-bar>
