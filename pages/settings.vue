@@ -1,39 +1,30 @@
 <template>
   <v-card flat>
     <v-card-title class="mt-2 mb-6">ゲストユーザー</v-card-title>
-    <v-card-subtitle>このサイトについて</v-card-subtitle>
-    <v-list>
-      <v-list-item
-        v-for="(item, i) in appItems"
-        :key="i"
-        :to="item.to"
-        router
-        exact>
-        <v-list-item-action>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title v-text="item.title" />
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
     <v-card-subtitle>新しく部屋を作成する</v-card-subtitle>
     <v-card-text>
-      <v-row no-gutters class="mt-2 mb-6">
-        <v-text-field
-          dense
-          color="deep-purple"
-          class="mx-1"
-          placeholder="部屋の名前を入力してください"
-          filled />
-        <v-btn
-        text
-        color="deep-purple"
-        class="mx-1"
-        :ripple="false">
-        作成する
-      　</v-btn>
+      <v-row no-gutters>
+        <v-col cols="10">
+          <v-text-field
+            dense
+            color="deep-purple"
+            class="mx-1"
+            placeholder="部屋の名前を入力してください"
+            filled />
+        </v-col>
+        <v-col cols="2">
+          <v-btn
+            text
+            color="deep-purple"
+            class="mx-1"
+            :ripple="false">
+            作成する
+          </v-btn>
+        </v-col>
       </v-row>
+    </v-card-text>
+    <v-card-subtitle>部屋情報</v-card-subtitle>
+    <v-card-text>
       <v-tabs
         v-model="tab"
         color="deep-purple">
@@ -59,6 +50,25 @@
           </v-list>
         </v-tab-item>
       </v-tabs-items>
+    </v-card-text>
+    <v-card-subtitle>このサイトについて</v-card-subtitle>
+    <v-card-text>
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in appItems"
+          :key="i"
+          :to="item.to"
+          color="deep-purple"
+          router
+          exact>
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-card-text>
   </v-card>
 </template>
