@@ -190,7 +190,7 @@ export const actions = {
                 joinedRoomList: firebase.firestore.FieldValue.arrayUnion({
                   id: room.id,
                   name: room.name,
-                  to: '/rooms/' + room.id + '/settings',
+                  to: '/rooms/' + room.id + '/players/' + user.id + '/bingo-card',
                 }),
               })
               .then(() => {
