@@ -80,7 +80,7 @@
         resultList: [],
       }
     },
-    created () {
+    mounted () {
       this.$emit("handleUserList", {list: this.userList})
     },
     computed: {

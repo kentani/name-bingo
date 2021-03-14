@@ -4,8 +4,10 @@
       <v-text-field
         v-model="inputName"
         dense
+        hide-details
         color="deep-purple"
-        placeholder="部屋の名前を入力してください"
+        :disabled="disabled"
+        :placeholder="placeholder"
         filled />
     </v-col>
     <v-col cols="4" align="center">
@@ -15,7 +17,7 @@
         :disabled="!inputName"
         :ripple="false"
         @click="handleCreateButtonClick">
-        作成する
+        {{ text }}
       </v-btn>
     </v-col>
   </v-row>
@@ -27,6 +29,20 @@
       return {
         inputName: ''
       }
+    },
+    props: {
+      text: {
+        type: String,
+        required: true
+      },
+      placeholder: {
+        type: String,
+        required: true
+      },
+      disabled: {
+        type: Boolean,
+        required: false
+      },
     },
     methods: {
       handleCreateButtonClick() {

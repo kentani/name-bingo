@@ -1,16 +1,30 @@
 <template>
   <v-app dark>
+    <v-navigation-drawer
+      v-model="drawer"
+      clipped
+      fixed
+      app>
+    </v-navigation-drawer>
     <v-app-bar
       clipped-left
       dense
       fixed
       flat
       app>
-      <v-app-bar-nav-icon disabled />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="px-0">
         <nuxt-link to="/" tag="div" class="c-p font-weight-bold">{{ title }}</nuxt-link>
       </v-toolbar-title>
       <v-spacer />
+      <v-btn
+        icon
+        nuxt
+        :disabled="!loggedIn"
+        :ripple="false"
+        to="/rooms/C0CuNh8Q4HECW4FUbWr9/settings">
+        <v-icon>mdi-cog</v-icon>
+      </v-btn>
       <v-btn
         icon
         nuxt

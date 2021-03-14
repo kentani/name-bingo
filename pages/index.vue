@@ -1,8 +1,7 @@
 <template>
   <v-row>
-    <v-col cols="12">root</v-col>
     <v-col cols="12">
-      <div v-if="isLogind">
+      <div v-if="loggedIn">
         <v-btn
           readonly
           dark
@@ -11,18 +10,14 @@
           :ripple="false">
           ログイン済み
         </v-btn>
-        <div>ゲストユーザーとしてログイン済み</div>
+        <div class="caption">ゲストユーザーとしてログイン済み</div>
       </div>
       <div v-else>
-        <v-btn
-          nuxt
-          dark
-          color="deep-purple"
-          :ripple="false"
-          @click="login">
-          ログイン
-        </v-btn>
-        <div>ゲストユーザーとしてログインします</div>
+        <basic-form
+          text="ログインする"
+          placeholder="あなたの名前を入力してください"
+          @create-button-click="handleCreateButtonClick" />
+        <div class="caption">ゲストユーザーとしてログインします</div>
       </div>
     </v-col>
     <v-col cols="12">
@@ -76,20 +71,26 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('fetchCurrentUser')
+    this.$store.dispatch('onAuth')
+    console.log("aaa", this.authUserId)
+  },
+  mounted () {
+    console.log("aaa", this.authUserId)
   },
   computed: {
-    isLogind () {
-      return this.$store.getters.getIsLogind
+    authUser () {
+      return this.$store.getters.getAuthUser
     },
-    userId () {
-      console.log("aaa", this.$store.getters.getUserId)
-      return this.$store.getters.getUserId
+    loggedIn () {
+      return this.$store.getters.getLoggedIn
+    },
+    authUserId () {
+      return this.$store.getters.getAuthUserId
     }
   },
   methods: {
-    login () {
-      this.$store.dispatch('login')
+    handleCreateButtonClick (args) {
+      this.$store.dispatch('login', { name: args.name })
     }
   }
 }
