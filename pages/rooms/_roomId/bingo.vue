@@ -37,7 +37,7 @@
         x-large
         :ripple="false"
         @click="">
-        ゲームを開始
+        ゲーム開始
       </v-btn>
       <v-btn
         text

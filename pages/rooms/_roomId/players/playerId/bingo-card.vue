@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" md="6">
+    <v-col cols="12" md="6" sm="10">
       <v-card class="mt-4">
         <p
           class="py-2 grey lighten-2 display-2 font-weight-bold text-center">
