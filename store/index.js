@@ -100,6 +100,21 @@ export const actions = {
       console.log(`ログアウト時にエラーが発生しました (${error})`);
     });
   },
+  setUser({ commit }, { userId, list }) {
+    usersRef
+      .doc(userId)
+      .update({
+        bingoUserList: list,
+      })
+      .then(() => {
+        usersRef
+          .doc(userId)
+          .get()
+          .then(function(doc) {
+            commit('setUserInfo', doc.data())
+          })
+      })
+  },
   createRoom({ commit }, { name, user }) {
     roomsRef
       .add({
