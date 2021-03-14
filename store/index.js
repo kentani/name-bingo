@@ -66,6 +66,7 @@ export const actions = {
               authUserId: user.uid,
               createdRoomList: [],
               joinedRoomList: [],
+              bingoUserList: [],
             })
             .then((docRef) => {
               usersRef
@@ -98,32 +99,6 @@ export const actions = {
     .catch( (error)=>{
       console.log(`ログアウト時にエラーが発生しました (${error})`);
     });
-  },
-  createUser({ commit }, { name, authUserId }) {
-    usersRef
-      .add({
-        name: name,
-        authUserId: authUserId,
-        bingoUserList: []
-      })
-      .then((docRef) => {
-        usersRef
-          .doc(docRef.id)
-          .update({
-            id: docRef.id,
-          })
-          .then(() => {
-            usersRef
-              .doc(docRef.id)
-              .get()
-              .then(function(doc) {
-                commit('setUserInfo', doc.data())
-              })
-          })
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
   },
   createRoom({ commit }, { name, user }) {
     roomsRef

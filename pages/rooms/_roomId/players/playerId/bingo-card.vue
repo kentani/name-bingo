@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" md="6" sm="10">
+    <v-col cols="12" sm="9" md="6">
       <v-card class="mt-4">
         <p
           class="py-2 grey lighten-2 display-2 font-weight-bold text-center">
@@ -13,12 +13,12 @@
               :key="i"
               cols="3">
               <v-card
-                :flat="i !== 0 && i !== 7 && i !== 10"
-                :dark="i === 0 || i === 7 || i === 10"
-                :class="{ 'deep-purple': i === 0 || i === 7 || i === 10, 'grey lighten-4': i !== 0 && i !== 7 && i !== 10 }"
+                :flat="!room.resultList.some(el => el.id === userItem(item, i).id)"
+                :dark="room.resultList.some(el => el.id === userItem(item, i).id)"
+                :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'deep-purple' : 'grey lighten-4' ]"
                 height="100">
                 <v-card-title class="overline py-1">
-                  {{ item.name }}
+                  {{ userInfo.bingoUserList[i] ? userInfo.bingoUserList[i].name : item.name }}
                 </v-card-title>
               </v-card>
             </v-col>
@@ -34,33 +34,52 @@
     layout: 'room',
     data () {
       return {
-        result: {name: '？？'},
-        starting: false,
         userList: [
-          {name: '齋藤'},
-          {name: '白石'},
-          {name: '堀'},
-          {name: '星野'},
-          {name: 'abc abc abc'},
-          {name: '若月'},
-          {name: '桜井'},
-          {name: '橋本'},
-          {name: 'abc abc abc'},
-          {name: 'abc abc abc'},
-          {name: '佐藤'},
-          {name: '田中'},
-          {name: '山田'},
           {name: ''},
-          {name: '生田'},
-          {name: '遠藤'},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
+          {name: ''},
         ]
       }
     },
-    mounted () {
+    created () {
+      this.$store.dispatch('onAuth')
+      this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
+      this.$store.dispatch('fetchRoom', { roomId: this.roomId })
     },
     computed: {
+      loggedIn() {
+        return this.$store.getters.getLoggedIn
+      },
+      authUserId() {
+        return this.$store.getters.getAuthUserId
+      },
+      userInfo() {
+        return this.$store.getters.getUserInfo
+      },
+      roomId() {
+        return this.$route.params.roomId
+      },
+      room() {
+        return this.$store.getters.getRoom
+      }
     },
     methods: {
+      userItem(item, index) {
+        return this.userInfo.bingoUserList[index] ? this.userInfo.bingoUserList[index] : item
+      }
     }
   }
 </script>

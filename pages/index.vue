@@ -54,17 +54,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'イベント1',
-          to: '/rooms/v8BF3GRK8c0sFxRfZS6R/settings'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'イベント2',
-          to: '/rooms/c1NbtiyuMMlfTLrgMqrK/settings'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'イベント3',
-          to: '/rooms/pOXei3g0EmjqdCOO4NNi/settings'
+          to: '/rooms/IxkeDXeR97ono2Y3tsnA/settings'
         },
       ]
     }
