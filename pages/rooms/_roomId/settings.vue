@@ -71,7 +71,7 @@
     <v-card-subtitle>参加者</v-card-subtitle>
     <v-divider class="mx-4"></v-divider>
     <v-card-text>
-      <chip-list v-if="isJoinedRoom" :items="room.joinedUserList" />
+      <chip-list :items="room.joinedUserList" />
     </v-card-text>
   </v-card>
 </template>
