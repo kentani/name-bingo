@@ -5,7 +5,7 @@
         <v-card flat class="grey lighten-4">
           <v-row justify="center">
             <v-card-title class="display-4 font-weight-bold">
-              {{ result.name }}
+              {{ room.result.name }}
             </v-card-title>
           </v-row>
         </v-card>
@@ -33,7 +33,8 @@
     </v-row>
     <v-row justify="center" class="my-3">
       <v-col
-        v-for="(item, i) in resultList"
+        v-if="room.resultList.length !== 0"
+        v-for="(item, i) in room.resultList"
         :key="i"
         cols="2">
         <v-card
@@ -50,45 +51,38 @@
 
 <script>
   export default {
-    layout: 'bingo',
+    layout: 'room',
     data () {
       return {
-        result: {name: '？？'},
         starting: false,
-        userList: [
-          {name: '斎藤'},
-          {name: '白石'},
-          {name: '堀'},
-          {name: '星野'},
-          {name: '西野'},
-          {name: '若月'},
-          {name: '桜井'},
-          {name: '橋本'},
-          {name: '与田'},
-          {name: '山田'},
-          {name: '佐藤'},
-          {name: '田中'},
-          {name: '山田'},
-          {name: '秋元'},
-          {name: '生田'},
-          {name: '遠藤'},
-          {name: '生駒'},
-          {name: '松村'},
-          {name: '中田'},
-          {name: '中元'},
-        ],
-        resultList: [],
       }
     },
-    mounted () {
-      this.$emit("handleUserList", {list: this.userList})
+    created () {
+      this.$store.dispatch('onAuth')
+      this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
+      this.$store.dispatch('fetchRoom', { roomId: this.roomId })
     },
     computed: {
+      loggedIn() {
+        return this.$store.getters.getLoggedIn
+      },
+      authUserId() {
+        return this.$store.getters.getAuthUserId
+      },
+      userInfo() {
+        return this.$store.getters.getUserInfo
+      },
+      roomId() {
+        return this.$route.params.roomId
+      },
+      room() {
+        return this.$store.getters.getRoom
+      }
     },
     methods: {
       start () {
-        const randomID = parseInt(Math.floor(Math.random() * this.userList.length));
-        this.result = this.userList[randomID]
+        const randomID = parseInt(Math.floor(Math.random() * this.room.rouletteList.length));
+        this.$store.dispatch('updateResult', { result: this.room.rouletteList[randomID], roomId: this.roomId })
         this.starting = true
         setTimeout(this.run, 50);
       },
@@ -99,7 +93,7 @@
         if (this.starting) {
           this.start()
         } else {
-          this.resultList.push(this.result)
+          this.$store.dispatch('updateResultList', { result: this.result, roomId: this.roomId })
         }
       }
     }

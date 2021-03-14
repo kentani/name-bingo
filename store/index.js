@@ -104,6 +104,7 @@ export const actions = {
       .add({
         name: name,
         authUserId: authUserId,
+        bingoUserList: []
       })
       .then((docRef) => {
         usersRef
@@ -131,6 +132,9 @@ export const actions = {
         createdUser: { id: user.id, name: user.name },
         adminList: [{ id: user.id, name: user.name }],
         joinedUserList: [],
+        rouletteList: [],
+        resultList: [],
+        result: '？？',
       })
       .then((docRef) => {
         roomsRef
@@ -177,6 +181,10 @@ export const actions = {
           id: user.id,
           name: user.name,
         }),
+        rouletteList: firebase.firestore.FieldValue.arrayUnion({
+          id: user.id,
+          name: user.name,
+        }),
       })
       .then(() => {
         roomsRef
@@ -204,6 +212,26 @@ export const actions = {
             commit('setRoom', doc.data())
           })
       })
+  },
+  updateResult({ commit }, { result, roomId }) {
+    roomsRef
+      .doc(roomId)
+      .update({
+        result: result,
+      })
+      .then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+  },
+  updateResultList({ commit }, { result, roomId }) {
+    roomsRef
+    .doc(roomId)
+    .update({
+      resultList: firebase.firestore.FieldValue.arrayUnion(result),
+    })
+    .then(function(doc) {
+      commit('setRoom', doc.data())
+    })
   },
   onAuth({ commit }) {
     firebase.auth().onAuthStateChanged(user => {

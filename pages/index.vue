@@ -54,19 +54,9 @@ export default {
         },
         {
           icon: 'mdi-apps',
-          title: 'bingo',
-          to: '/rooms/1/bingo'
-        },
-        {
-          icon: 'mdi-apps',
           title: 'join',
           to: '/rooms/1/join'
         },
-        {
-          icon: 'mdi-apps',
-          title: 'players',
-          to: '/rooms/1/players/1/bingo-card'
-        }
       ]
     }
   },
