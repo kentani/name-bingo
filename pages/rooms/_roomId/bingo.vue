@@ -35,7 +35,6 @@
       <v-btn
         text
         x-large
-        color="red"
         :ripple="false"
         @click="">
         ゲームを開始
