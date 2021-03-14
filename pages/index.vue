@@ -26,8 +26,7 @@
           v-for="(item, i) in items"
           :key="i"
           :to="item.to"
-          router
-          exact>
+          nuxt>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -54,8 +53,18 @@ export default {
         },
         {
           icon: 'mdi-apps',
-          title: 'join',
-          to: '/rooms/1/join'
+          title: 'イベント1',
+          to: '/rooms/v8BF3GRK8c0sFxRfZS6R/settings'
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'イベント2',
+          to: '/rooms/c1NbtiyuMMlfTLrgMqrK/settings'
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'イベント3',
+          to: '/rooms/pOXei3g0EmjqdCOO4NNi/settings'
         },
       ]
     }

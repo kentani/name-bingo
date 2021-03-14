@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-row justify="center" class="mt-2 mb-6">
-      <v-col cols="4">
-        <v-card flat class="grey lighten-4">
+      <v-col cols="12">
+        <v-card flat class="grey lighten-4" height="120">
           <v-row justify="center">
             <v-card-title class="display-4 font-weight-bold">
-              {{ room.result.name }}
+              {{ result.name }}
             </v-card-title>
           </v-row>
         </v-card>
@@ -55,6 +55,7 @@
     data () {
       return {
         starting: false,
+        result: {}
       }
     },
     created () {
@@ -82,8 +83,8 @@
     methods: {
       start () {
         const randomID = parseInt(Math.floor(Math.random() * this.room.rouletteList.length));
-        this.$store.dispatch('updateResult', { result: this.room.rouletteList[randomID], roomId: this.roomId })
         this.starting = true
+        this.result = this.room.rouletteList[randomID]
         setTimeout(this.run, 50);
       },
       stop () {
@@ -93,6 +94,7 @@
         if (this.starting) {
           this.start()
         } else {
+          this.$store.dispatch('updateResult', { result: this.result, roomId: this.roomId })
           this.$store.dispatch('updateResultList', { result: this.result, roomId: this.roomId })
         }
       }

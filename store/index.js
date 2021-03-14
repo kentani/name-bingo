@@ -220,18 +220,28 @@ export const actions = {
         result: result,
       })
       .then(function(doc) {
-        commit('setRoom', doc.data())
+        roomsRef
+          .doc(roomId)
+          .get()
+          .then(function(doc) {
+            commit('setRoom', doc.data())
+          })
       })
   },
   updateResultList({ commit }, { result, roomId }) {
     roomsRef
-    .doc(roomId)
-    .update({
-      resultList: firebase.firestore.FieldValue.arrayUnion(result),
-    })
-    .then(function(doc) {
-      commit('setRoom', doc.data())
-    })
+      .doc(roomId)
+      .update({
+        resultList: firebase.firestore.FieldValue.arrayUnion(result),
+      })
+      .then(function(doc) {
+        roomsRef
+          .doc(roomId)
+          .get()
+          .then(function(doc) {
+            commit('setRoom', doc.data())
+          })
+      })
   },
   onAuth({ commit }) {
     firebase.auth().onAuthStateChanged(user => {
@@ -256,10 +266,12 @@ export const actions = {
     commit('clearRoom')
     roomsRef
       .doc(roomId)
-      .get()
-      .then(function(doc) {
+      .onSnapshot({
+        includeMetadataChanges: true
+      }, (doc) => {
+        console.log("aaa", roomId, doc.data())
         commit('setRoom', doc.data())
-      })
+      });
   },
   clearRoom({ commit }) {
     commit('clearRoom')
