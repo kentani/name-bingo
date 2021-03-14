@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  layout: 'room',
+  layout: 'top',
   data () {
     return {
       appItems: [

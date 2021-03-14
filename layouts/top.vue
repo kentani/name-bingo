@@ -20,9 +20,8 @@
       <v-btn
         icon
         nuxt
-        :disabled="!loggedIn"
-        :ripple="false"
-        :to="'/rooms/' + roomId + '/settings'">
+        disabled
+        :ripple="false">
         <v-icon>mdi-cog</v-icon>
       </v-btn>
       <v-btn
@@ -57,7 +56,7 @@
 
 <script>
 export default {
-  name: 'room',
+  name: 'top',
   middleware: 'authenticated',
   data () {
     return {
@@ -72,10 +71,7 @@ export default {
   computed: {
     loggedIn () {
       return this.$store.getters.getLoggedIn
-    },
-    roomId() {
-      return this.$route.params.roomId
-    },
+    }
   },
   methods: {
   }

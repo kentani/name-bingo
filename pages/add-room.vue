@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  layout: 'room',
+  layout: 'top',
   created () {
     this.$store.dispatch('onAuth')
   },
