@@ -1,13 +1,13 @@
 <template>
   <v-card>
     <v-card-title class="headline font-weight-bold">{{ userInfo.name }}</v-card-title>
-    <v-card-subtitle class="py-0">{{ userInfo.id }}</v-card-subtitle>
-    <v-card-actions class="py-0 mx-2">
+    <v-card-subtitle>{{ userInfo.id }}</v-card-subtitle>
+    <v-card-actions class="mx-2">
       <v-btn
-        text
         nuxt
-        large
-        class="px-0"
+        outlined
+        rounded
+        small
         color="red"
         :ripple="false"
         @click="logout">

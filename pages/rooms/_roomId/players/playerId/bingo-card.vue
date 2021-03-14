@@ -1,40 +1,45 @@
 <template>
   <div>
-    <v-row justify="center">
-      <v-col cols="12" sm="9" md="6">
-        <v-card flat>
-          <v-card-text>
-            <draggable
-              tag="v-row"
-              group="cardList"
-              class="flex-nowrap pt-6 pb-3"
-              style="overflow-x: scroll;"
-              v-bind="draggableOptions">
-              <v-col
-                v-for="(item, i) in room.joinedUserList"
-                :key="i"
-                cols="3">
-                <v-card
-                  hover
-                  class="grey lighten-4"
-                  height="100">
-                  <v-card-title class="overline py-1">
-                    {{ item.name }}
-                  </v-card-title>
-                </v-card>
-              </v-col>
-            </draggable>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row justify="center">
+    <v-row justify="center" class="pt-6">
       <v-col cols="12" sm="9" md="6">
         <v-card>
           <p
-            class="py-2 grey lighten-2 display-2 font-weight-bold text-center">
+            class="py-2 my-0 grey lighten-2 display-2 font-weight-bold text-center">
             BINGO CARD
           </p>
+          <v-card-actions>
+            <v-btn
+              icon
+              :ripple="false">
+              <v-icon>mdi-account-multiple</v-icon>
+            </v-btn>
+            <v-spacer />
+            <v-btn
+              rounded
+              outlined
+              small
+              :ripple="false"
+              @click="setUser">
+              自動作成
+            </v-btn>
+            <v-btn
+              rounded
+              outlined
+              small
+              color="deep-purple"
+              :ripple="false">
+              準備完了
+            </v-btn>
+            <v-btn
+              rounded
+              outlined
+              small
+              color="red"
+              :ripple="false"
+              @click="resetUser">
+              リセット
+            </v-btn>
+          </v-card-actions>
           <v-card-text>
             <draggable
               tag="v-row"
@@ -43,13 +48,14 @@
               <v-col
                 v-for="(item, i) in userList"
                 :key="i"
-                cols="3">
+                cols="3"
+                class="pa-1">
                 <v-card
                   :flat="!room.resultList.some(el => el.id === userItem(item, i).id)"
                   :dark="room.resultList.some(el => el.id === userItem(item, i).id)"
                   :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'deep-purple' : 'grey lighten-4' ]"
                   height="100">
-                  <v-card-title class="overline py-1">
+                  <v-card-title class="overline py-1" style="line-height:15px">
                     {{ userInfo.bingoUserList[i] ? userInfo.bingoUserList[i].name : item.name }}
                   </v-card-title>
                 </v-card>
@@ -59,23 +65,35 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row justify="center" class="my-3">
-      <v-btn
-        text
-        x-large
-        :ripple="false"
-        @click="setUser">
-        ユーザーセット
-      </v-btn>
-      <v-btn
-        text
-        x-large
-        color="red"
-        :ripple="false"
-        @click="isReach([0, 5, 10, 15])">
-        ユーザーリセット
-      </v-btn>
-    </v-row>
+    <!-- <v-row justify="center">
+      <v-col cols="12" sm="9" md="6">
+        <v-card flat>
+          <v-card-text>
+            <draggable
+              tag="v-row"
+              group="cardList"
+              class="flex-nowrap"
+              style="overflow-x: scroll;"
+              v-bind="draggableOptions">
+              <v-col
+                v-for="(item, i) in room.joinedUserList"
+                :key="i"
+                cols="3"
+                class="pa-1">
+                <v-card
+                  hover
+                  class="grey lighten-4 overline py-1"
+                  height="100">
+                  <v-card-title class="overline py-1" style="line-height:15px">
+                    {{ item.name }}
+                  </v-card-title>
+                </v-card>
+              </v-col>
+            </draggable>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row> -->
   </div>
 </template>
 

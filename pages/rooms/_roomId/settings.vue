@@ -1,52 +1,48 @@
 <template>
   <v-card>
     <v-card-title class="headline font-weight-bold">{{ room.name }}</v-card-title>
-    <v-card-subtitle class="py-0">みんなで楽しみましょう！</v-card-subtitle>
-    <v-card-actions class="py-0 mx-2">
+    <v-card-subtitle>みんなで楽しみましょう！</v-card-subtitle>
+    <v-card-actions class="mx-2">
+      <v-btn
+        nuxt
+        outlined
+        rounded
+        small
+        :disabled="!isJoinedRoom"
+        :ripple="false"
+        :to="'/rooms/' + roomId + '/players/' + userInfo.id + '/bingo-card'">
+        ビンゴカード
+      </v-btn>
+      <v-btn
+        nuxt
+        outlined
+        rounded
+        small
+        :disabled="!isJoinedRoom"
+        :ripple="false"
+        :to="'/rooms/' + roomId + '/bingo'">
+        ビンゴルーム
+      </v-btn>
       <v-btn
         v-if="isJoinedRoom"
-        text
         nuxt
-        large
+        outlined
+        rounded
+        small
         color="red"
-        class="px-0"
         :ripple="false"
         @click="">
         参加をやめる
       </v-btn>
       <v-btn
         v-else
-        text
-        large
+        outlined
+        rounded
+        small
         color="deep-purple"
-        class="px-0"
         :ripple="false"
         @click="handleJoinButtonClick">
         参加する
-      </v-btn>
-    </v-card-actions>
-    <v-card-actions class="py-0 mx-2">
-      <v-btn
-        text
-        nuxt
-        large
-        color="deep-purple"
-        class="px-0"
-        :disabled="!isJoinedRoom"
-        :ripple="false"
-        :to="'/rooms/' + roomId + '/players/' + userInfo.id + '/bingo-card'">
-        ビンゴカードを見る
-      </v-btn>
-      <v-btn
-        text
-        nuxt
-        large
-        color="deep-purple"
-        class="px-0"
-        :disabled="!isJoinedRoom"
-        :ripple="false"
-        :to="'/rooms/' + roomId + '/bingo'">
-        ルーレット部屋に行く
       </v-btn>
     </v-card-actions>
     <v-card-subtitle>作成者</v-card-subtitle>

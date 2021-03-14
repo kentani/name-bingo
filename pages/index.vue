@@ -6,6 +6,8 @@
           readonly
           dark
           depressed
+          rounded
+          small
           color="deep-purple deep-purple lighten-4"
           :ripple="false">
           ログイン済み

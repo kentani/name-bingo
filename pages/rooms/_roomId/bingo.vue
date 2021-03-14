@@ -17,18 +17,20 @@
         color="deep-purple"
         dark
         x-large
+        rounded
         :ripple="false"
         @click="start">
-        スタート
+        START
       </v-btn>
       <v-btn
         v-else
         color="deep-purple"
         dark
         x-large
+        rounded
         :ripple="false"
         @click="stop">
-        ストップ
+        STOP
       </v-btn>
     </v-row>
     <v-row justify="center" class="my-3">

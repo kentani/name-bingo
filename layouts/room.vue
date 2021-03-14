@@ -2,7 +2,6 @@
   <v-app dark>
     <!-- <side :drawer="drawer" /> -->
     <v-app-bar
-      hide-on-scroll
       clipped-left
       dense
       fixed
