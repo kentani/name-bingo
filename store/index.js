@@ -269,7 +269,6 @@ export const actions = {
       .onSnapshot({
         includeMetadataChanges: true
       }, (doc) => {
-        console.log("aaa", roomId, doc.data())
         commit('setRoom', doc.data())
       });
   },
