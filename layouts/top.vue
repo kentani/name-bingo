@@ -1,18 +1,12 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      clipped
-      fixed
-      app>
-    </v-navigation-drawer>
     <v-app-bar
       clipped-left
       dense
       fixed
       flat
       app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon disabled />
       <v-toolbar-title class="px-0">
         <nuxt-link to="/" tag="div" class="c-p font-weight-bold">{{ title }}</nuxt-link>
       </v-toolbar-title>
@@ -61,7 +55,6 @@ export default {
   data () {
     return {
       title: 'BINGO',
-      drawer: false
     }
   },
   created () {
