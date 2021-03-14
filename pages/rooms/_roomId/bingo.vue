@@ -32,6 +32,24 @@
       </v-btn>
     </v-row>
     <v-row justify="center" class="my-3">
+      <v-btn
+        text
+        x-large
+        color="red"
+        :ripple="false"
+        @click="">
+        ゲームを開始
+      </v-btn>
+      <v-btn
+        text
+        x-large
+        color="red"
+        :ripple="false"
+        @click="reset">
+        リセット
+      </v-btn>
+    </v-row>
+    <v-row justify="center" class="my-3">
       <v-col
         v-if="room.resultList.length !== 0"
         v-for="(item, i) in room.resultList"
@@ -97,6 +115,10 @@
           this.$store.dispatch('updateResult', { result: this.result, roomId: this.roomId })
           this.$store.dispatch('updateResultList', { result: this.result, roomId: this.roomId })
         }
+      },
+      reset() {
+        this.$store.dispatch('resetResultList', { roomId: this.roomId })
+        this.result = {}
       }
     }
   }

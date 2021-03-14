@@ -134,7 +134,7 @@ export const actions = {
         joinedUserList: [],
         rouletteList: [],
         resultList: [],
-        result: '？？',
+        result: {},
       })
       .then((docRef) => {
         roomsRef
@@ -233,6 +233,22 @@ export const actions = {
       .doc(roomId)
       .update({
         resultList: firebase.firestore.FieldValue.arrayUnion(result),
+      })
+      .then(function(doc) {
+        roomsRef
+          .doc(roomId)
+          .get()
+          .then(function(doc) {
+            commit('setRoom', doc.data())
+          })
+      })
+  },
+  resetResultList({ commit }, { roomId }) {
+    roomsRef
+      .doc(roomId)
+      .update({
+        result: {},
+        resultList: [],
       })
       .then(function(doc) {
         roomsRef
