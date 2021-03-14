@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="4" align="center">
         <v-btn
-          v-if="room.joinedUserList.filter(v => v).some(el => el.id === userInfo.id)"
+          v-if="isJoinedRoom"
           text
           nuxt
           x-large
@@ -50,7 +50,7 @@
     <v-card-subtitle>参加者</v-card-subtitle>
     <v-divider class="mx-4"></v-divider>
     <v-card-text>
-      <chip-list :items="room.joinedUserList" />
+      <chip-list v-if="isJoinedRoom" :items="room.joinedUserList" />
     </v-card-text>
   </v-card>
 </template>
@@ -63,7 +63,6 @@ export default {
     this.$store.dispatch('onAuth')
     this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
     this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-    console.log("aaa", this.room)
   },
   mounted () {
   },
@@ -82,7 +81,14 @@ export default {
     },
     room() {
       return this.$store.getters.getRoom
-    }
+    },
+    isJoinedRoom() {
+      let val = false
+      if (this.room.joinedUserList) {
+        val = this.room.joinedUserList.filter(v => v).some(el => el.id === this.userInfo.id)
+      }
+      return val
+    },
   },
   methods: {
     handleJoinButtonClick() {

@@ -5,7 +5,7 @@ const usersRef = db.collection('users');
 const roomsRef = db.collection('rooms');
 
 export const state = () => ({
-  authUserId: 'あ',
+  authUserId: '',
   loggedIn: false,
   userInfo: {},
   room: {}

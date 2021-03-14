@@ -72,10 +72,8 @@ export default {
   },
   created () {
     this.$store.dispatch('onAuth')
-    console.log("aaa", this.authUserId)
   },
   mounted () {
-    console.log("aaa", this.authUserId)
   },
   computed: {
     authUser () {
