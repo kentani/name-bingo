@@ -1,6 +1,22 @@
 <template>
   <v-card>
-    <v-card-title class="mt-2 headline font-weight-bold">{{ userInfo.name }}</v-card-title>
+    <v-row no-gutters class="mt-2 mb-0">
+      <v-col cols="8" align="center">
+        <v-card-title class="mt-2 headline font-weight-bold">{{ userInfo.name }}</v-card-title>
+      </v-col>
+      <v-col cols="4" align="center">
+        <v-btn
+          text
+          nuxt
+          x-large
+          class="my-2"
+          color="red"
+          :ripple="false"
+          @click="logout">
+          ログアウト
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-card-subtitle>{{ userInfo.id }}</v-card-subtitle>
     <v-card-subtitle>作成した部屋</v-card-subtitle>
     <v-divider class="mx-4"></v-divider>
@@ -22,6 +38,7 @@
 
 <script>
 export default {
+  layout: 'room',
   data () {
     return {
       appItems: [
@@ -61,6 +78,9 @@ export default {
     }
   },
   methods: {
+    logout() {
+      this.$store.dispatch('logout')
+    }
   }
 }
 </script>

@@ -15,3 +15,39 @@
     </v-col>
   </v-row>
 </template>
+
+<script>
+  export default {
+    layout: 'room',
+    data () {
+      return {
+        result: {name: '？？'},
+        starting: false,
+        userList: [
+          {name: '齋藤'},
+          {name: '白石'},
+          {name: '堀'},
+          {name: '星野'},
+          {name: 'abc abc abc'},
+          {name: '若月'},
+          {name: '桜井'},
+          {name: '橋本'},
+          {name: 'abc abc abc'},
+          {name: 'abc abc abc'},
+          {name: '佐藤'},
+          {name: '田中'},
+          {name: '山田'},
+          {name: ''},
+          {name: '生田'},
+          {name: '遠藤'},
+        ]
+      }
+    },
+    mounted () {
+    },
+    computed: {
+    },
+    methods: {
+    }
+  }
+</script>

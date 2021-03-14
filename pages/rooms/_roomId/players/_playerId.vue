@@ -1,16 +1,11 @@
 <template>
   <div>
     <v-tabs
-      v-model="tab"
       centered
       color="deep-purple">
       <v-tabs-slider color="deep-purple"></v-tabs-slider>
-      <v-tab
-        v-for="item in items"
-        :key="item.title"
-        :to="item.to">
-        {{ item.title }}
-      </v-tab>
+      <v-tab :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/bingo-card'">ビンゴカード</v-tab>
+      <v-tab :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/profile'">自己紹介</v-tab>
     </v-tabs>
     <nuxt-child />
   </div>
@@ -18,18 +13,35 @@
 
 <script>
 export default {
+  layout: 'room',
   data () {
     return {
-      tab: null,
-      items: [
-        { title: "ビンゴカード", to: "/rooms/1/players/1/bingo-card" },
-        { title: "自己紹介", to: "/rooms/1/players/1/profile" },
-      ]
     }
   },
-  mounted () {
+  created () {
+    this.$store.dispatch('onAuth')
+    this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
+    this.$store.dispatch('fetchRoom', { roomId: this.roomId })
   },
   computed: {
+    loggedIn() {
+      return this.$store.getters.getLoggedIn
+    },
+    authUserId() {
+      return this.$store.getters.getAuthUserId
+    },
+    userInfo() {
+      return this.$store.getters.getUserInfo
+    },
+    roomId() {
+      return this.$route.params.roomId
+    },
+    room() {
+      return this.$store.getters.getRoom
+    },
+    playerId() {
+      return this.$route.params.playerId
+    },
   },
   methods: {
   }

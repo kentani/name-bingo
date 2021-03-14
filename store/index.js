@@ -45,6 +45,10 @@ export const mutations = {
   clearRoom(state) {
     state.room = Object.assign({}, state.room, {})
   },
+  clearAuth(state) {
+    state.authUserId = ''
+    stete.loggedIn = false
+  }
 }
 
 export const actions = {
@@ -84,6 +88,16 @@ export const actions = {
         console.log("errorCode:", error.code)
         console.log("errorMessage:", error.message)
       });
+  },
+  logout({ commit }) {
+    firebase.auth().signOut().then(()=>{
+      commit('clearAuth')
+      commit('clearUserInfo')
+      console.log("ログアウトしました");
+    })
+    .catch( (error)=>{
+      console.log(`ログアウト時にエラーが発生しました (${error})`);
+    });
   },
   createUser({ commit }, { name, authUserId }) {
     usersRef
