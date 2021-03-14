@@ -72,7 +72,19 @@
     data () {
       return {
         starting: false,
-        result: {}
+        result: {},
+        checkList: [
+          [0,1,2,3],
+          [4,5,6,7],
+          [8,9,10,11],
+          [12,13,14,15],
+          [0,4,8,12],
+          [1,5,9,13],
+          [2,6,10,14],
+          [3,7,11,15],
+          [0,5,10,15],
+          [3,6,9,12],
+        ],
       }
     },
     created () {
@@ -113,11 +125,24 @@
         } else {
           this.$store.dispatch('updateResult', { result: this.result, roomId: this.roomId })
           this.$store.dispatch('updateResultList', { result: this.result, roomId: this.roomId })
+          this.$store.dispatch('updateBingoList', { result: this.result, roomId: this.roomId })
+          this.$store.dispatch('updateReachList', { result: this.result, roomId: this.roomId })
         }
       },
       reset() {
         this.$store.dispatch('resetResultList', { roomId: this.roomId })
         this.result = {}
+      },
+      reachCheck() {
+        let returnVal = false
+        this.checkList.forEach(function(list) {
+          let ary = list.filter((val) => {
+            return winItemList.indexOf(val) !== -1
+          })
+          if (ary.length === 3) {
+            this.isReach = true
+          }
+        })
       }
     }
   }

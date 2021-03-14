@@ -2,13 +2,44 @@
   <div>
     <v-row justify="center">
       <v-col cols="12" sm="9" md="6">
-        <v-card class="mt-4">
+        <v-card flat>
+          <v-card-text>
+            <draggable
+              tag="v-row"
+              group="cardList"
+              class="flex-nowrap pt-6 pb-3"
+              style="overflow-x: scroll;"
+              v-bind="draggableOptions">
+              <v-col
+                v-for="(item, i) in room.joinedUserList"
+                :key="i"
+                cols="3">
+                <v-card
+                  hover
+                  class="grey lighten-4"
+                  height="100">
+                  <v-card-title class="overline py-1">
+                    {{ item.name }}
+                  </v-card-title>
+                </v-card>
+              </v-col>
+            </draggable>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" sm="9" md="6">
+        <v-card>
           <p
             class="py-2 grey lighten-2 display-2 font-weight-bold text-center">
             BINGO CARD
           </p>
           <v-card-text>
-            <v-row justify="center" class="my-3">
+            <draggable
+              tag="v-row"
+              group="cardList"
+              v-bind="draggableOptions">
               <v-col
                 v-for="(item, i) in userList"
                 :key="i"
@@ -23,7 +54,7 @@
                   </v-card-title>
                 </v-card>
               </v-col>
-            </v-row>
+            </draggable>
           </v-card-text>
         </v-card>
       </v-col>
@@ -41,7 +72,7 @@
         x-large
         color="red"
         :ripple="false"
-        @click="resetUser">
+        @click="isReach([0, 5, 10, 15])">
         ユーザーリセット
       </v-btn>
     </v-row>
@@ -49,10 +80,13 @@
 </template>
 
 <script>
+  import draggable from 'vuedraggable'
   export default {
     layout: 'room',
+    components: { draggable },
     data () {
       return {
+        draggableOptions: { animation: 300, delay: 0 },
         userList: [
           {name: ''},
           {name: ''},
@@ -70,7 +104,20 @@
           {name: ''},
           {name: ''},
           {name: ''},
-        ]
+        ],
+        checkList: [
+          [0,1,2,3],
+          [4,5,6,7],
+          [8,9,10,11],
+          [12,13,14,15],
+          [0,4,8,12],
+          [1,5,9,13],
+          [2,6,10,14],
+          [3,7,11,15],
+          [0,5,10,15],
+          [3,6,9,12],
+        ],
+        isReach: false
       }
     },
     created () {
@@ -104,6 +151,17 @@
       },
       resetUser() {
         this.$store.dispatch('setUser', { userId: this.userInfo.id, list: [] })
+      },
+      reachCheck(winItemList) {
+        let returnVal = false
+        this.checkList.forEach(function(list) {
+          let ary = list.filter((val) => {
+            return winItemList.indexOf(val) !== -1
+          })
+          if (ary.length === 3) {
+            this.isReach = true
+          }
+        })
       }
     }
   }

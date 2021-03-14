@@ -1,12 +1,8 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      clipped
-      fixed
-      app>
-    </v-navigation-drawer>
+    <!-- <side :drawer="drawer" /> -->
     <v-app-bar
+      hide-on-scroll
       clipped-left
       dense
       fixed
