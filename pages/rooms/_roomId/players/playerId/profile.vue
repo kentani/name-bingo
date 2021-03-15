@@ -30,17 +30,17 @@
                     <v-card-text>
                       <v-text-field
                         filled
-                        label="name"
+                        label="なまえ"
                         color="deep-purple"
                         v-model="inputName" />
                       <v-text-field
                         filled
-                        label="one message"
+                        label="ひとこと"
                         color="deep-purple"
                         v-model="inputMessage" />
                       <v-textarea
                         filled
-                        label="profile"
+                        label="プロフィール"
                         color="deep-purple"
                         v-model="inputProfile" />
                     </v-card-text>
@@ -69,8 +69,7 @@
             inset
             hide-details
             class="my-2"
-            color="deep-purple"
-            :disabled="editting">
+            color="deep-purple">
             <template v-slot:label>
               <span
                 class="overline font-weight-bold"
@@ -80,20 +79,20 @@
             </template>
           </v-switch>
         </v-card-actions>
-        <v-divider class="mx-4"></v-divider>
+        <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold mb-3">
           {{ userInfo.name }}
         </v-card-title>
-        <v-card-subtitle>
+        <v-card-subtitle class="font-weight-bold pb-6">
           ひとこと
         </v-card-subtitle>
         <v-card-text class="body-1">
           {{ userInfo.message }}
         </v-card-text>
-        <v-card-subtitle>
+        <v-card-subtitle class="font-weight-bold pb-0">
           プロフィール
         </v-card-subtitle>
-        <v-card-text class="body-1">
+        <v-card-text class="body-1" style="white-space: pre-line;">
           {{ userInfo.profile }}
         </v-card-text>
       </v-card>
