@@ -39,12 +39,15 @@
               <v-card-actions>
                 <v-btn
                   text
-                  color="grey"
+                  rounded
+                  small
                   @click="resetUserInfo">
                   Close
                 </v-btn>
                 <v-btn
-                  text
+                  rounded
+                  dark
+                  small
                   color="deep-purple"
                   @click="editEnd">
                   Save
@@ -55,10 +58,10 @@
           <v-spacer />
           <v-btn
             nuxt
-            outlined
             rounded
+            dark
             small
-            color="red"
+            color="red darken-4"
             :ripple="false"
             @click="logout">
             ログアウト
@@ -66,7 +69,7 @@
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
-        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ userInfo.id }}</v-card-subtitle>
+        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-subtitle>
         <v-card-title class="caption font-weight-bold pb-0">作成履歴</v-card-title>
         <v-card-text class="py-0">
           <link-list :items="userInfo.createdRoomList" />

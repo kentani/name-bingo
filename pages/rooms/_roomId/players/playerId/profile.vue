@@ -50,12 +50,15 @@
               <v-card-actions>
                 <v-btn
                   text
-                  color="grey"
+                  rounded
+                  small
                   @click="resetUserInfo">
                   Close
                 </v-btn>
                 <v-btn
-                  text
+                  rounded
+                  dark
+                  small
                   color="deep-purple"
                   @click="editEnd">
                   Save

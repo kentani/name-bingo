@@ -44,12 +44,15 @@
               <v-card-actions>
                 <v-btn
                   text
-                  color="grey"
+                  rounded
+                  small
                   @click="resetUserInfo">
                   Close
                 </v-btn>
                 <v-btn
-                  text
+                  rounded
+                  dark
+                  small
                   color="deep-purple"
                   @click="editEnd">
                   Save
@@ -68,14 +71,6 @@
         <v-card-title class="caption font-weight-bold pb-0">管理者</v-card-title>
         <v-card-text class="py-0">
           <chip-list :items="room.adminList" />
-        </v-card-text>
-        <v-card-title class="caption font-weight-bold pb-0">管理者を追加する</v-card-title>
-        <v-card-text class="py-0">
-          <basic-form
-            text="追加する"
-            placeholder="追加するユーザーのIDを入力してください"
-            :disabled="true"
-            @create-button-click="" />
         </v-card-text>
         <v-card-title class="caption font-weight-bold pb-0">
           <v-badge

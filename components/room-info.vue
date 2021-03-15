@@ -6,28 +6,16 @@
         <p class="body-1">人名ビンゴを始めましょう！</p>
       </v-col>
     </v-row>
-    <!-- <v-row>
-      <v-col cols="8" align="center">
-      <v-text-field
-        v-model="url"
-        readonly
-      ></v-text-field>
-      </v-col>
-      <v-col cols="4" align="center">
-        <v-btn class="my-2 amber" @click="">
-          コピー
-        </v-btn>
-      </v-col>
-    </v-row> -->
     <v-row>
       <v-col align="center">
         <v-btn
           nuxt
+          dark
           text
-          x-large
+          rounded
           color="deep-purple"
           :to="'/rooms/' + room.id + '/settings'">
-          作成した部屋に入る
+          <span class="font-weight-bold">作成した部屋に入る</span>
         </v-btn>
       </v-col>
     </v-row>

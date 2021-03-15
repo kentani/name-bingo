@@ -10,6 +10,7 @@
           <v-btn
             nuxt
             text
+            rounded
             color="deep-purple"
             :disabled="!room.adminList.some(el => el.id === this.userInfo.id)"
             :to="'/rooms/' + this.roomId + '/admin/settings'"
@@ -20,8 +21,10 @@
           <v-btn
             v-if="isJoinedRoom"
             nuxt
-            text
-            color="red"
+            rounded
+            dark
+            small
+            color="red darken-4"
             :ripple="false"
             @click="">
             <span class="font-weight-bold">参加をやめる</span>
@@ -30,6 +33,7 @@
             v-else
             rounded
             dark
+            small
             color="deep-purple"
             :ripple="false"
             @click="handleJoinButtonClick">
