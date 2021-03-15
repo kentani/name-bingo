@@ -11,7 +11,6 @@
         <nuxt-link to="/" tag="div" class="c-p font-weight-bold">{{ title }}</nuxt-link>
       </v-toolbar-title>
       <v-spacer />
-      </v-btn>
       <v-btn
         icon
         nuxt
@@ -41,7 +40,7 @@ export default {
   middleware: 'authenticated',
   data () {
     return {
-      title: 'BINGO',
+      title: 'Name Bingo',
     }
   },
   created () {

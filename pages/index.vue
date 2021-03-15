@@ -1,5 +1,30 @@
 <template>
-  <v-row>
+  <v-row justify="center" class="my-6">
+    <v-col cols="12">
+      <v-card flat color="grey lighten-4" class="my-6 py-6">
+        <p
+          class="pt-6 mt-6 display-4 font-weight-bold text-center dark--text">
+          Name Bingo
+        </p>
+        <p class="body-4 text-center" style="white-space: pre-line;">
+          ユーザー登録なしで利用できるビンゴアプリです。
+          あああああ
+        </p>
+        <v-card-actions class="py-6 mx-2">
+          <v-row justify="center" class="my-6">
+            <v-btn
+              dark
+              rounded
+              x-large
+              color="deep-purple"
+              :ripple="false"
+              @click="login2">
+              ユーザー登録なしで利用する
+            </v-btn>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-col>
     <v-col cols="12">
       <div v-if="loggedIn">
         <v-btn
@@ -56,7 +81,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'イベント1',
-          to: '/rooms/IxkeDXeR97ono2Y3tsnA/admin/settings'
+          to: '/rooms/IxkeDXeR97ono2Y3tsnA/admin/bingo'
         },
       ]
     }
@@ -79,6 +104,9 @@ export default {
   },
   methods: {
     handleCreateButtonClick (args) {
+      this.$store.dispatch('login', { name: args.name })
+    },
+    login2 (args) {
       this.$store.dispatch('login', { name: args.name })
     }
   }

@@ -27,7 +27,7 @@
             small
             color="red darken-4"
             :ripple="false"
-            @click="">
+            @click="unJoin">
             <span class="font-weight-bold">参加をやめる</span>
           </v-btn>
           <v-btn
@@ -106,6 +106,9 @@
       handleJoinButtonClick() {
         this.$store.dispatch('joinRoom', { user: this.userInfo, roomId: this.roomId })
       },
+      unJoin() {
+        
+      }
     }
   }
 </script>

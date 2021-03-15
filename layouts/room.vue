@@ -41,7 +41,7 @@ export default {
   middleware: 'authenticated',
   data () {
     return {
-      title: 'BINGO',
+      title: 'Name Bingo',
       drawer: false
     }
   },
