@@ -132,6 +132,21 @@ export const actions = {
           })
       })
   },
+  setUserInfo2({ commit }, { userId, name }) {
+    usersRef
+      .doc(userId)
+      .update({
+        name: name,
+      })
+      .then(() => {
+        usersRef
+          .doc(userId)
+          .get()
+          .then(function(doc) {
+            commit('setUserInfo', doc.data())
+          })
+      })
+  },
   setRoomInfo({ commit }, { roomId, name, message, profile }) {
     roomsRef
       .doc(roomId)

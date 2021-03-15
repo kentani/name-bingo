@@ -112,7 +112,7 @@ export default {
       this.$store.dispatch('login', { name: args.name })
     },
     login2 (args) {
-      this.$store.dispatch('login', { name: args.name })
+      this.$store.dispatch('login', { name: 'ゲストユーザー' })
     },
     nextStep (n) {
         if (n === this.steps) {

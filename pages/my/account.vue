@@ -142,7 +142,7 @@ export default {
       this.dialog = false
     },
     editEnd() {
-      this.$store.dispatch('setUserInfo', { userId: this.userInfo.id, name: this.inputName, message: this.userInfo.message, profile: this.userInfo.profile })
+      this.$store.dispatch('setUserInfo2', { userId: this.userInfo.id, name: this.inputName })
       this.dialog = false
     },
     setUserInfo() {
