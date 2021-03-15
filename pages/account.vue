@@ -4,7 +4,7 @@
       <v-card>
         <p
           class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
-          Settings
+          Account
         </p>
         <v-card-actions class="py-2 mx-2">
           <v-dialog
@@ -29,14 +29,9 @@
                   <v-card-text>
                     <v-text-field
                       filled
-                      label="イベント名"
+                      label="なまえ"
                       color="deep-purple"
                       v-model="inputName" />
-                    <v-textarea
-                      filled
-                      label="メッセージ"
-                      color="deep-purple"
-                      v-model="inputMessage" />
                   </v-card-text>
                 </v-card>
               </v-card-text>
@@ -57,37 +52,32 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-spacer />
+          <v-btn
+            nuxt
+            outlined
+            rounded
+            small
+            color="red"
+            :ripple="false"
+            @click="logout">
+            ログアウト
+          </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">作成者</v-card-title>
+        <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
+        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ userInfo.id }}</v-card-subtitle>
+        <v-card-title class="caption font-weight-bold pb-0">作成履歴</v-card-title>
         <v-card-text class="py-0">
-          <chip-list :items="[room.createdUser]" />
+          <link-list :items="userInfo.createdRoomList" />
         </v-card-text>
-        <v-card-title class="caption font-weight-bold pb-0">管理者</v-card-title>
+        <v-card-title class="caption font-weight-bold pb-0">参加履歴</v-card-title>
         <v-card-text class="py-0">
-          <chip-list :items="room.adminList" />
+          <link-list :items="userInfo.joinedRoomList" />
         </v-card-text>
-        <v-card-title class="caption font-weight-bold pb-0">管理者を追加する</v-card-title>
+        <v-card-title class="caption font-weight-bold pb-0">このサイトについて</v-card-title>
         <v-card-text class="py-0">
-          <basic-form
-            text="追加する"
-            placeholder="追加するユーザーのIDを入力してください"
-            :disabled="true"
-            @create-button-click="" />
-        </v-card-text>
-        <v-card-title class="caption font-weight-bold pb-0">
-          <v-badge
-            offset-y="17"
-            offset-x="-5"
-            color="deep-purple"
-            :content="room.joinedUserList.length">
-            参加者
-          </v-badge>
-        </v-card-title>
-        <v-card-text class="py-0">
-          <chip-list :items="room.joinedUserList" />
+          <link-list :with-icon="true" :items="appItems" />
         </v-card-text>
       </v-card>
     </v-col>
@@ -96,18 +86,33 @@
 
 <script>
 export default {
-  layout: 'room',
+  layout: 'top',
   data () {
     return {
       dialog: false,
       inputName: '',
-      inputMessage: '',
+      appItems: [
+        {
+          icon: 'mdi-apps',
+          name: 'ビンゴの始め方',
+          to: '/'
+        },
+        {
+          icon: 'mdi-note',
+          name: '利用規約',
+          to: '/'
+        },
+        {
+          icon: 'mdi-github',
+          name: 'ソースコード',
+          to: '/'
+        },
+      ]
     }
   },
   created () {
     this.$store.dispatch('onAuth')
     this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
-    this.$store.dispatch('fetchRoom', { roomId: this.roomId })
   },
   mounted () {
   },
@@ -120,36 +125,21 @@ export default {
     },
     userInfo() {
       return this.$store.getters.getUserInfo
-    },
-    roomId() {
-      return this.$route.params.roomId
-    },
-    room() {
-      return this.$store.getters.getRoom
-    },
-    isJoinedRoom() {
-      let val = false
-      if (this.room.joinedUserList) {
-        val = this.room.joinedUserList.filter(v => v).some(el => el.id === this.userInfo.id)
-      }
-      return val
-    },
+    }
   },
   methods: {
-    handleJoinButtonClick() {
-      this.$store.dispatch('joinRoom', { user: this.userInfo, roomId: this.roomId })
+    logout() {
+      this.$store.dispatch('logout')
     },
     editStart() {
-      this.inputName = this.room.name
-      this.inputMessage = this.room.message
+      this.inputName = this.userInfo.name
     },
     resetUserInfo() {
       this.inputName = ''
-      this.inputMessage = ''
       this.dialog = false
     },
     editEnd() {
-      this.$store.dispatch('setRoomInfo', { roomId: this.roomId, name: this.inputName, message: this.inputMessage })
+      this.$store.dispatch('setUserInfo', { userId: this.userInfo.id, name: this.inputName, message: this.userInfo.message, profile: this.userInfo.profile })
       this.dialog = false
     },
     setUserInfo() {

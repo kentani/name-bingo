@@ -18,7 +18,7 @@
         nuxt
         :disabled="!loggedIn"
         :ripple="false"
-        to="/user">
+        to="/account">
         <v-icon>mdi-account</v-icon>
       </v-btn>
       <v-btn

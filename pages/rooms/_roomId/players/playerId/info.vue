@@ -39,7 +39,7 @@
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
         <v-card-subtitle class="pb-0">みんなで楽しみましょう！</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold">
+        <v-card-title class="caption font-weight-bold pb-0">
           <v-badge
             offset-y="17"
             offset-x="-5"
@@ -48,7 +48,7 @@
             参加者
           </v-badge>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="py-0">
           <chip-list :items="room.joinedUserList" />
         </v-card-text>
       </v-card>
