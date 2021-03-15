@@ -42,7 +42,7 @@
                         filled
                         label="profile"
                         color="deep-purple"
-                        v-model="inputMessage" />
+                        v-model="inputProfile" />
                     </v-card-text>
                   </v-card>
                 </v-card-text>
