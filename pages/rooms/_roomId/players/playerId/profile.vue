@@ -3,8 +3,8 @@
     <v-col cols="12" sm="9" md="6">
       <v-card>
         <p
-          class="py-2 my-0 grey lighten-2 display-2 font-weight-bold text-center">
-          PROFILE CARD
+          class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
+          Profile
         </p>
         <v-card-actions class="py-0 mx-2">
           <v-dialog
@@ -24,7 +24,7 @@
               </template>
               <v-card>
                 <v-card-title class="mb-2 font-weight-bold">EDIT PROFILE</v-card-title>
-                <v-divider></v-divider>
+                <v-divider />
                 <v-card-text class="pa-2">
                   <v-card flat>
                     <v-card-text>

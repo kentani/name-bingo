@@ -1,136 +1,134 @@
 <template>
-  <div>
-    <v-row justify="center">
-      <v-col cols="12" sm="9" md="6">
-        <v-card>
-          <p
-            class="py-2 my-0 grey lighten-2 display-2 font-weight-bold text-center">
-            BINGO CARD
-          </p>
-          <v-card-actions class="py-0 mx-2">
-            <v-dialog
-              v-model="dialog"
-              scrollable
-              width="600">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                  :ripple="false"
-                  :disabled="switch1"
-                  @click="setSelected">
-                  <v-icon color="deep-purple">mdi-account-multiple</v-icon>
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title class="mb-2 font-weight-bold">参加者一覧</v-card-title>
-                <v-card-subtitle>参加者：{{ room.joinedUserList.length }} | 選択中：{{selected.length}}</v-card-subtitle>
-                <v-divider></v-divider>
-                <v-card-text class="pa-2">
-                  <v-card
-                    v-for="(item, i) in room.joinedUserList"
-                    :key="i"
-                    class="my-2">
-                    <v-card-title class="font-weight-bold mb-3">
-                      {{ item.name }}
-                    </v-card-title>
-                    <v-card-subtitle>
-                      プロフィール
-                    </v-card-subtitle>
-                    <v-card-text>
-                      {{ item.profile }}
-                    </v-card-text>
-                    <v-card-subtitle>
-                      ひとこと
-                    </v-card-subtitle>
-                    <v-card-text>
-                      {{ item.oneMessage }}
-                    </v-card-text>
-                    <v-divider class="mx-4"></v-divider>
-                    <v-card-actions class="py-0 mx-2">
-                      <v-spacer />
-                      <v-switch
-                        v-model="selected"
-                        inset
-                        hide-details
-                        class="my-2"
-                        color="deep-purple"
-                        :value="item">
-                        <template v-slot:label>
-                          <span
-                            class="overline font-weight-bold"
-                            :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
-                            加える
-                          </span>
-                        </template>
-                      </v-switch>
-                    </v-card-actions>
-                  </v-card>
-                </v-card-text>
-                <v-divider />
-                <v-card-actions>
-                  <v-btn
-                    text
-                    color="grey"
-                    @click="resetSelected">
-                    Close
-                  </v-btn>
-                  <v-btn
-                    text
-                    color="deep-purple"
-                    :disabled="selected.length > 16"
-                    @click="setBingoUserList">
-                    Save
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-spacer />
-            <v-switch
-              v-model="switch1"
-              inset
-              hide-details
-              class="my-2"
-              color="deep-purple">
-              <template v-slot:label>
-                <span
-                  class="overline font-weight-bold"
-                  :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
-                  準備完了
-                </span>
-              </template>
-            </v-switch>
-          </v-card-actions>
-          <v-divider class="mx-4"></v-divider>
-          <v-card-text>
-            <draggable
-              tag="v-row"
-              group="cardList"
-              v-model="selected"
-              v-bind="draggableOptions"
-              @start="setSelected"
-              @end="setBingoUserList">
-              <v-col
-                v-for="(item, i) in userInfo.bingoUserList"
-                :key="i"
-                cols="3"
-                class="pa-1">
+  <v-row justify="center">
+    <v-col cols="12" sm="9" md="6">
+      <v-card>
+        <p
+          class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
+          BINGO CARD
+        </p>
+        <v-card-actions class="py-0 mx-2">
+          <v-dialog
+            v-model="dialog"
+            scrollable
+            width="600">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+                :ripple="false"
+                :disabled="switch1"
+                @click="setSelected">
+                <v-icon color="deep-purple">mdi-account-multiple</v-icon>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="mb-2 font-weight-bold">参加者一覧</v-card-title>
+              <v-card-subtitle>参加者：{{ room.joinedUserList.length }} | 選択中：{{selected.length}}</v-card-subtitle>
+              <v-divider />
+              <v-card-text class="pa-2">
                 <v-card
-                  :flat="!room.resultList.some(el => el.id === userItem(item, i).id)"
-                  :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'yellow accent-4' : 'grey lighten-4' ]"
-                  height="100">
-                  <v-card-title class="overline py-1" style="line-height:15px">
+                  v-for="(item, i) in room.joinedUserList"
+                  :key="i"
+                  class="my-2">
+                  <v-card-title class="font-weight-bold mb-3">
                     {{ item.name }}
                   </v-card-title>
+                  <v-card-subtitle>
+                    プロフィール
+                  </v-card-subtitle>
+                  <v-card-text>
+                    {{ item.profile }}
+                  </v-card-text>
+                  <v-card-subtitle>
+                    ひとこと
+                  </v-card-subtitle>
+                  <v-card-text>
+                    {{ item.oneMessage }}
+                  </v-card-text>
+                  <v-divider class="mx-4"></v-divider>
+                  <v-card-actions class="py-0 mx-2">
+                    <v-spacer />
+                    <v-switch
+                      v-model="selected"
+                      inset
+                      hide-details
+                      class="my-2"
+                      color="deep-purple"
+                      :value="item">
+                      <template v-slot:label>
+                        <span
+                          class="overline font-weight-bold"
+                          :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                          加える
+                        </span>
+                      </template>
+                    </v-switch>
+                  </v-card-actions>
                 </v-card>
-              </v-col>
-            </draggable>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+              </v-card-text>
+              <v-divider />
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="grey"
+                  @click="resetSelected">
+                  Close
+                </v-btn>
+                <v-btn
+                  text
+                  color="deep-purple"
+                  :disabled="selected.length > 16"
+                  @click="setBingoUserList">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-spacer />
+          <v-switch
+            v-model="switch1"
+            inset
+            hide-details
+            class="my-2"
+            color="deep-purple">
+            <template v-slot:label>
+              <span
+                class="overline font-weight-bold"
+                :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                準備完了
+              </span>
+            </template>
+          </v-switch>
+        </v-card-actions>
+        <v-divider class="mx-4"></v-divider>
+        <v-card-text>
+          <draggable
+            tag="v-row"
+            group="cardList"
+            v-model="selected"
+            v-bind="draggableOptions"
+            @start="setSelected"
+            @end="setBingoUserList">
+            <v-col
+              v-for="(item, i) in userInfo.bingoUserList"
+              :key="i"
+              cols="3"
+              class="pa-1">
+              <v-card
+                :flat="!room.resultList.some(el => el.id === userItem(item, i).id)"
+                :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'yellow accent-4' : 'grey lighten-4' ]"
+                height="100">
+                <v-card-title class="overline py-1" style="line-height:15px">
+                  {{ item.name }}
+                </v-card-title>
+              </v-card>
+            </v-col>
+          </draggable>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
