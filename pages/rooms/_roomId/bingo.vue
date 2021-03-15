@@ -2,7 +2,7 @@
   <div>
     <v-row justify="center" class="mt-2 mb-6">
       <v-col cols="12">
-        <v-card flat class="" height="120">
+        <v-card flat height="120">
           <v-row justify="center">
             <v-card-title class="display-4 font-weight-bold">
               {{ result.name }}
@@ -38,7 +38,7 @@
         text
         x-large
         :ripple="false"
-        @click="">
+        @click="startGame">
         ゲーム開始
       </v-btn>
       <v-btn
@@ -52,7 +52,6 @@
     </v-row>
     <v-row justify="center" class="my-3">
       <v-col
-        v-if="room.resultList.length !== 0"
         v-for="(item, i) in room.resultList"
         :key="i"
         cols="2">
@@ -145,6 +144,9 @@
             this.isReach = true
           }
         })
+      },
+      startGame() {
+
       }
     }
   }

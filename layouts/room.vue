@@ -7,7 +7,6 @@
       dense
       fixed
       flat
-      app
       dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="px-0">
