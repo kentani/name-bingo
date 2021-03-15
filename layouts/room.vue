@@ -8,7 +8,6 @@
       fixed
       flat
       dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="px-0">
         <nuxt-link to="/" tag="div" class="c-p font-weight-bold">{{ title }}</nuxt-link>
       </v-toolbar-title>
