@@ -71,13 +71,17 @@
               </template>
             </v-switch>
           </v-card-actions>
+          <v-divider class="mx-4"></v-divider>
           <v-card-text>
             <draggable
               tag="v-row"
               group="cardList"
-              v-bind="draggableOptions">
+              v-model="selected"
+              v-bind="draggableOptions"
+              @start="setSelected"
+              @end="setBingoUserList">
               <v-col
-                v-for="(item, i) in userList"
+                v-for="(item, i) in userInfo.bingoUserList"
                 :key="i"
                 cols="3"
                 class="pa-1">
@@ -87,7 +91,7 @@
                   :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'deep-purple' : 'grey lighten-4' ]"
                   height="100">
                   <v-card-title class="overline py-1" style="line-height:15px">
-                    {{ userInfo.bingoUserList[i] ? userInfo.bingoUserList[i].name : item.name }}
+                    {{ item.name }}
                   </v-card-title>
                 </v-card>
               </v-col>
@@ -110,7 +114,7 @@
         dialog: false,
         selected: [],
         switch1: false,
-        draggableOptions: { animation: 300, delay: 0, fixed: true },
+        draggableOptions: { animation: 300, delay: 0 },
         userList: [
           {name: ''},
           {name: ''},
@@ -165,9 +169,6 @@
       room() {
         return this.$store.getters.getRoom
       },
-      sele() {
-
-      }
     },
     methods: {
       userItem(item, index) {
