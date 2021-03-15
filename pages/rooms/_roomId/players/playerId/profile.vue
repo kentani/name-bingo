@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center" class="pt-6">
+  <v-row justify="center">
     <v-col cols="12" sm="9" md="6">
       <v-card>
         <p
