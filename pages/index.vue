@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center" class="my-6">
+  <v-row justify="center" class="my-6 py-6">
     <v-col cols="12">
       <v-card flat color="grey lighten-4" class="my-6 py-6">
         <p
@@ -7,10 +7,10 @@
           Name Bingo
         </p>
         <p class="body-4 text-center" style="white-space: pre-line;">
-          ユーザー登録なしで利用できるビンゴアプリです。
-          あああああ
+          名前ビンゴゲームを開催できる無料のウェブアプリです。
+          ユーザー登録なしで利用できます。
         </p>
-        <v-card-actions class="py-6 mx-2">
+        <v-card-actions class="mx-2">
           <v-row justify="center" class="my-6">
             <v-btn
               dark
@@ -26,42 +26,38 @@
       </v-card>
     </v-col>
     <v-col cols="12">
-      <div v-if="loggedIn">
-        <v-btn
-          readonly
-          dark
-          depressed
-          rounded
-          small
-          color="deep-purple deep-purple lighten-4"
-          :ripple="false">
-          ログイン済み
-        </v-btn>
-        <div class="caption">ゲストユーザーとしてログイン済み</div>
-      </div>
-      <div v-else>
-        <basic-form
-          text="ログインする"
-          placeholder="あなたの名前を入力してください"
-          @create-button-click="handleCreateButtonClick" />
-        <div class="caption">ゲストユーザーとしてログインします</div>
-      </div>
+      <v-card flat color="grey lighten-4" class="mt-6 pt-6">
+        <p
+          class="display-1 font-weight-bold text-center dark--text">
+          How to use
+        </p>
+      </v-card>
     </v-col>
-    <v-col cols="12">
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          nuxt>
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+    <v-col cols="12" sm="6" md="4">
+      <v-card flat>
+        <p
+          class="py-2 my-0 yellow accent-4 title font-weight-bold text-center">
+          事前準備
+        </p>
+        <v-card-text>
+          <div class="body-1 py-2">① ゲストユーザーでログイン</div>
+          <div class="body-1 py-2">② 部屋を作成</div>
+          <div class="body-1 py-2">③ 部屋のURLを共有</div>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <v-card flat>
+        <p
+          class="py-2 my-0 yellow accent-4 title font-weight-bold text-center">
+          ゲーム開始
+        </p>
+        <v-card-text>
+          <div class="body-1 py-2">④ プロフィールカードを作成</div>
+          <div class="body-1 py-2">⑤ ビンゴカードを作成</div>
+          <div class="body-1 py-2">⑥ ゲーム開始！</div>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -70,6 +66,8 @@
 export default {
   data () {
     return {
+      e1: 1,
+      steps: 2,
       title: 'BINGO',
       drawer: false,
       items: [
@@ -86,6 +84,13 @@ export default {
       ]
     }
   },
+  watch: {
+      steps (val) {
+        if (this.e1 > val) {
+          this.e1 = val
+        }
+      },
+    },
   created () {
     this.$store.dispatch('onAuth')
   },
@@ -108,7 +113,14 @@ export default {
     },
     login2 (args) {
       this.$store.dispatch('login', { name: args.name })
-    }
+    },
+    nextStep (n) {
+        if (n === this.steps) {
+          this.e1 = 1
+        } else {
+          this.e1 = n + 1
+        }
+      },
   }
 }
 </script>
