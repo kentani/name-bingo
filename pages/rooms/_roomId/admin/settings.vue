@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" md="9">
+    <v-col cols="12" sm="9" md="6">
       <v-card>
         <p
           class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
@@ -60,19 +60,16 @@
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-subtitle class="font-weight-bold">作成者</v-card-subtitle>
-        <v-divider class="mx-4"></v-divider>
+        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
+        <v-card-title class="caption font-weight-bold">作成者</v-card-title>
         <v-card-text>
           <chip-list :items="[room.createdUser]" />
         </v-card-text>
-        <v-card-subtitle class="font-weight-bold">管理者</v-card-subtitle>
-        <v-divider class="mx-4"></v-divider>
+        <v-card-title class="caption font-weight-bold">管理者</v-card-title>
         <v-card-text>
           <chip-list :items="room.adminList" />
         </v-card-text>
-        <v-card-subtitle class="font-weight-bold">管理者を追加する</v-card-subtitle>
-        <v-divider class="mx-4"></v-divider>
+        <v-card-title class="caption font-weight-bold">管理者を追加する</v-card-title>
         <v-card-text>
           <basic-form
             text="追加する"
@@ -80,7 +77,7 @@
             :disabled="true"
             @create-button-click="" />
         </v-card-text>
-        <v-card-subtitle class="font-weight-bold">
+        <v-card-title class="caption font-weight-bold">
           <v-badge
             offset-y="17"
             offset-x="-5"
@@ -88,8 +85,7 @@
             :content="room.joinedUserList.length">
             参加者
           </v-badge>
-        </v-card-subtitle>
-        <v-divider class="mx-4" />
+        </v-card-title>
         <v-card-text>
           <chip-list :items="room.joinedUserList" />
         </v-card-text>
