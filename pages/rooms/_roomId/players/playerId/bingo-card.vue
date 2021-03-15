@@ -8,37 +8,68 @@
             BINGO CARD
           </p>
           <v-card-actions>
-            <v-btn
-              icon
-              :ripple="false">
-              <v-icon>mdi-account-multiple</v-icon>
-            </v-btn>
+            <v-dialog
+              v-model="dialog"
+              scrollable
+              width="600">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  :ripple="false"
+                  :disabled="switch1"
+                  @click="setSelected">
+                  <v-icon>mdi-account-multiple</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="mb-2 font-weight-bold">参加者一覧</v-card-title>
+                <v-card-subtitle>参加者：{{ room.joinedUserList.length }} | 選択中：{{selected.length}}</v-card-subtitle>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <v-checkbox
+                    v-for="(item, i) in room.joinedUserList"
+                    :key="i"
+                    hide-details
+                    v-model="selected"
+                    color="deep-purple"
+                    :label="item.name"
+                    :value="item" />
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-btn
+                    text
+                    color="grey"
+                    @click="resetSelected">
+                    Close
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="deep-purple"
+                    :disabled="selected.length > 16"
+                    @click="setBingoUserList">
+                    Save
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             <v-spacer />
-            <v-btn
-              rounded
-              outlined
-              small
-              :ripple="false"
-              @click="setUser">
-              自動作成
-            </v-btn>
-            <v-btn
-              rounded
-              outlined
-              small
-              color="deep-purple"
-              :ripple="false">
-              準備完了
-            </v-btn>
-            <v-btn
-              rounded
-              outlined
-              small
-              color="red"
-              :ripple="false"
-              @click="resetUser">
-              リセット
-            </v-btn>
+            <v-switch
+              v-model="switch1"
+              inset
+              hide-details
+              class="my-2"
+              color="deep-purple">
+              <template v-slot:label>
+                <span
+                  class="overline font-weight-bold"
+                  :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                  準備完了
+                </span>
+              </template>
+            </v-switch>
           </v-card-actions>
           <v-card-text>
             <draggable
@@ -65,35 +96,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <!-- <v-row justify="center">
-      <v-col cols="12" sm="9" md="6">
-        <v-card flat>
-          <v-card-text>
-            <draggable
-              tag="v-row"
-              group="cardList"
-              class="flex-nowrap"
-              style="overflow-x: scroll;"
-              v-bind="draggableOptions">
-              <v-col
-                v-for="(item, i) in room.joinedUserList"
-                :key="i"
-                cols="3"
-                class="pa-1">
-                <v-card
-                  hover
-                  class="grey lighten-4 overline py-1"
-                  height="100">
-                  <v-card-title class="overline py-1" style="line-height:15px">
-                    {{ item.name }}
-                  </v-card-title>
-                </v-card>
-              </v-col>
-            </draggable>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row> -->
   </div>
 </template>
 
@@ -104,7 +106,11 @@
     components: { draggable },
     data () {
       return {
-        draggableOptions: { animation: 300, delay: 0 },
+        dialogm1: '',
+        dialog: false,
+        selected: [],
+        switch1: false,
+        draggableOptions: { animation: 300, delay: 0, fixed: true },
         userList: [
           {name: ''},
           {name: ''},
@@ -158,6 +164,9 @@
       },
       room() {
         return this.$store.getters.getRoom
+      },
+      sele() {
+
       }
     },
     methods: {
@@ -166,9 +175,11 @@
       },
       setUser() {
         this.$store.dispatch('setUser', { userId: this.userInfo.id, list: this.room.joinedUserList })
+        this.selected = Object.assign([], this.selected, [])
       },
       resetUser() {
         this.$store.dispatch('setUser', { userId: this.userInfo.id, list: [] })
+        this.selected = Object.assign([], this.selected, [])
       },
       reachCheck(winItemList) {
         let returnVal = false
@@ -180,6 +191,18 @@
             this.isReach = true
           }
         })
+      },
+      setSelected() {
+        this.selected = Object.assign([], this.selected, this.userInfo.bingoUserList)
+      },
+      resetSelected() {
+        this.selected = Object.assign([], this.selected, [])
+        this.dialog = false
+      },
+      setBingoUserList() {
+        this.$store.dispatch('setUser', { userId: this.userInfo.id, list: this.selected })
+        this.selected = Object.assign([], this.selected, [])
+        this.dialog = false
       }
     }
   }

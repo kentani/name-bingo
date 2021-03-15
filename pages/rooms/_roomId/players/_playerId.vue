@@ -4,8 +4,8 @@
       centered
       color="deep-purple">
       <v-tabs-slider color="deep-purple"></v-tabs-slider>
-      <v-tab :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/bingo-card'">ビンゴカード</v-tab>
-      <v-tab :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/profile'">自己紹介</v-tab>
+      <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/bingo-card'">Bingo</v-tab>
+      <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/profile'">Profile</v-tab>
     </v-tabs>
     <nuxt-child />
   </div>
