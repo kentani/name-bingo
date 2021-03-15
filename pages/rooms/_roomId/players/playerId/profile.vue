@@ -6,7 +6,7 @@
           class="py-2 my-0 grey lighten-2 display-2 font-weight-bold text-center">
           PROFILE
         </p>
-        <v-card-actions>
+        <v-card-actions class="py-0 mx-2">
           <v-spacer />
           <v-switch
               v-model="switch1"

@@ -7,7 +7,7 @@
             class="py-2 my-0 grey lighten-2 display-2 font-weight-bold text-center">
             BINGO CARD
           </p>
-          <v-card-actions>
+          <v-card-actions class="py-0 mx-2">
             <v-dialog
               v-model="dialog"
               scrollable
@@ -27,15 +27,46 @@
                 <v-card-title class="mb-2 font-weight-bold">参加者一覧</v-card-title>
                 <v-card-subtitle>参加者：{{ room.joinedUserList.length }} | 選択中：{{selected.length}}</v-card-subtitle>
                 <v-divider></v-divider>
-                <v-card-text>
-                  <v-checkbox
+                <v-card-text class="pa-2">
+                  <v-card
                     v-for="(item, i) in room.joinedUserList"
                     :key="i"
-                    hide-details
-                    v-model="selected"
-                    color="deep-purple"
-                    :label="item.name"
-                    :value="item" />
+                    class="my-2">
+                    <v-card-title class="font-weight-bold mb-3">
+                      {{ item.name }}
+                    </v-card-title>
+                    <v-card-subtitle>
+                      プロフィール
+                    </v-card-subtitle>
+                    <v-card-text>
+                      {{ item.profile }}
+                    </v-card-text>
+                    <v-card-subtitle>
+                      ひとこと
+                    </v-card-subtitle>
+                    <v-card-text>
+                      {{ item.oneMessage }}
+                    </v-card-text>
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-actions class="py-0 mx-2">
+                      <v-spacer />
+                      <v-switch
+                        v-model="selected"
+                        inset
+                        hide-details
+                        class="my-2"
+                        color="deep-purple"
+                        :value="item">
+                        <template v-slot:label>
+                          <span
+                            class="overline font-weight-bold"
+                            :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                            加える
+                          </span>
+                        </template>
+                      </v-switch>
+                    </v-card-actions>
+                  </v-card>
                 </v-card-text>
                 <v-divider />
                 <v-card-actions>
