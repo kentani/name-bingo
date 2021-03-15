@@ -3,7 +3,8 @@
     <v-tabs
       centered
       background-color="grey lighten-4"
-      color="deep-purple">
+      color="deep-purple"
+      class="mb-6">
       <v-tabs-slider color="deep-purple"></v-tabs-slider>
       <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/bingo-card'">Bingo</v-tab>
       <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/profile'">Profile</v-tab>

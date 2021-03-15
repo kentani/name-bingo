@@ -15,13 +15,6 @@
       <v-btn
         icon
         nuxt
-        disabled
-        :ripple="false">
-        <v-icon>mdi-cog</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        nuxt
         :disabled="!loggedIn"
         :ripple="false"
         to="/user">

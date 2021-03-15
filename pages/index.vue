@@ -56,7 +56,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'イベント1',
-          to: '/rooms/IxkeDXeR97ono2Y3tsnA/settings'
+          to: '/rooms/IxkeDXeR97ono2Y3tsnA/admin/settings'
         },
       ]
     }

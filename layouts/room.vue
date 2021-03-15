@@ -18,14 +18,6 @@
         nuxt
         :disabled="!loggedIn"
         :ripple="false"
-        :to="'/rooms/' + roomId + '/settings'">
-        <v-icon>mdi-cog</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        nuxt
-        :disabled="!loggedIn"
-        :ripple="false"
         to="/user">
         <v-icon>mdi-account</v-icon>
       </v-btn>

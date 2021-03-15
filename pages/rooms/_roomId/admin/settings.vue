@@ -20,7 +20,7 @@
         small
         :disabled="!isJoinedRoom"
         :ripple="false"
-        :to="'/rooms/' + roomId + '/bingo'">
+        :to="'/rooms/' + roomId + '/admin/roulette'">
         ビンゴルーム
       </v-btn>
       <v-btn
@@ -73,7 +73,6 @@
 </template>
 
 <script>
-
 export default {
   layout: 'room',
   created () {
