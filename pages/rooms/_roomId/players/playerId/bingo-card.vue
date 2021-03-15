@@ -37,7 +37,7 @@
                     :label="item.name"
                     :value="item" />
                 </v-card-text>
-                <v-divider></v-divider>
+                <v-divider />
                 <v-card-actions>
                   <v-btn
                     text
@@ -115,24 +115,6 @@
         selected: [],
         switch1: false,
         draggableOptions: { animation: 300, delay: 0 },
-        userList: [
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-          {name: ''},
-        ],
         checkList: [
           [0,1,2,3],
           [4,5,6,7],
