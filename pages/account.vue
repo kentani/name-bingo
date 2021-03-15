@@ -81,7 +81,7 @@
           <link-list :items="userInfo.joinedRoomList" />
         </v-card-text>
         <v-card-title class="caption font-weight-bold pb-0">このサイトについて</v-card-title>
-        <v-card-text class="py-0">
+        <v-card-text class="pt-0">
           <link-list :with-icon="true" :items="appItems" />
         </v-card-text>
       </v-card>
