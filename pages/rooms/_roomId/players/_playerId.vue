@@ -6,7 +6,7 @@
       color="deep-purple"
       class="mb-6">
       <v-tabs-slider color="deep-purple"></v-tabs-slider>
-      <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/bingo-card'">Bingo</v-tab>
+      <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/bingo-card'">Card</v-tab>
       <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/profile'">Profile</v-tab>
       <v-tab class="font-weight-bold" :to="'/rooms/' + this.roomId + '/players/' + this.playerId + '/info'">Info</v-tab>
     </v-tabs>
