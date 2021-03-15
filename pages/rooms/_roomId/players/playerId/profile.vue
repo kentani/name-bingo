@@ -19,7 +19,7 @@
                   :ripple="false"
                   :disabled="switch1"
                   @click="editStart">
-                  <v-icon>mdi-square-edit-outline</v-icon>
+                  <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
                 </v-btn>
               </template>
               <v-card>

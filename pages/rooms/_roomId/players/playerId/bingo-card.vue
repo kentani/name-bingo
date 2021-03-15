@@ -20,7 +20,7 @@
                   :ripple="false"
                   :disabled="switch1"
                   @click="setSelected">
-                  <v-icon>mdi-account-multiple</v-icon>
+                  <v-icon color="deep-purple">mdi-account-multiple</v-icon>
                 </v-btn>
               </template>
               <v-card>
