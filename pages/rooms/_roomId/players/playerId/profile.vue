@@ -8,61 +8,61 @@
         </p>
         <v-card-actions class="py-0 mx-2">
           <v-dialog
-              v-model="dialog"
-              scrollable
-              width="600">
-              <template v-slot:activator="{ on, attrs }">
+            v-model="dialog"
+            scrollable
+            width="600">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+                :ripple="false"
+                :disabled="switch1"
+                @click="editStart">
+                <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="mb-2 font-weight-bold">EDIT</v-card-title>
+              <v-divider />
+              <v-card-text class="pa-2">
+                <v-card flat>
+                  <v-card-text>
+                    <v-text-field
+                      filled
+                      label="なまえ"
+                      color="deep-purple"
+                      v-model="inputName" />
+                    <v-text-field
+                      filled
+                      label="ひとこと"
+                      color="deep-purple"
+                      v-model="inputMessage" />
+                    <v-textarea
+                      filled
+                      label="プロフィール"
+                      color="deep-purple"
+                      v-model="inputProfile" />
+                  </v-card-text>
+                </v-card>
+              </v-card-text>
+              <v-divider />
+              <v-card-actions>
                 <v-btn
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                  :ripple="false"
-                  :disabled="switch1"
-                  @click="editStart">
-                  <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
+                  text
+                  color="grey"
+                  @click="resetUserInfo">
+                  Close
                 </v-btn>
-              </template>
-              <v-card>
-                <v-card-title class="mb-2 font-weight-bold">EDIT PROFILE</v-card-title>
-                <v-divider />
-                <v-card-text class="pa-2">
-                  <v-card flat>
-                    <v-card-text>
-                      <v-text-field
-                        filled
-                        label="なまえ"
-                        color="deep-purple"
-                        v-model="inputName" />
-                      <v-text-field
-                        filled
-                        label="ひとこと"
-                        color="deep-purple"
-                        v-model="inputMessage" />
-                      <v-textarea
-                        filled
-                        label="プロフィール"
-                        color="deep-purple"
-                        v-model="inputProfile" />
-                    </v-card-text>
-                  </v-card>
-                </v-card-text>
-                <v-divider />
-                <v-card-actions>
-                  <v-btn
-                    text
-                    color="grey"
-                    @click="resetUserInfo">
-                    Close
-                  </v-btn>
-                  <v-btn
-                    text
-                    color="deep-purple"
-                    @click="editEnd">
-                    Save
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+                <v-btn
+                  text
+                  color="deep-purple"
+                  @click="editEnd">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-spacer />
           <v-switch
             v-model="switch1"
@@ -80,21 +80,10 @@
           </v-switch>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold mb-3">
-          {{ userInfo.name }}
-        </v-card-title>
-        <v-card-subtitle class="font-weight-bold pb-6">
-          ひとこと
-        </v-card-subtitle>
-        <v-card-text class="body-1">
-          {{ userInfo.message }}
-        </v-card-text>
-        <v-card-subtitle class="font-weight-bold pb-0">
-          プロフィール
-        </v-card-subtitle>
-        <v-card-text class="body-1" style="white-space: pre-line;">
-          {{ userInfo.profile }}
-        </v-card-text>
+        <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
+        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-subtitle>
+        <v-card-title class="caption font-weight-bold">プロフィール</v-card-title>
+        <v-card-subtitle style="white-space: pre-line;">{{ userInfo.profile }}</v-card-subtitle>
       </v-card>
     </v-col>
   </v-row>

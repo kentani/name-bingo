@@ -1,80 +1,113 @@
 <template>
-  <v-card>
-    <v-card-title class="headline font-weight-bold">{{ room.name }}</v-card-title>
-    <v-card-subtitle>みんなで楽しみましょう！</v-card-subtitle>
-    <v-card-actions class="mx-2">
-      <v-btn
-        nuxt
-        outlined
-        rounded
-        small
-        :disabled="!isJoinedRoom"
-        :ripple="false"
-        :to="'/rooms/' + roomId + '/players/' + userInfo.id + '/bingo-card'">
-        ビンゴカード
-      </v-btn>
-      <v-btn
-        nuxt
-        outlined
-        rounded
-        small
-        :disabled="!isJoinedRoom"
-        :ripple="false"
-        :to="'/rooms/' + roomId + '/admin/roulette'">
-        ビンゴルーム
-      </v-btn>
-      <v-btn
-        v-if="isJoinedRoom"
-        nuxt
-        outlined
-        rounded
-        small
-        color="red"
-        :ripple="false"
-        @click="">
-        参加をやめる
-      </v-btn>
-      <v-btn
-        v-else
-        outlined
-        rounded
-        small
-        color="deep-purple"
-        :ripple="false"
-        @click="handleJoinButtonClick">
-        参加する
-      </v-btn>
-    </v-card-actions>
-    <v-card-subtitle>作成者</v-card-subtitle>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-text>
-      <chip-list :items="[room.createdUser]" />
-    </v-card-text>
-    <v-card-subtitle>管理者</v-card-subtitle>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-text>
-      <chip-list :items="room.adminList" />
-    </v-card-text>
-    <v-card-subtitle>管理者を追加する</v-card-subtitle>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-text>
-      <basic-form
-        text="追加する"
-        placeholder="追加するユーザーのIDを入力してください"
-        :disabled="true"
-        @create-button-click="" />
-    </v-card-text>
-    <v-card-subtitle>参加者</v-card-subtitle>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-text>
-      <chip-list :items="room.joinedUserList" />
-    </v-card-text>
-  </v-card>
+  <v-row justify="center">
+    <v-col cols="12" md="9">
+      <v-card>
+        <p
+          class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
+          Settings
+        </p>
+        <v-card-actions class="py-2 mx-2">
+          <v-dialog
+            v-model="dialog"
+            scrollable
+            width="600">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+                :ripple="false"
+                @click="editStart">
+                <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="mb-2 font-weight-bold">EDIT</v-card-title>
+              <v-divider />
+              <v-card-text class="pa-2">
+                <v-card flat>
+                  <v-card-text>
+                    <v-text-field
+                      filled
+                      label="イベント名"
+                      color="deep-purple"
+                      v-model="inputName" />
+                    <v-textarea
+                      filled
+                      label="メッセージ"
+                      color="deep-purple"
+                      v-model="inputMessage" />
+                  </v-card-text>
+                </v-card>
+              </v-card-text>
+              <v-divider />
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="grey"
+                  @click="resetUserInfo">
+                  Close
+                </v-btn>
+                <v-btn
+                  text
+                  color="deep-purple"
+                  @click="editEnd">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-card-actions>
+        <v-divider class="mx-4" />
+        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
+        <v-card-subtitle style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
+        <v-card-subtitle class="font-weight-bold">作成者</v-card-subtitle>
+        <v-divider class="mx-4"></v-divider>
+        <v-card-text>
+          <chip-list :items="[room.createdUser]" />
+        </v-card-text>
+        <v-card-subtitle class="font-weight-bold">管理者</v-card-subtitle>
+        <v-divider class="mx-4"></v-divider>
+        <v-card-text>
+          <chip-list :items="room.adminList" />
+        </v-card-text>
+        <v-card-subtitle class="font-weight-bold">管理者を追加する</v-card-subtitle>
+        <v-divider class="mx-4"></v-divider>
+        <v-card-text>
+          <basic-form
+            text="追加する"
+            placeholder="追加するユーザーのIDを入力してください"
+            :disabled="true"
+            @create-button-click="" />
+        </v-card-text>
+        <v-card-subtitle class="font-weight-bold">
+          <v-badge
+            offset-y="17"
+            offset-x="-5"
+            color="deep-purple"
+            :content="room.joinedUserList.length">
+            参加者
+          </v-badge>
+        </v-card-subtitle>
+        <v-divider class="mx-4" />
+        <v-card-text>
+          <chip-list :items="room.joinedUserList" />
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 export default {
   layout: 'room',
+  data () {
+    return {
+      dialog: false,
+      inputName: '',
+      inputMessage: '',
+    }
+  },
   created () {
     this.$store.dispatch('onAuth')
     this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
@@ -110,6 +143,22 @@ export default {
     handleJoinButtonClick() {
       this.$store.dispatch('joinRoom', { user: this.userInfo, roomId: this.roomId })
     },
+    editStart() {
+      this.inputName = this.room.name
+      this.inputMessage = this.room.message
+    },
+    resetUserInfo() {
+      this.inputName = ''
+      this.inputMessage = ''
+      this.dialog = false
+    },
+    editEnd() {
+      this.$store.dispatch('setRoomInfo', { roomId: this.roomId, name: this.inputName, message: this.inputMessage })
+      this.dialog = false
+    },
+    setUserInfo() {
+
+    }
   }
 }
 </script>

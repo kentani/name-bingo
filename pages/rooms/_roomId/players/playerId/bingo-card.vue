@@ -17,7 +17,6 @@
                 v-bind="attrs"
                 v-on="on"
                 :ripple="false"
-                :disabled="switch1"
                 @click="setSelected">
                 <v-icon color="deep-purple">mdi-account-multiple</v-icon>
               </v-btn>
@@ -31,21 +30,10 @@
                   v-for="(item, i) in room.joinedUserList"
                   :key="i"
                   class="my-2">
-                  <v-card-title class="font-weight-bold mb-3">
-                    {{ item.name }}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    プロフィール
-                  </v-card-subtitle>
-                  <v-card-text>
-                    {{ item.profile }}
-                  </v-card-text>
-                  <v-card-subtitle>
-                    ひとこと
-                  </v-card-subtitle>
-                  <v-card-text>
-                    {{ item.oneMessage }}
-                  </v-card-text>
+                  <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
+                  <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-subtitle>
+                  <v-card-title class="caption font-weight-bold">プロフィール</v-card-title>
+                  <v-card-subtitle style="white-space: pre-line;">{{ userInfo.profile }}</v-card-subtitle>
                   <v-divider class="mx-4"></v-divider>
                   <v-card-actions class="py-0 mx-2">
                     <v-spacer />
@@ -53,13 +41,13 @@
                       v-model="selected"
                       inset
                       hide-details
-                      class="my-2"
+                      class="my-1"
                       color="deep-purple"
+                      :disabled="switch1"
                       :value="item">
                       <template v-slot:label>
                         <span
-                          class="overline font-weight-bold"
-                          :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                          class="overline font-weight-bold">
                           加える
                         </span>
                       </template>
@@ -78,7 +66,7 @@
                 <v-btn
                   text
                   color="deep-purple"
-                  :disabled="selected.length > 16"
+                  :disabled="selected.length > 16 || switch1"
                   @click="setBingoUserList">
                   Save
                 </v-btn>

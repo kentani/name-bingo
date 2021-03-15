@@ -132,6 +132,22 @@ export const actions = {
           })
       })
   },
+  setRoomInfo({ commit }, { roomId, name, message, profile }) {
+    roomsRef
+      .doc(roomId)
+      .update({
+        name: name,
+        message: message,
+      })
+      .then(() => {
+        usersRef
+          .doc(roomId)
+          .get()
+          .then(function(doc) {
+            commit('setRoom', doc.data())
+          })
+      })
+  },
   createRoom({ commit }, { name, user }) {
     roomsRef
       .add({

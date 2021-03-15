@@ -11,21 +11,20 @@
             nuxt
             text
             color="deep-purple"
+            :disabled="!room.adminList.some(el => el.id === this.userInfo.id)"
             :to="'/rooms/' + this.roomId + '/admin/settings'"
             :ripple="false">
-            <span class="font-weight-bold">管理者画面</span>
-            <v-icon right>mdi-call-made</v-icon>
+            <span class="font-weight-bold">管理画面へ</span>
           </v-btn>
           <v-spacer />
           <v-btn
             v-if="isJoinedRoom"
             nuxt
-            rounded
-            outlined
-            color="deep-purple"
+            text
+            color="red"
             :ripple="false"
             @click="">
-            参加をやめる
+            <span class="font-weight-bold">参加をやめる</span>
           </v-btn>
           <v-btn
             v-else
@@ -38,18 +37,17 @@
           </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="headline font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle>みんなで楽しみましょう！</v-card-subtitle>
-        <v-card-subtitle class="font-weight-bold">
+        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
+        <v-card-subtitle class="pb-0">みんなで楽しみましょう！</v-card-subtitle>
+        <v-card-title class="caption font-weight-bold">
           <v-badge
-            offset-y="16"
-            offset-x="-4"
+            offset-y="17"
+            offset-x="-5"
             color="deep-purple"
-            content="6">
+            :content="room.joinedUserList.length">
             参加者
           </v-badge>
-        </v-card-subtitle>
-        <v-divider class="mx-4" />
+        </v-card-title>
         <v-card-text>
           <chip-list :items="room.joinedUserList" />
         </v-card-text>
