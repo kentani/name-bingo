@@ -53,6 +53,7 @@
               md="1"
               class="pa-1">
               <v-card
+                :flat="!room.resultList.some(el => el.id === item.id)"
                 :class="[ room.resultList.some(el => el.id === item.id) ? 'yellow accent-4' : 'white']"
                 height="60">
                 <v-card-title class="overline py-1" style="line-height:15px">

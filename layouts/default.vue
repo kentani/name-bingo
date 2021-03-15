@@ -17,16 +17,8 @@
         nuxt
         :disabled="!loggedIn"
         :ripple="false"
-        to="/add-room">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        nuxt
-        :disabled="!loggedIn"
-        :ripple="false"
-        to="/account">
-        <v-icon>mdi-account</v-icon>
+        to="/my/account">
+        <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
