@@ -1,87 +1,70 @@
 <template>
-  <div>
-    <v-row justify="center">
-      <v-col cols="12">
-        <v-card flat color="grey lighten-4">
-          <v-card-actions class="py-2 mx-2">
-            <v-spacer />
+  <v-row justify="center">
+    <v-col cols="12">
+      <v-card flat color="grey lighten-4">
+        <v-card-actions class="py-2 mx-2">
+          <v-spacer />
+          <v-btn
+            dark
+            small
+            rounded
+            color="red darken-4"
+            :ripple="false"
+            @click="reset">
+            リセット
+          </v-btn>
+        </v-card-actions>
+        <p
+          class="py-2 my-0 display-4 font-weight-bold text-center"
+          style="text-shadow:0px 0px 1px #FFF, 2px 2px 4px rgba(0,0,0,0.3)">
+          {{ result.name }}
+        </p>
+        <v-card-actions class="py-2 mx-2">
+          <v-row justify="center" class="my-3">
             <v-btn
+              v-if="!starting"
+              color="deep-purple"
               dark
-              small
+              x-large
               rounded
-              depressed
-              color="red darken-4"
               :ripple="false"
-              @click="reset">
-              リセット
+              @click="start">
+              START
             </v-btn>
-          </v-card-actions>
-          <p
-            class="py-2 my-0 display-4 font-weight-bold text-center"
-            style="text-shadow:0px 0px 1px #FFF, 2px 2px 4px rgba(0,0,0,0.3)">
-            {{ result.name }}
-          </p>
-          <v-card-actions class="py-2 mx-2">
-            <v-row justify="center" class="my-3">
-              <v-btn
-                v-if="!starting"
-                color="deep-purple"
-                dark
-                x-large
-                rounded
-                :ripple="false"
-                @click="start">
-                START
-              </v-btn>
-              <v-btn
-                v-else
-                color="deep-purple"
-                dark
-                x-large
-                rounded
-                :ripple="false"
-                @click="stop">
-                STOP
-              </v-btn>
-            </v-row>
-          </v-card-actions>
-          <v-card-text>
-            <v-row>
-              <v-col
-                v-for="(item, i) in room.joinedUserList"
-                :key="i"
-                cols="3"
-                sm="2"
-                md="1"
-                class="pa-1">
-                <v-card
-                  :class="[ room.resultList.some(el => el.id === item.id) ? 'yellow accent-4' : 'grey lighten-4']"
-                  height="60">
-                  <v-card-title class="overline py-1" style="line-height:15px">
-                    {{ item.name }}
-                  </v-card-title>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row justify="center" class="my-3">
-      <v-col
-        v-for="(item, i) in room.resultList"
-        :key="i"
-        cols="2">
-        <v-card
-          flat
-          class="grey lighten-4">
-            <v-card-title class="subtitle-1 py-1">
-              {{ item.name }}
-            </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+            <v-btn
+              v-else
+              color="deep-purple"
+              dark
+              x-large
+              rounded
+              :ripple="false"
+              @click="stop">
+              STOP
+            </v-btn>
+          </v-row>
+        </v-card-actions>
+        <v-card-text>
+          <v-row>
+            <v-col
+              v-for="(item, i) in room.joinedUserList"
+              :key="i"
+              cols="3"
+              sm="2"
+              md="1"
+              class="pa-1">
+              <v-card
+                :class="[ room.resultList.some(el => el.id === item.id) ? 'yellow accent-4' : 'white']"
+                height="60">
+                <v-card-title class="overline py-1" style="line-height:15px">
+                  {{ item.name }}
+                </v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

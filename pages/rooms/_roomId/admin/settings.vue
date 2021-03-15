@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="9" md="6">
-      <v-card>
+      <v-card flat>
         <p
           class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
           Settings
@@ -54,7 +54,6 @@
                   rounded
                   dark
                   small
-                  depressed
                   color="deep-purple"
                   @click="editEnd">
                   Save
