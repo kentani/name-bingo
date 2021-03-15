@@ -31,7 +31,7 @@
                   :key="i"
                   class="my-2">
                   <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
-                  <v-card-subtitle style="white-space: pre-line;">{{ userInfo.message }}</v-card-subtitle>
+                  <v-card-subtitle class="py-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-subtitle>
                   <v-card-title class="caption font-weight-bold">プロフィール</v-card-title>
                   <v-card-subtitle style="white-space: pre-line;">{{ userInfo.profile }}</v-card-subtitle>
                   <v-divider class="mx-4"></v-divider>
