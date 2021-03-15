@@ -115,6 +115,23 @@ export const actions = {
           })
       })
   },
+  setUserInfo({ commit }, { userId, name, message, profile }) {
+    usersRef
+      .doc(userId)
+      .update({
+        name: name,
+        message: message,
+        profile: profile,
+      })
+      .then(() => {
+        usersRef
+          .doc(userId)
+          .get()
+          .then(function(doc) {
+            commit('setUserInfo', doc.data())
+          })
+      })
+  },
   createRoom({ commit }, { name, user }) {
     roomsRef
       .add({
