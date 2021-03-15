@@ -7,6 +7,15 @@
           PROFILE
         </p>
         <v-card-actions class="py-0 mx-2">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            :ripple="false"
+            :disabled="switch1"
+            @click="setSelected">
+            <v-icon>mdi-square-edit-outline</v-icon>
+          </v-btn>
           <v-spacer />
           <v-switch
               v-model="switch1"

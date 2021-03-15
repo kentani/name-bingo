@@ -118,8 +118,7 @@
                 class="pa-1">
                 <v-card
                   :flat="!room.resultList.some(el => el.id === userItem(item, i).id)"
-                  :dark="room.resultList.some(el => el.id === userItem(item, i).id)"
-                  :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'deep-purple' : 'grey lighten-4' ]"
+                  :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'yellow accent-4' : 'grey lighten-4' ]"
                   height="100">
                   <v-card-title class="overline py-1" style="line-height:15px">
                     {{ item.name }}

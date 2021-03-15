@@ -1,11 +1,12 @@
 <template>
-  <v-app dark>
+  <v-app style="background: #F5F5F5">
     <v-app-bar
       clipped-left
       dense
       fixed
       flat
-      app>
+      app
+      dark>
       <v-app-bar-nav-icon disabled />
       <v-toolbar-title class="px-0">
         <nuxt-link to="/" tag="div" class="c-p font-weight-bold">{{ title }}</nuxt-link>
@@ -35,7 +36,8 @@
     </v-main>
     <v-footer
       absolute
-      app>
+      app
+      dark>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>

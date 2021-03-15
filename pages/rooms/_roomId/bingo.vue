@@ -2,7 +2,7 @@
   <div>
     <v-row justify="center" class="mt-2 mb-6">
       <v-col cols="12">
-        <v-card flat class="grey lighten-4" height="120">
+        <v-card flat class="" height="120">
           <v-row justify="center">
             <v-card-title class="display-4 font-weight-bold">
               {{ result.name }}
