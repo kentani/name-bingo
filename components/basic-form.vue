@@ -15,9 +15,9 @@
         rounded
         dark
         small
+        depressed
         color="deep-purple"
         class="my-2"
-        :depressed="!inputName"
         :disabled="!inputName"
         :ripple="false"
         @click="handleCreateButtonClick">

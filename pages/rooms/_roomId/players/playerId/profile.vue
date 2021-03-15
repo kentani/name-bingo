@@ -59,6 +59,7 @@
                   rounded
                   dark
                   small
+                  depressed
                   color="deep-purple"
                   @click="editEnd">
                   Save

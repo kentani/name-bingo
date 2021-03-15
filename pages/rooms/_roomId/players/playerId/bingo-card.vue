@@ -68,6 +68,7 @@
                   rounded
                   dark
                   small
+                  depressed
                   color="deep-purple"
                   :disabled="selected.length > 16 || switch1"
                   @click="setBingoUserList">

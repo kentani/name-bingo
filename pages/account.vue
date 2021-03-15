@@ -48,6 +48,7 @@
                   rounded
                   dark
                   small
+                  depressed
                   color="deep-purple"
                   @click="editEnd">
                   Save
@@ -61,6 +62,7 @@
             rounded
             dark
             small
+            depressed
             color="red darken-4"
             :ripple="false"
             @click="logout">

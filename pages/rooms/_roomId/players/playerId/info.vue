@@ -11,6 +11,7 @@
             nuxt
             text
             rounded
+            small
             color="deep-purple"
             :disabled="!room.adminList.some(el => el.id === this.userInfo.id)"
             :to="'/rooms/' + this.roomId + '/admin/settings'"
@@ -24,6 +25,7 @@
             rounded
             dark
             small
+            depressed
             color="red darken-4"
             :ripple="false"
             @click="">
@@ -34,6 +36,7 @@
             rounded
             dark
             small
+            depressed
             color="deep-purple"
             :ripple="false"
             @click="handleJoinButtonClick">
