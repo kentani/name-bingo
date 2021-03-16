@@ -80,9 +80,18 @@
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
         <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">作成者</v-card-title>
+        <v-card-title class="caption font-weight-bold pb-0">この部屋の招待用URL</v-card-title>
         <v-card-text class="py-0">
-          <chip-list :items="[room.createdUser]" />
+          <v-text-field
+            filled
+            dense
+            hide-details
+            readonly
+            append-icon="mdi-clipboard-text-outline"
+            class="mt-2"
+            color="deep-purple"
+            :value="local + '/rooms/' + roomId + '/join'"
+            @click:append="copy(local + '/rooms/' + roomId + '/join')" />
         </v-card-text>
         <v-card-title class="caption font-weight-bold pb-0">管理者</v-card-title>
         <v-card-text class="py-0">
@@ -114,6 +123,7 @@ export default {
       switch1: false,
       inputName: '',
       inputMessage: '',
+      local: window.location.origin,
     }
   },
   created () {
@@ -145,7 +155,7 @@ export default {
         val = this.room.joinedUserList.filter(v => v).some(el => el.id === this.userInfo.id)
       }
       return val
-    },
+    }
   },
   methods: {
     handleJoinButtonClick() {
@@ -165,7 +175,9 @@ export default {
       this.dialog = false
     },
     setUserInfo() {
-
+    },
+    copy(str) {
+      this.$copyText(str)
     }
   }
 }
