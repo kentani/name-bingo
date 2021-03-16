@@ -66,10 +66,6 @@
 export default {
   data () {
     return {
-      e1: 1,
-      steps: 2,
-      title: 'BINGO',
-      drawer: false,
       items: [
         {
           icon: 'mdi-apps',
@@ -84,13 +80,6 @@ export default {
       ]
     }
   },
-  watch: {
-      steps (val) {
-        if (this.e1 > val) {
-          this.e1 = val
-        }
-      },
-    },
   created () {
     this.$store.dispatch('onAuth')
   },
@@ -114,13 +103,6 @@ export default {
     login2 (args) {
       this.$store.dispatch('login', { name: 'ゲストユーザー' })
     },
-    nextStep (n) {
-        if (n === this.steps) {
-          this.e1 = 1
-        } else {
-          this.e1 = n + 1
-        }
-      },
   }
 }
 </script>
