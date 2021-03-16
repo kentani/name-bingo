@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="9" md="6">
-      <v-card flat>
+      <v-card elevation="18">
         <p
           class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
           BINGO CARD
@@ -10,7 +10,8 @@
           <v-dialog
             v-model="dialog"
             scrollable
-            width="600">
+            persistent
+            width="900">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 icon

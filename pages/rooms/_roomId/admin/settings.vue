@@ -1,16 +1,13 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="9" md="6">
-      <v-card flat>
-        <p
-          class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
-          Settings
-        </p>
-        <v-card-actions class="py-2 mx-2">
+    <v-col cols="12" md="9">
+      <v-card flat min-height="600">
+        <v-card-actions class="py-0 mx-2">
           <v-dialog
             v-model="dialog"
             scrollable
-            width="600">
+            persistent
+            width="900">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 icon

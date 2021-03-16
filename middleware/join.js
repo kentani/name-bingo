@@ -3,6 +3,6 @@ export default async function ({ store, route, redirect }) {
     return redirect('/')
   }
   else {
-    return await redirect('/rooms/' + route.params.roomId + '/players/' + store.getters.getUserInfo.id + '/bingo-card')
+    // return await redirect('/rooms/' + route.params.roomId + '/players/' + store.getters.getUserInfo.id + '/bingo-card')
   }
 }

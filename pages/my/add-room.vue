@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="9" md="6">
-      <v-card flat>
+      <v-card flat min-height="600">
         <p
           class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
           Add room
@@ -20,7 +20,7 @@
           </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="caption font-weight-bold pb-0">部屋を作成する</v-card-title>
+        <v-card-title class="caption font-weight-bold pb-3">部屋を作成する</v-card-title>
         <v-card-text class="py-0">
           <basic-form
             text="作成する"

@@ -1,12 +1,8 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="9" md="6">
+    <v-col cols="12" md="9">
       <v-card flat>
-        <p
-          class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
-          Info
-        </p>
-        <v-card-actions class="py-2 mx-2">
+        <v-card-actions class="py-3 mx-2">
           <v-btn
             nuxt
             text
@@ -43,7 +39,7 @@
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle class="pb-0">みんなで楽しみましょう！</v-card-subtitle>
+        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
         <v-card-title class="caption font-weight-bold pb-0">
           <v-badge
             offset-y="17"
