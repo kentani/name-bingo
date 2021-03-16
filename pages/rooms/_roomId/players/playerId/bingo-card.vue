@@ -23,17 +23,17 @@
             </template>
             <v-card>
               <v-card-title class="mb-2 font-weight-bold">参加者一覧</v-card-title>
-              <v-card-subtitle>参加者：{{ room.joinedUserList.length }} | 選択中：{{selected.length}}</v-card-subtitle>
+              <v-card-subtitle>参加者：{{ room.joinedUserList ? room.joinedUserList.length : 0 }} | 選択中：{{selected.length}}</v-card-subtitle>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card
                   v-for="(item, i) in room.joinedUserList"
                   :key="i"
                   class="my-2">
-                  <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
-                  <v-card-subtitle class="py-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-subtitle>
+                  <v-card-title class="title font-weight-bold">{{ item.name }}</v-card-title>
+                  <v-card-subtitle class="py-0" style="white-space: pre-line;">{{ item.message }}</v-card-subtitle>
                   <v-card-title class="caption font-weight-bold">プロフィール</v-card-title>
-                  <v-card-subtitle style="white-space: pre-line;">{{ userInfo.profile }}</v-card-subtitle>
+                  <v-card-subtitle style="white-space: pre-line;">{{ item.profile }}</v-card-subtitle>
                   <v-divider class="mx-4"></v-divider>
                   <v-card-actions class="py-0 mx-2">
                     <v-spacer />

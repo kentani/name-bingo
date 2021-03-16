@@ -1,5 +1,8 @@
 import firebase from '~/plugins/firebase'
+import Cookies from 'js-cookie'
 
+const cookieparser = process.server ? require('cookieparser') : undefined
+const admin = process.server ? require('~/plugins/firebaseAdmin').default : undefined
 const db = firebase.firestore();
 const usersRef = db.collection('users');
 const roomsRef = db.collection('rooms');
@@ -8,7 +11,7 @@ export const state = () => ({
   authUserId: '',
   loggedIn: false,
   userInfo: {},
-  room: {}
+  room: {},
 })
 
 export const getters = {
@@ -23,7 +26,7 @@ export const getters = {
   },
   getRoom(state) {
     return state.room
-  }
+  },
 }
 
 export const mutations = {
@@ -48,17 +51,21 @@ export const mutations = {
   clearAuth(state) {
     state.authUserId = ''
     stete.loggedIn = false
-  }
+  },
 }
 
 export const actions = {
-  login({ commit }, { name }) {
+  async login({ commit }, { name }) {
     firebase.auth().signInAnonymously()
       .then(() => {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
-            commit('setAuthUserId', user.uid)
-            commit('loginStatusChange', user.uid ? true : false)
+            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+              Cookies.set('__session', idToken)
+              commit('setAuthUserId', user.uid)
+              commit('loginStatusChange', user.uid ? true : false)
+            }).catch(function(error) {
+            });
           }
           usersRef
             .add({
@@ -90,15 +97,53 @@ export const actions = {
         console.log("errorMessage:", error.message)
       });
   },
-  logout({ commit }) {
+  async logout({ commit }) {
     firebase.auth().signOut().then(()=>{
+      Cookies.remove('__session');
       commit('clearAuth')
       commit('clearUserInfo')
       console.log("ログアウトしました");
     })
     .catch( (error)=>{
+      Cookies.remove('__session');
       console.log(`ログアウト時にエラーが発生しました (${error})`);
     });
+  },
+  async onAuth({ commit }) {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        commit('setAuthUserId', user.uid)
+        commit('loginStatusChange', user.uid ? true : false)
+      }
+      else {
+      }
+    })
+  },
+  async nuxtServerInit ({ commit }, { req }) {
+    if (req.headers.cookie) {
+      try {
+        const idToken = await cookieparser.parse(req.headers.cookie).__session
+        let authId = ''
+        await admin.auth().verifyIdToken(idToken).then((decodedToken) => {
+          authId = decodedToken
+          commit('setAuthUserId', decodedToken.uid)
+          commit('loginStatusChange', decodedToken.uid ? true : false)
+        })
+        .catch((error) => {
+          console.log("invalidToken", error)
+        })
+        await admin.firestore().collection('users').where("authUserId", "==", authId.uid).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            commit('setUserInfo', doc.data())
+          })
+        })
+        .catch((error) => {
+          console.log("invalidUserInfo", error)
+        })
+      } catch (err) {
+        console.log("error", err)
+      }
+    }
   },
   setUser({ commit }, { userId, list }) {
     usersRef
@@ -296,14 +341,6 @@ export const actions = {
             commit('setRoom', doc.data())
           })
       })
-  },
-  onAuth({ commit }) {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        commit('setAuthUserId', user.uid)
-        commit('loginStatusChange', user.uid ? true : false)
-      }
-    })
   },
   fetchUserInfo({ commit }, { authUserId }) {
     commit('clearUserInfo')
