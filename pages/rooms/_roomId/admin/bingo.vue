@@ -6,7 +6,6 @@
           <v-spacer />
           <v-btn
             dark
-            small
             rounded
             color="red darken-4"
             :ripple="false"

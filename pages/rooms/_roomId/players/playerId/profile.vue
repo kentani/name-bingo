@@ -24,7 +24,7 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="mb-2 font-weight-bold">EDIT</v-card-title>
+              <v-card-title class="mb-2 font-weight-bold">Edit</v-card-title>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card flat>
@@ -49,17 +49,16 @@
               </v-card-text>
               <v-divider />
               <v-card-actions>
+                <v-spacer />
                 <v-btn
                   text
                   rounded
-                  small
                   @click="resetUserInfo">
                   Close
                 </v-btn>
                 <v-btn
                   rounded
                   dark
-                  small
                   color="deep-purple"
                   @click="editEnd">
                   Save

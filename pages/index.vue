@@ -31,7 +31,7 @@
               color="deep-purple"
               :ripple="false"
               to="/my/account">
-              <span class="font-weight-bold">アカウント画面へ</span>
+              <span class="font-weight-bold">アカウント設定</span>
             </v-btn>
           </v-row>
         </v-card-actions>

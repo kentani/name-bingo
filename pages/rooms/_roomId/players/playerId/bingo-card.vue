@@ -58,17 +58,16 @@
               </v-card-text>
               <v-divider />
               <v-card-actions>
+                <v-spacer />
                 <v-btn
                   text
                   rounded
-                  small
                   @click="resetSelected">
                   Close
                 </v-btn>
                 <v-btn
                   rounded
                   dark
-                  small
                   color="deep-purple"
                   :disabled="selected.length > 16 || switch1"
                   @click="setBingoUserList">

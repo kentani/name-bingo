@@ -2,14 +2,28 @@
   <v-row justify="center">
     <v-dialog
       v-model="dialog"
+      scrollable
       persistent
       width="900">
       <v-card>
-        <p
-          class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
-          Join
-        </p>
-        <v-card-actions class="py-2 mx-2">
+        <v-card-title class="mb-2 font-weight-bold">Join</v-card-title>
+        <v-divider class="mx-4" />
+        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
+        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
+        <v-card-title class="caption font-weight-bold pb-0">
+          <v-badge
+            offset-y="17"
+            offset-x="-5"
+            color="deep-purple"
+            :content="room.joinedUserList ? room.joinedUserList.length : 0">
+            参加者
+          </v-badge>
+        </v-card-title>
+        <v-card-text>
+          <chip-list :items="room.joinedUserList" />
+        </v-card-text>
+        <v-divider class="mx-4" />
+        <v-card-actions>
           <v-spacer />
           <v-btn
             v-if="isJoinedRoom"
@@ -26,28 +40,12 @@
             v-else
             rounded
             dark
-            small
             color="deep-purple"
             :ripple="false"
             @click="handleJoinButtonClick">
             参加する
           </v-btn>
         </v-card-actions>
-        <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">
-          <v-badge
-            offset-y="17"
-            offset-x="-5"
-            color="deep-purple"
-            :content="room.joinedUserList ? room.joinedUserList.length : 0">
-            参加者
-          </v-badge>
-        </v-card-title>
-        <v-card-text class="py-0">
-          <chip-list :items="room.joinedUserList" />
-        </v-card-text>
       </v-card>
     </v-dialog>
   </v-row>

@@ -3,7 +3,6 @@
     <v-col cols="8" align="center">
       <v-text-field
         v-model="inputName"
-        dense
         hide-details
         color="deep-purple"
         :disabled="disabled"

@@ -24,7 +24,7 @@
             color="red darken-4"
             :ripple="false"
             @click="unJoin">
-            <span class="font-weight-bold">参加をやめる</span>
+            参加をやめる
           </v-btn>
           <v-btn
             v-else
@@ -49,7 +49,7 @@
             参加者
           </v-badge>
         </v-card-title>
-        <v-card-text class="py-0">
+        <v-card-text>
           <chip-list :items="room.joinedUserList" />
         </v-card-text>
       </v-card>

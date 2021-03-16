@@ -208,10 +208,11 @@ export const actions = {
           })
       })
   },
-  createRoom({ commit }, { name, user }) {
+  createRoom({ commit }, { name, message, user }) {
     roomsRef
       .add({
         name: name,
+        message: message,
         createdUser: { id: user.id, name: user.name },
         adminList: [{ id: user.id, name: user.name }],
         joinedUserList: [],

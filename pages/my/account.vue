@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col cols="12" md="9">
       <v-card flat>
-        <v-card-actions class="py-2 mx-2">
+        <v-card-actions class="mx-2">
           <v-dialog
             v-model="dialog"
             scrollable
@@ -19,7 +19,7 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="mb-2 font-weight-bold">EDIT</v-card-title>
+              <v-card-title class="mb-2 font-weight-bold">Edit</v-card-title>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card flat>
@@ -34,17 +34,16 @@
               </v-card-text>
               <v-divider />
               <v-card-actions>
+                <v-spacer />
                 <v-btn
                   text
                   rounded
-                  small
                   @click="resetUserInfo">
                   Close
                 </v-btn>
                 <v-btn
                   rounded
                   dark
-                  small
                   color="deep-purple"
                   @click="editEnd">
                   Save
@@ -55,13 +54,12 @@
           <v-spacer />
           <v-btn
             nuxt
+            text
             rounded
-            dark
-            small
-            color="red darken-4"
-            :ripple="false"
-            @click="logout">
-            ログアウト
+            color="deep-purple"
+            :to="'/add-room'"
+            :ripple="false">
+            <span class="font-weight-bold">部屋を作成</span>
           </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
@@ -78,6 +76,19 @@
         <v-card-title class="caption font-weight-bold pb-0">このサイトについて</v-card-title>
         <v-card-text class="pt-0">
           <link-list :with-icon="true" :items="appItems" />
+          <v-divider class="mx-4" />
+            <v-list dense>
+            <v-list-item-group color="deep-purple">
+              <v-list-item　@click="logout">
+                <v-list-item-icon>
+                  <v-icon v-text="'mdi-arrow-right'"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="'ログアウト'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
         </v-card-text>
       </v-card>
     </v-col>
