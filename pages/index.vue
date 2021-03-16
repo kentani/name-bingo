@@ -13,6 +13,7 @@
         <v-card-actions class="mx-2">
           <v-row justify="center" class="my-6">
             <v-btn
+              v-if="!loggedIn"
               dark
               rounded
               x-large
@@ -20,6 +21,17 @@
               :ripple="false"
               @click="login2">
               ユーザー登録なしで利用する
+            </v-btn>
+            <v-btn
+              v-else
+              nuxt
+              text
+              rounded
+              x-large
+              color="deep-purple"
+              :ripple="false"
+              to="/my/account">
+              <span class="font-weight-bold">アカウント画面へ</span>
             </v-btn>
           </v-row>
         </v-card-actions>

@@ -56,46 +56,46 @@ export const mutations = {
 
 export const actions = {
   async login({ commit }, { name }) {
-    firebase.auth().signInAnonymously()
-      .then(() => {
-        firebase.auth().onAuthStateChanged((user) => {
-          if (user) {
-            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-              Cookies.set('__session', idToken)
-              commit('setAuthUserId', user.uid)
-              commit('loginStatusChange', user.uid ? true : false)
-            }).catch(function(error) {
-            });
-          }
-          usersRef
-            .add({
-              name: name,
-              authUserId: user.uid,
-              createdRoomList: [],
-              joinedRoomList: [],
-              bingoUserList: [],
-            })
-            .then((docRef) => {
-              usersRef
-                .doc(docRef.id)
-                .update({
-                  id: docRef.id,
-                })
-                .then(() => {
-                  usersRef
-                    .doc(docRef.id)
-                    .get()
-                    .then(function(doc) {
-                      commit('setUserInfo', doc.data())
-                    })
-                })
-            })
-        })
+    firebase.auth().signInAnonymously().then(() => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+            Cookies.set('__session', idToken)
+            commit('setAuthUserId', user.uid)
+            commit('loginStatusChange', user.uid ? true : false)
+          })
+          .catch(function(error) {
+          })
+        }
+        usersRef
+          .add({
+            name: name,
+            authUserId: user.uid,
+            createdRoomList: [],
+            joinedRoomList: [],
+            bingoUserList: [],
+          })
+          .then((docRef) => {
+            usersRef
+              .doc(docRef.id)
+              .update({
+                id: docRef.id,
+              })
+              .then(() => {
+                usersRef
+                  .doc(docRef.id)
+                  .get()
+                  .then(function(doc) {
+                    commit('setUserInfo', doc.data())
+                  })
+              })
+          })
       })
-      .catch((error) => {
-        console.log("errorCode:", error.code)
-        console.log("errorMessage:", error.message)
-      });
+    })
+    .catch((error) => {
+      console.log("errorCode:", error.code)
+      console.log("errorMessage:", error.message)
+    })
   },
   async logout({ commit }) {
     firebase.auth().signOut().then(()=>{
