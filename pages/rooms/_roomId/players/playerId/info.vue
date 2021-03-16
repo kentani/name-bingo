@@ -7,7 +7,6 @@
             nuxt
             text
             rounded
-            small
             color="deep-purple"
             :disabled="!room.adminList.some(el => el.id === this.userInfo.id)"
             :to="'/rooms/' + this.roomId + '/admin/settings'"
@@ -20,7 +19,6 @@
             nuxt
             rounded
             dark
-            small
             color="red darken-4"
             :ripple="false"
             @click="unJoin">
@@ -30,7 +28,6 @@
             v-else
             rounded
             dark
-            small
             color="deep-purple"
             :ripple="false"
             @click="handleJoinButtonClick">

@@ -30,7 +30,6 @@
             nuxt
             rounded
             text
-            small
             color="deep-purple"
             :to="'/rooms/' + roomId + '/players/' + userInfo.id + '/bingo-card'"
             :ripple="false">

@@ -13,7 +13,6 @@
       <v-btn
         rounded
         dark
-        small
         depressed
         color="deep-purple"
         class="my-2"
