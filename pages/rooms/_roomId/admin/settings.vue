@@ -80,7 +80,7 @@
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
         <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">この部屋の招待用URL</v-card-title>
+        <v-card-title class="caption font-weight-bold pb-0">この部屋の招待リンク</v-card-title>
         <v-card-text class="py-0">
           <v-text-field
             filled
