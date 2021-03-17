@@ -24,7 +24,7 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="mb-2 font-weight-bold">Edit</v-card-title>
+              <v-card-title class="font-weight-bold">Edit</v-card-title>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card flat>
@@ -83,9 +83,9 @@
           </v-switch>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold" :class="[ userInfo.profile ? 'pb-1' : 'pb-3' ]">{{ userInfo.name }}</v-card-title>
-        <v-card-text class="py-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold" :class="[ userInfo.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
+        <v-card-title class="title font-weight-bold" :class="[ userInfo.message ? 'pb-1' : 'pb-3' ]">{{ userInfo.name }}</v-card-title>
+        <v-card-text style="white-space: pre-line;">{{ userInfo.message }}</v-card-text>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ userInfo.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
         <v-card-text style="white-space: pre-line;">{{ userInfo.profile }}</v-card-text>
       </v-card>
     </v-col>

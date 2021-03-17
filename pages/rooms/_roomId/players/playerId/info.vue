@@ -18,7 +18,7 @@
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
         <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold">
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">
           <v-badge
             offset-y="17"
             offset-x="-5"

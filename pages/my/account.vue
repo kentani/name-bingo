@@ -19,7 +19,7 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="mb-2 font-weight-bold">Edit</v-card-title>
+              <v-card-title class="font-weight-bold">Edit</v-card-title>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card flat>
@@ -63,17 +63,17 @@
           </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
-        <v-card-subtitle class="caption pb-3" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-subtitle>
-        <v-card-subtitle class="body-2 font-weight-bold" :class="[ userInfo.createdRoomList.length > 0 ? 'py-0' : 'py-3' ]">作成履歴</v-card-subtitle>
+        <v-card-title class="title font-weight-bold pb-0">{{ userInfo.name }}</v-card-title>
+        <v-card-text class="caption" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-text>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ userInfo.createdRoomList.length > 0 ? 'pb-1' : 'pb-3' ]">作成履歴</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :items="userInfo.createdRoomList" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold" :class="[ userInfo.joinedRoomList.length > 0 ? 'py-0' : 'py-3' ]">参加履歴</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ userInfo.joinedRoomList.length > 0 ? 'pb-1' : 'pb-3' ]">参加履歴</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :items="userInfo.joinedRoomList" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold py-0">このサイトについて</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">このサイトについて</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :with-icon="true" :items="appItems" />
         </v-card-text>

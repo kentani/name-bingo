@@ -23,17 +23,17 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="mb-2 font-weight-bold">参加者一覧</v-card-title>
-              <v-card-subtitle>参加者：{{ room.joinedUserList ? room.joinedUserList.length : 0 }} | 選択中：{{selected.length}}</v-card-subtitle>
+              <v-card-title class="font-weight-bold">参加者一覧</v-card-title>
+              <v-card-text>参加者：{{ room.joinedUserList ? room.joinedUserList.length : 0 }}　　選択中：{{selected.length}}</v-card-text>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card
                   v-for="(item, i) in room.joinedUserList"
                   :key="i"
                   class="my-2">
-                  <v-card-title class="title font-weight-bold" :class="[ item.profile ? 'pb-1' : 'pb-3' ]">{{ item.name }}</v-card-title>
-                  <v-card-text class="py-0" style="white-space: pre-line;">{{ item.message }}</v-card-text>
-                  <v-card-subtitle class="body-2 font-weight-bold" :class="[ item.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
+                  <v-card-title class="title font-weight-bold" :class="[ item.message ? 'pb-1' : 'pb-3' ]">{{ item.name }}</v-card-title>
+                  <v-card-text style="white-space: pre-line;">{{ item.message }}</v-card-text>
+                  <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ item.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
                   <v-card-text style="white-space: pre-line;">{{ item.profile }}</v-card-text>
                   <v-divider class="mx-4"></v-divider>
                   <v-card-actions class="py-0 mx-2">

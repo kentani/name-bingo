@@ -20,7 +20,7 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="mb-2 font-weight-bold">Edit</v-card-title>
+              <v-card-title class="font-weight-bold">Edit</v-card-title>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card flat>
@@ -76,7 +76,7 @@
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
         <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pb-1">この部屋の招待リンク</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">この部屋の招待リンク</v-card-subtitle>
         <v-card-text>
           <v-text-field
             filled
@@ -89,11 +89,11 @@
             :value="local + '/rooms/' + roomId + '/invite'"
             @click:append="copy(local + '/rooms/' + roomId + '/invite')" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold">管理者</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">管理者</v-card-subtitle>
         <v-card-text>
           <chip-list :items="room.adminList" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold">
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">
           <v-badge
             offset-y="17"
             offset-x="-5"

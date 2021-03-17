@@ -8,7 +8,7 @@
       <v-card>
         <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
         <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold">
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">
           <v-badge
             offset-y="17"
             offset-x="-5"
@@ -19,10 +19,6 @@
         </v-card-subtitle>
         <v-card-text>
           <chip-list :items="room.joinedUserList" />
-        </v-card-text>
-        <v-divider class="mx-4" />
-        <v-card-text class="py-0">
-          <link-list :with-icon="true" :items="items" />
         </v-card-text>
         <v-divider class="mx-4" />
         <v-card-actions>
