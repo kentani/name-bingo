@@ -2,16 +2,33 @@
   <v-row justify="center">
     <v-col cols="12">
       <v-card flat color="grey lighten-4">
-        <v-card-actions class="py-2 mx-2">
-          <v-spacer />
+        <v-card-actions class="py-0 mx-2">
           <v-btn
-            dark
-            rounded
-            color="red darken-4"
-            :ripple="false"
-            @click="reset">
-            リセット
-          </v-btn>
+              text
+              rounded
+              color="red darken-4"
+              :disabled="switch1"
+              :ripple="false"
+              @click="reset">
+              <span class="body-2 font-weight-bold">
+                RESET
+              </span>
+            </v-btn>
+          <v-spacer />
+          <v-switch
+            v-model="switch1"
+            inset
+            hide-details
+            class="my-2"
+            color="deep-purple">
+            <template v-slot:label>
+              <span
+                class="body-2 font-weight-bold"
+                :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                ゲーム開始
+              </span>
+            </template>
+          </v-switch>
         </v-card-actions>
         <p
           class="py-2 my-0 display-4 font-weight-bold text-center"
@@ -26,6 +43,7 @@
               dark
               x-large
               rounded
+              elevation="18"
               :ripple="false"
               @click="start">
               START
@@ -72,6 +90,7 @@
     layout: 'room',
     data () {
       return {
+        switch1: false,
         starting: false,
         result: { id: '', name: '？？' },
         checkList: [
