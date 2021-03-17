@@ -6,7 +6,7 @@
       persistent
       width="900">
       <v-card>
-        <v-card-title class="mb-2 font-weight-bold">Add new</v-card-title>
+        <v-card-title class="font-weight-bold">Add new</v-card-title>
         <v-divider class="mx-4" />
         <v-card-text class="pa-2">
           <v-card flat>
@@ -51,7 +51,7 @@
               text
               nuxt
               color="deep-purple"
-              :to="'/rooms/' + room.id + '/admin/bingo'">
+              :to="'/rooms/' + room.id + '/admin/settings'">
               <span class="font-weight-bold">部屋に入る</span>
             </v-btn>
           </div>

@@ -64,22 +64,24 @@
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
-        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">作成履歴</v-card-title>
+        <v-card-subtitle class="caption pb-3" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold" :class="[ userInfo.createdRoomList.length > 0 ? 'py-0' : 'py-3' ]">作成履歴</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :items="userInfo.createdRoomList" />
         </v-card-text>
-        <v-card-title class="caption font-weight-bold pb-0">参加履歴</v-card-title>
+        <v-card-subtitle class="body-2 font-weight-bold" :class="[ userInfo.joinedRoomList.length > 0 ? 'py-0' : 'py-3' ]">参加履歴</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :items="userInfo.joinedRoomList" />
         </v-card-text>
-        <v-card-title class="caption font-weight-bold pb-0">このサイトについて</v-card-title>
-        <v-card-text class="pt-0">
+        <v-card-subtitle class="body-2 font-weight-bold py-0">このサイトについて</v-card-subtitle>
+        <v-card-text class="py-0">
           <link-list :with-icon="true" :items="appItems" />
-          <v-divider class="mx-4" />
-            <v-list dense>
+        </v-card-text>
+        <v-divider class="mx-4" />
+        <v-card-text class="py-0">
+          <v-list dense>
             <v-list-item-group color="deep-purple">
-              <v-list-item　@click="logout">
+              <v-list-item @click="logout">
                 <v-list-item-icon>
                   <v-icon v-text="'mdi-arrow-right'"></v-icon>
                 </v-list-item-icon>

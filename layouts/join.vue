@@ -36,8 +36,8 @@
 
 <script>
 export default {
-  name: 'join',
-  middleware: 'join',
+  name: 'invite',
+  middleware: 'invite',
   data () {
     return {
       title: 'Name Bingo',

@@ -31,10 +31,10 @@
                   v-for="(item, i) in room.joinedUserList"
                   :key="i"
                   class="my-2">
-                  <v-card-title class="title font-weight-bold">{{ item.name }}</v-card-title>
-                  <v-card-subtitle class="py-0" style="white-space: pre-line;">{{ item.message }}</v-card-subtitle>
-                  <v-card-title class="caption font-weight-bold">プロフィール</v-card-title>
-                  <v-card-subtitle style="white-space: pre-line;">{{ item.profile }}</v-card-subtitle>
+                  <v-card-title class="title font-weight-bold" :class="[ item.profile ? 'pb-1' : 'pb-3' ]">{{ item.name }}</v-card-title>
+                  <v-card-text class="py-0" style="white-space: pre-line;">{{ item.message }}</v-card-text>
+                  <v-card-subtitle class="body-2 font-weight-bold" :class="[ item.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
+                  <v-card-text style="white-space: pre-line;">{{ item.profile }}</v-card-text>
                   <v-divider class="mx-4"></v-divider>
                   <v-card-actions class="py-0 mx-2">
                     <v-spacer />

@@ -6,21 +6,23 @@
       persistent
       width="900">
       <v-card>
-        <v-card-title class="mb-2 font-weight-bold">Join</v-card-title>
-        <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">
+        <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
+        <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
+        <v-card-subtitle class="body-2 font-weight-bold">
           <v-badge
             offset-y="17"
             offset-x="-5"
             color="deep-purple"
-            :content="room.joinedUserList ? room.joinedUserList.length : 0">
+            :content="room.joinedUserList.length">
             参加者
           </v-badge>
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <chip-list :items="room.joinedUserList" />
+        </v-card-text>
+        <v-divider class="mx-4" />
+        <v-card-text class="py-0">
+          <link-list :with-icon="true" :items="items" />
         </v-card-text>
         <v-divider class="mx-4" />
         <v-card-actions>
@@ -52,7 +54,7 @@
 
 <script>
 export default {
-  layout: 'join',
+  layout: 'room',
   data () {
     return {
       dialog: true,

@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div v-if="items.length !== 0">
     <v-chip
-      v-if="items.length !== 0"
       v-for="(item, i) in items.filter(v => v)"
       :key="i"
       label

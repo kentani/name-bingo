@@ -3,6 +3,7 @@
     <v-col cols="12" md="9">
       <v-card flat>
         <v-card-actions class="py-3 mx-2">
+          <v-spacer />
           <v-btn
             nuxt
             text
@@ -11,33 +12,13 @@
             :disabled="!room.adminList.some(el => el.id === this.userInfo.id)"
             :to="'/rooms/' + this.roomId + '/admin/settings'"
             :ripple="false">
-            <span class="font-weight-bold">管理画面へ</span>
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            v-if="isJoinedRoom"
-            nuxt
-            rounded
-            dark
-            color="red darken-4"
-            :ripple="false"
-            @click="unJoin">
-            参加をやめる
-          </v-btn>
-          <v-btn
-            v-else
-            rounded
-            dark
-            color="deep-purple"
-            :ripple="false"
-            @click="handleJoinButtonClick">
-            参加する
+            <span class="font-weight-bold">管理画面</span>
           </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold">{{ room.name }}</v-card-title>
-        <v-card-subtitle class="pb-0" style="white-space: pre-line;">{{ room.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold pb-0">
+        <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
+        <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
+        <v-card-subtitle class="body-2 font-weight-bold">
           <v-badge
             offset-y="17"
             offset-x="-5"
@@ -45,9 +26,13 @@
             :content="room.joinedUserList.length">
             参加者
           </v-badge>
-        </v-card-title>
+        </v-card-subtitle>
         <v-card-text>
           <chip-list :items="room.joinedUserList" />
+        </v-card-text>
+        <v-divider class="mx-4" />
+        <v-card-text class="py-0">
+          <link-list :with-icon="true" :items="items" />
         </v-card-text>
       </v-card>
     </v-col>
@@ -64,6 +49,14 @@
         inputName: '',
         inputProfile: '',
         inputMessage: '',
+        items: [
+        {
+          icon: 'mdi-arrow-right',
+          name: '参加をやめる',
+          to: '/rooms/' + this.roomId + '/invite',
+          disabled: false
+        },
+      ]
       }
     },
     created () {
@@ -86,6 +79,12 @@
       },
       room() {
         return this.$store.getters.getRoom
+      },
+      playerId() {
+        return this.$route.params.playerId
+      },
+      isCreater() {
+        return this.room.adminList.some(el => el.id === this.playerId)
       },
       isJoinedRoom() {
         let val = false

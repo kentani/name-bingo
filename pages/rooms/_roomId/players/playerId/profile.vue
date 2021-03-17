@@ -83,10 +83,10 @@
           </v-switch>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold">{{ userInfo.name }}</v-card-title>
-        <v-card-subtitle class="py-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-subtitle>
-        <v-card-title class="caption font-weight-bold">プロフィール</v-card-title>
-        <v-card-subtitle style="white-space: pre-line;">{{ userInfo.profile }}</v-card-subtitle>
+        <v-card-title class="title font-weight-bold" :class="[ userInfo.profile ? 'pb-1' : 'pb-3' ]">{{ userInfo.name }}</v-card-title>
+        <v-card-text class="py-0" style="white-space: pre-line;">{{ userInfo.message }}</v-card-text>
+        <v-card-subtitle class="body-2 font-weight-bold" :class="[ userInfo.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
+        <v-card-text style="white-space: pre-line;">{{ userInfo.profile }}</v-card-text>
       </v-card>
     </v-col>
   </v-row>
