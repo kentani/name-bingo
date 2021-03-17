@@ -13,7 +13,7 @@
             offset-y="17"
             offset-x="-5"
             color="deep-purple"
-            :content="room.joinedUserList.length">
+            :content="room.joinedUserList ? room.joinedUserList.length : 0">
             参加者
           </v-badge>
         </v-card-subtitle>
