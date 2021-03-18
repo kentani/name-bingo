@@ -85,13 +85,13 @@
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold pb-0">ゲストユーザー</v-card-title>
         <v-card-text class="caption" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ [].length > 0 ? 'pb-1' : 'pb-3' ]">管理履歴</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ adminList.length > 0 ? 'pb-1' : 'pb-3' ]">管理履歴</v-card-subtitle>
         <v-card-text class="py-0">
-          <link-list :items="[]" />
+          <link-list :items="adminList" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ [].length > 0 ? 'pb-1' : 'pb-3' ]">参加履歴</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ joinedList.length > 0 ? 'pb-1' : 'pb-3' ]">参加履歴</v-card-subtitle>
         <v-card-text class="py-0">
-          <link-list :items="[]" />
+          <link-list :items="joinedList" />
         </v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">このサイトについて</v-card-subtitle>
         <v-card-text class="py-0">
@@ -136,12 +136,12 @@ export default {
         {
           icon: 'mdi-note',
           name: '利用規約',
-          to: '/rooms/322fKsJpAWIbpo5zpp6b/invite'
+          to: '/'
         },
         {
           icon: 'mdi-github',
           name: 'ソースコード',
-          to: '/rooms/322fKsJpAWIbpo5zpp6b/admin/settings'
+          to: '/'
         },
       ]
     }
@@ -163,10 +163,18 @@ export default {
       return this.$store.getters.getAccountInfo
     },
     adminList() {
-      return this.accountInfo.length > 0 ? this.accountInfo.filter(v => v.isAdmin ) : this.accountInfo
+      return this.accountInfo.map((v) => {
+        if (v.isAdmin) {
+          return { name: v.name, to: '/rooms/' + v.roomId + '/admin/bingo' }
+        }
+      })
     },
     joinedList() {
-      return this.accountInfo.length > 0 ? this.accountInfo.filter(v => v.isJoined ) : this.accountInfo
+      return this.accountInfo.map((v) => {
+        if (v.isJoined) {
+          return { name: v.name, to: '/rooms/' + v.roomId + '/players/' + v.id + '/bingo-card' }
+        }
+      })
     },
     room() {
       return this.$store.getters.getRoom
