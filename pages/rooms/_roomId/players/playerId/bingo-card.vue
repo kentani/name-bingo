@@ -119,6 +119,21 @@
         </v-card-text>
       </v-card>
     </v-col>
+    <!-- <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      centered
+      color="grey">
+      <span class="title font-weight-bold">{{ text }}</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          text
+          v-bind="attrs"
+          @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar> -->
   </v-row>
 </template>
 
@@ -133,21 +148,10 @@
         dialog: false,
         selected: [],
         switch1: false,
+        snackbar: true,
+        text: 'リーチ！',
+        timeout: 4000,
         draggableOptions: { animation: 300, delay: 0 },
-        checkList: [
-          [0,1,2,3],
-          [4,5,6,7],
-          [8,9,10,11],
-          [12,13,14,15],
-          [0,4,8,12],
-          [1,5,9,13],
-          [2,6,10,14],
-          [3,7,11,15],
-          [0,5,10,15],
-          [3,6,9,12],
-        ],
-        isReach: false,
-        isBingo: false,
       }
     },
     async created () {
@@ -204,24 +208,49 @@
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       },
-      check() {
-        let hitIndexList = []
-        this.room.hitList.forEach((v) => {
-          hitIndexList.push(this.player.selectList.indexOf(v))
-        })
-        this.checkList.forEach((list) => {
-          let tmpResult = []
-          list.forEach((index) => {
-            tmpResult.push(hitIndexList.includes(index))
-          })
-          console.log(tmpResult)
-          let result = []
-          result = tmpResult.filter(v => v === true)
-          if (result.length === 3) {
-            return this.isReach = true
-          } 
-        })
-      }
     }
   }
 </script>
+
+<style scoped>
+.ribbon19-wrapper {
+  display: block;
+  position: relative;
+  margin: 15px auto;
+  padding: 10px 0;
+  width: 300px;
+  height: 150px;
+  background: #f1f1f1;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.14);
+  box-sizing: border-box;
+}
+
+.ribbon19-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 85px;
+  height: 85px;
+  overflow: hidden;
+  }
+
+.ribbon19 {
+  display: inline-block;
+  position: absolute;
+  padding: 5px 0;
+  left: -24px;
+  top: 20px;
+  width: 160px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 16px;
+  background: #39c3d4;
+  color: #fff;
+  letter-spacing: 0.05em;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 2px rgb(57, 195, 212);
+  border-top: dashed 1px rgba(255, 255, 255, 0.65);
+  border-bottom: dashed 1px rgba(255, 255, 255, 0.65);
+}
+</style>
