@@ -26,7 +26,7 @@
           <v-text-field
             filled
             label="あなたの名前"
-            :disabled="player.isJoined"
+            :disabled="!!player.id"
             color="deep-purple"
             v-model="inputPlayerName" />
         </v-card-text>
@@ -101,8 +101,12 @@ export default {
   },
   methods: {
     joinRoom() {
-      if (this.player.isJoined) return
-      this.$store.dispatch('joinRoom', { roomId: this.roomId, playerName: this.inputPlayerName, authId: this.authId })
+      if (this.player.id) {
+        this.$store.dispatch('updatePlayerJoin', { isJoined: true, playerId: this.player.id })
+      }
+      else {
+        this.$store.dispatch('joinRoom', { roomId: this.roomId, playerName: this.inputPlayerName, authId: this.authId })
+      }
     },
   }
 }

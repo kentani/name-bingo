@@ -110,23 +110,29 @@ export const actions = {
   },
 
   async login({ commit }) {
-    firebase.auth().signInAnonymously().then(() => {
-
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
-            Cookies.set('__session', idToken)
-            commit('setAuthId', user.uid)
-            commit('changeLoginStatus', user.uid ? true : false)
-          })
-          .catch(function(error) {
-          })
-        }
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+      firebase.auth().signInAnonymously().then(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
+              Cookies.set('__session', idToken)
+              commit('setAuthId', user.uid)
+              commit('changeLoginStatus', user.uid ? true : false)
+            })
+            .catch(function(error) {
+            })
+          }
+        })
+      })
+      .catch((error) => {
+        console.log("errorCode:", error.code)
+        console.log("errorMessage:", error.message)
       })
     })
     .catch((error) => {
-      console.log("errorCode:", error.code)
-      console.log("errorMessage:", error.message)
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
     })
   },
 
@@ -138,6 +144,7 @@ export const actions = {
     })
     .catch( (error)=>{
       Cookies.remove('__session');
+      commit('clearAuth')
       console.log(`ログアウト時にエラーが発生しました (${error})`)
     });
   },
@@ -228,6 +235,14 @@ export const actions = {
 
   async updatePlayerInfo({ commit }, { name, note, profile, playerId }) {
     await playersRef.doc(playerId).update({ name: name, note: note, profile: profile }).then(() => {
+      playersRef.doc(playerId).get().then(function(doc) {
+        commit('setPlayer', doc.data())
+      })
+    })
+  },
+
+  async updatePlayerJoin({ commit }, { isJoined, playerId }) {
+    await playersRef.doc(playerId).update({ isJoined: isJoined }).then(() => {
       playersRef.doc(playerId).get().then(function(doc) {
         commit('setPlayer', doc.data())
       })

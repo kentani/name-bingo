@@ -24,7 +24,7 @@
             </template>
             <v-card>
               <v-card-title class="font-weight-bold">参加者一覧</v-card-title>
-              <v-card-text>参加者：{{ joinedList ? joinedList.length : 0 }}　　選択中：{{selected.length}}</v-card-text>
+              <v-card-text>参加者：{{ joinedList ? joinedList.length : 0 }}　　選択中：{{ selected.length }}</v-card-text>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card
