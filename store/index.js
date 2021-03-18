@@ -259,7 +259,23 @@ export const actions = {
   },
 
   async resetHit({ commit }, { roomId }) {
-    await roomsRef.doc(roomId).update({ hitList: [] }).then(() => {
+    await roomsRef.doc(roomId).update({ hitList: [], reachList: [], bingoList: [] }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
+  async addReach({ commit }, { roomId, reachList }) {
+    await roomsRef.doc(roomId).update({ reachList: reachList }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
+  async addBingo({ commit }, { roomId, bingoList }) {
+    await roomsRef.doc(roomId).update({ bingoList: bingoList }).then(() => {
       roomsRef.doc(roomId).get().then(function(doc) {
         commit('setRoom', doc.data())
       })

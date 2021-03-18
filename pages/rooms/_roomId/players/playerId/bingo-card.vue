@@ -146,6 +146,8 @@
           [0,5,10,15],
           [3,6,9,12],
         ],
+        isReach: false,
+        isBingo: false,
       }
     },
     async created () {
@@ -187,7 +189,7 @@
         return this.player.selectList.map((v) =>{
           return this.playerListMap[v]
         }).filter(v => v)
-      }
+      },
     },
     methods: {
       setSelected() {
@@ -202,6 +204,24 @@
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       },
+      check() {
+        let hitIndexList = []
+        this.room.hitList.forEach((v) => {
+          hitIndexList.push(this.player.selectList.indexOf(v))
+        })
+        this.checkList.forEach((list) => {
+          let tmpResult = []
+          list.forEach((index) => {
+            tmpResult.push(hitIndexList.includes(index))
+          })
+          console.log(tmpResult)
+          let result = []
+          result = tmpResult.filter(v => v === true)
+          if (result.length === 3) {
+            return this.isReach = true
+          } 
+        })
+      }
     }
   }
 </script>

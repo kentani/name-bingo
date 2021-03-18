@@ -61,6 +61,18 @@
           </v-row>
         </v-card-actions>
         <v-card-text>
+          <v-row justify="center" class="mb-3 mt-1">
+            <v-card flat color="grey lighten-4">
+              <v-card-text class="title font-weight-bold">
+                リーチ：{{ reach.length }}
+              </v-card-text>
+            </v-card>
+            <v-card flat color="grey lighten-4">
+              <v-card-text class="title font-weight-bold">
+                ビンゴ：{{ bingo.length }}
+              </v-card-text>
+            </v-card>
+          </v-row>
           <v-row>
             <v-col
               v-for="(player, i) in joinedList"
@@ -105,6 +117,8 @@
           [0,5,10,15],
           [3,6,9,12],
         ],
+        reach: [],
+        bingo: [],
       }
     },
     async created () {
@@ -137,28 +151,68 @@
     },
     methods: {
       start () {
-        const randomID = parseInt(Math.floor(Math.random() * this.joinedList.length));
+        const list = this.joinedList.filter(v => !this.room.hitList.includes(v.id) )
+        const randomID = parseInt(Math.floor(Math.random() * list.length));
         this.starting = true
-        this.result = this.joinedList[randomID]
-        setTimeout(this.run, 80);
+        this.result = list[randomID]
+        this.reach =  Object.assign([], this.reach, this.room.reachList)
+        this.bingo =  Object.assign([], this.bingo, this.room.bingoList)
+        setTimeout(this.run, 30);
       },
       stop () {
         this.starting = false
       },
-      run () {
+      async run () {
         if (this.starting) {
           this.start()
         }
         else {
-          this.$store.dispatch('addHit', { roomId: this.roomId, playerId: this.result.id })
+          await this.$store.dispatch('addHit', { roomId: this.roomId, playerId: this.result.id })
+          await this.check()
         }
       },
       reset() {
         this.$store.dispatch('resetHit', { roomId: this.roomId })
         this.result = { id: '', name: '？？' }
+        this.reach = []
+        this.bingo = []
       },
       ishit(playerId) {
         return this.room.hitList.includes(playerId)
+      },
+      check() {
+        this.joinedList.forEach((player) => {
+          let hitIndexList = []
+          this.room.hitList.forEach((v) => {
+            hitIndexList.push(player.selectList.indexOf(v))
+          })
+
+          this.checkList.forEach((list) => {
+            let tmpResult = []
+            list.forEach((index) => {
+              tmpResult.push(hitIndexList.includes(index))
+            })
+
+            let result = []
+            result = tmpResult.filter(v => v === true)
+
+            if (result.length === 3 && !this.room.reachList.includes(player.id) && !this.reach.includes(player.id)) {
+              this.reach.push(player.id)
+            }
+
+            if (result.length === 4 && !this.room.bingoList.includes(player.id) && !this.bingo.includes(player.id)) {
+              this.bingo.push(player.id)
+            } 
+          })
+        })
+
+        if (this.reach.length != 0) {
+          this.$store.dispatch('addReach', { roomId: this.roomId, reachList: this.reach })
+        }
+
+        if (this.bingo.length != 0) {
+          this.$store.dispatch('addBingo', { roomId: this.roomId, bingoList: this.bingo })
+        }
       }
     }
   }
