@@ -24,15 +24,15 @@
             </template>
             <v-card>
               <v-card-title class="font-weight-bold">参加者一覧</v-card-title>
-              <v-card-text>参加者：{{ room.joinedUserList ? room.joinedUserList.length : 0 }}　　選択中：{{selected.length}}</v-card-text>
+              <v-card-text>参加者：{{ joinedList ? joinedList.length : 0 }}　　選択中：{{selected.length}}</v-card-text>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card
-                  v-for="(item, i) in room.joinedUserList"
+                  v-for="(item, i) in joinedList"
                   :key="i"
                   class="my-2">
-                  <v-card-title class="title font-weight-bold" :class="[ item.message ? 'pb-1' : 'pb-3' ]">{{ item.name }}</v-card-title>
-                  <v-card-text style="white-space: pre-line;">{{ item.message }}</v-card-text>
+                  <v-card-title class="title font-weight-bold" :class="[ item.note ? 'pb-1' : 'pb-3' ]">{{ item.name }}</v-card-title>
+                  <v-card-text style="white-space: pre-line;">{{ item.note }}</v-card-text>
                   <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ item.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
                   <v-card-text style="white-space: pre-line;">{{ item.profile }}</v-card-text>
                   <v-divider class="mx-4"></v-divider>
@@ -70,7 +70,7 @@
                   dark
                   color="deep-purple"
                   :disabled="selected.length > 16 || switch1"
-                  @click="setBingoUserList">
+                  @click="updateSelectList">
                   Save
                 </v-btn>
               </v-card-actions>
@@ -100,17 +100,17 @@
             v-model="selected"
             v-bind="draggableOptions"
             @start="setSelected"
-            @end="setBingoUserList">
+            @end="updateSelectList">
             <v-col
-              v-for="(item, i) in userInfo.bingoUserList"
+              v-for="(item, i) in player.selectList"
               :key="i"
               cols="3"
               class="pa-1">
               <v-card
-                :flat="!room.resultList.some(el => el.id === userItem(item, i).id)"
-                :class="[ room.resultList.some(el => el.id === userItem(item, i).id) ? 'yellow accent-4' : 'grey lighten-4' ]"
+                :flat="!item.isHit"
+                :class="[ !item.isHit ? 'grey lighten-4' : 'yellow accent-4' ]"
                 height="100">
-                <v-card-title class="overline py-1" style="line-height:15px">
+                <v-card-title class="overline pa-1" style="line-height:15px">
                   {{ item.name }}
                 </v-card-title>
               </v-card>
@@ -149,60 +149,48 @@
         isReach: false
       }
     },
-    created () {
-      this.$store.dispatch('onAuth')
-      this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
-      this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+    async created () {
+      await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
+      await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
     },
     computed: {
+      authId() {
+        return this.$store.getters.getAuthId
+      },
       loggedIn() {
         return this.$store.getters.getLoggedIn
-      },
-      authUserId() {
-        return this.$store.getters.getAuthUserId
-      },
-      userInfo() {
-        return this.$store.getters.getUserInfo
-      },
-      roomId() {
-        return this.$route.params.roomId
       },
       room() {
         return this.$store.getters.getRoom
       },
+      roomId() {
+        return this.$route.params.roomId
+      },
+      player() {
+        return this.$store.getters.getPlayer
+      },
+      playerId() {
+        return this.$route.params.playerId
+      },
+      playerList() {
+        return this.$store.getters.getPlayerList
+      },
+      joinedList() {
+        return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+      }
     },
     methods: {
-      userItem(item, index) {
-        return this.userInfo.bingoUserList[index] ? this.userInfo.bingoUserList[index] : item
-      },
-      setUser() {
-        this.$store.dispatch('setUser', { userId: this.userInfo.id, list: this.room.joinedUserList })
-        this.selected = Object.assign([], this.selected, [])
-      },
-      resetUser() {
-        this.$store.dispatch('setUser', { userId: this.userInfo.id, list: [] })
-        this.selected = Object.assign([], this.selected, [])
-      },
-      reachCheck(winItemList) {
-        let returnVal = false
-        this.checkList.forEach(function(list) {
-          let ary = list.filter((val) => {
-            return winItemList.indexOf(val) !== -1
-          })
-          if (ary.length === 3) {
-            this.isReach = true
-          }
-        })
-      },
       setSelected() {
-        this.selected = Object.assign([], this.selected, this.userInfo.bingoUserList)
+        this.selected = Object.assign([], this.selected, this.player.selectList)
       },
       resetSelected() {
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       },
-      setBingoUserList() {
-        this.$store.dispatch('setUser', { userId: this.userInfo.id, list: this.selected })
+      updateSelectList() {
+        this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       }

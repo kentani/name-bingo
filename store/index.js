@@ -6,90 +6,122 @@ const admin = process.server ? require('~/plugins/firebaseAdmin').default : unde
 const db = firebase.firestore();
 const usersRef = db.collection('users');
 const roomsRef = db.collection('rooms');
+const playersRef = db.collection('players');
+
+// firebase.firestore.FieldValue.arrayUnion
+// onSnapshot({ includeMetadataChanges: true }
 
 export const state = () => ({
-  authUserId: '',
+  authId: '',
   loggedIn: false,
-  userInfo: {},
   room: {},
+  playerList: [],
+  player: {},
+  accountInfo: [],
 })
 
 export const getters = {
-  getAuthUserId(state) {
-    return state.authUserId
+  getAuthId(state) {
+    return state.authId
   },
   getLoggedIn(state) {
     return state.loggedIn
   },
-  getUserInfo(state) {
-    return state.userInfo
-  },
   getRoom(state) {
     return state.room
+  },
+  getPlayerList(state) {
+    return state.playerList
+  },
+  getPlayer(state) {
+    return state.player
+  },
+  getAccountInfo(state) {
+    return state.accountInfo
   },
 }
 
 export const mutations = {
-  setAuthUserId(state, authUserId) {
-    state.authUserId = authUserId
+  setAuthId(state, authId) {
+    state.authId = authId
   },
-  loginStatusChange(state, status) {
+  changeLoginStatus(state, status) {
     state.loggedIn = status
   },
-  setUserInfo(state, userInfo) {
-    state.userInfo = Object.assign({}, state.userInfo, userInfo)
+  clearAuth(state) {
+    state.authId = ''
+    stete.loggedIn = false
   },
+
   setRoom(state, room) {
     state.room = Object.assign({}, state.room, room)
-  },
-  clearUserInfo(state) {
-    state.userInfo = Object.assign({}, state.userInfo, {})
   },
   clearRoom(state) {
     state.room = Object.assign({}, state.room, {})
   },
-  clearAuth(state) {
-    state.authUserId = ''
-    stete.loggedIn = false
+
+  setPlayerList(state, player) {
+    state.playerList.push(player)
+  },
+  clearPlayerList(state) {
+    state.playerList = []
+  },
+
+  setPlayer(state, player) {
+    state.player = Object.assign({}, state.player, player)
+  },
+  clearPlayer(state) {
+    state.player = Object.assign({}, state.player, {})
+  },
+
+  setAccountInfo(state, player) {
+    state.accountInfo.push(player)
+  },
+  clearAccountInfo(state) {
+    state.accountInfo = []
   },
 }
 
 export const actions = {
-  async login({ commit }, { name }) {
+  async nuxtServerInit ({ commit }, { req }) {
+    if (!req.headers.cookie) return
+    try {
+      const idToken = await cookieparser.parse(req.headers.cookie).__session
+      if (!idToken) return
+      await admin.auth().verifyIdToken(idToken).then((decodedToken) => {
+        commit('setAuthId', decodedToken.uid)
+        commit('changeLoginStatus', decodedToken.uid ? true : false)
+      })
+      .catch((error) => {
+        console.log("invalidToken", error)
+      })
+    } catch (err) {
+      console.log("error", err)
+    }
+  },
+
+  async onAuth({ commit }) {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        commit('setAuthId', user.uid)
+        commit('changeLoginStatus', user.uid ? true : false)
+      }
+    })
+  },
+
+  async login({ commit }) {
     firebase.auth().signInAnonymously().then(() => {
+
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+          firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
             Cookies.set('__session', idToken)
-            commit('setAuthUserId', user.uid)
-            commit('loginStatusChange', user.uid ? true : false)
+            commit('setAuthId', user.uid)
+            commit('changeLoginStatus', user.uid ? true : false)
           })
           .catch(function(error) {
           })
         }
-        usersRef
-          .add({
-            name: name,
-            authUserId: user.uid,
-            createdRoomList: [],
-            joinedRoomList: [],
-            bingoUserList: [],
-          })
-          .then((docRef) => {
-            usersRef
-              .doc(docRef.id)
-              .update({
-                id: docRef.id,
-              })
-              .then(() => {
-                usersRef
-                  .doc(docRef.id)
-                  .get()
-                  .then(function(doc) {
-                    commit('setUserInfo', doc.data())
-                  })
-              })
-          })
       })
     })
     .catch((error) => {
@@ -97,274 +129,150 @@ export const actions = {
       console.log("errorMessage:", error.message)
     })
   },
+
   async logout({ commit }) {
     firebase.auth().signOut().then(()=>{
       Cookies.remove('__session');
       commit('clearAuth')
-      commit('clearUserInfo')
-      console.log("ログアウトしました");
+      console.log("ログアウトしました")
     })
     .catch( (error)=>{
       Cookies.remove('__session');
-      console.log(`ログアウト時にエラーが発生しました (${error})`);
+      console.log(`ログアウト時にエラーが発生しました (${error})`)
     });
   },
-  async onAuth({ commit }) {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        commit('setAuthUserId', user.uid)
-        commit('loginStatusChange', user.uid ? true : false)
-      }
-      else {
-      }
+
+  async createRoom({ commit }, { roomName, note, playerName, authId }) {
+    roomsRef.add({ name: roomName, note: note }).then((roomRef) => {
+      
+      roomsRef.doc(roomRef.id).update({ id: roomRef.id }).then(() => {
+
+        const args = {
+          authId: authId,
+          roomId: roomRef.id,
+          name: playerName,
+          note: '',
+          profile: '',
+          isAdmin: true,
+          isCreator: true,
+          isJoined: false,
+          isHit: false,
+          isReach: false,
+          isBingo: false,
+          selectList: [],
+        }
+  
+        playersRef.add(args).then((playerRef) => {
+  
+          playersRef.doc(playerRef.id).update({ id: playerRef.id }).then(() => {
+
+            roomsRef.doc(roomRef.id).get().then(function(doc) {
+              commit('setRoom', doc.data())
+            })
+
+            playersRef.doc(playerRef.id).get().then(function(doc) {
+              commit('setPlayer', doc.data())
+            })
+          })
+        })
+      })
     })
   },
-  async nuxtServerInit ({ commit }, { req }) {
-    if (req.headers.cookie) {
-      try {
-        const idToken = await cookieparser.parse(req.headers.cookie).__session
-        let authId = ''
-        await admin.auth().verifyIdToken(idToken).then((decodedToken) => {
-          authId = decodedToken
-          commit('setAuthUserId', decodedToken.uid)
-          commit('loginStatusChange', decodedToken.uid ? true : false)
-        })
-        .catch((error) => {
-          console.log("invalidToken", error)
-        })
-        await admin.firestore().collection('users').where("authUserId", "==", authId.uid).get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            commit('setUserInfo', doc.data())
-          })
-        })
-        .catch((error) => {
-          console.log("invalidUserInfo", error)
-        })
-      } catch (err) {
-        console.log("error", err)
-      }
+
+  async joinRoom({ commit }, { roomId, playerName, authId }) {
+    const args = {
+      authId: authId,
+      roomId: roomId,
+      name: playerName,
+      note: '',
+      profile: '',
+      isAdmin: false,
+      isCreator: false,
+      isJoined: true,
+      isHit: false,
+      isReach: false,
+      isBingo: false,
+      selectList: [],
     }
+
+    playersRef.add(args).then((playerRef) => {
+
+      playersRef.doc(playerRef.id).update({ id: playerRef.id }).then(() => {
+
+        roomsRef.doc(roomRef.id).get().then(function(doc) {
+          commit('setRoom', doc.data())
+        })
+
+        playersRef.doc(playerRef.id).get().then(function(doc) {
+          commit('setPlayer', doc.data())
+        })
+      })
+    })
   },
-  setUser({ commit }, { userId, list }) {
-    usersRef
-      .doc(userId)
-      .update({
-        bingoUserList: list,
-      })
-      .then(() => {
-        usersRef
-          .doc(userId)
-          .get()
-          .then(function(doc) {
-            commit('setUserInfo', doc.data())
-          })
-      })
-  },
-  setUserInfo({ commit }, { userId, name, message, profile }) {
-    usersRef
-      .doc(userId)
-      .update({
-        name: name,
-        message: message,
-        profile: profile,
-      })
-      .then(() => {
-        usersRef
-          .doc(userId)
-          .get()
-          .then(function(doc) {
-            commit('setUserInfo', doc.data())
-          })
-      })
-  },
-  setUserInfo2({ commit }, { userId, name }) {
-    usersRef
-      .doc(userId)
-      .update({
-        name: name,
-      })
-      .then(() => {
-        usersRef
-          .doc(userId)
-          .get()
-          .then(function(doc) {
-            commit('setUserInfo', doc.data())
-          })
-      })
-  },
-  setRoomInfo({ commit }, { roomId, name, message, profile }) {
-    roomsRef
-      .doc(roomId)
-      .update({
-        name: name,
-        message: message,
-      })
-      .then(() => {
-        usersRef
-          .doc(roomId)
-          .get()
-          .then(function(doc) {
-            commit('setRoom', doc.data())
-          })
-      })
-  },
-  createRoom({ commit }, { name, message, user }) {
-    roomsRef
-      .add({
-        name: name,
-        message: message,
-        createdUser: { id: user.id, name: user.name },
-        adminList: [{ id: user.id, name: user.name }],
-        joinedUserList: [],
-        rouletteList: [],
-        resultList: [],
-        result: {},
-      })
-      .then((docRef) => {
-        roomsRef
-          .doc(docRef.id)
-          .update({
-            id: docRef.id,
-          })
-          .then(() => {
-            roomsRef
-              .doc(docRef.id)
-              .get()
-              .then(function(doc) {
-                const room = doc.data()
-                usersRef
-                  .doc(user.id)
-                  .update({
-                    createdRoomList: firebase.firestore.FieldValue.arrayUnion({
-                      id: room.id,
-                      name: room.name,
-                      to: '/rooms/' + room.id + '/admin/settings',
-                    }),
-                  })
-                  .then(() => {
-                    usersRef
-                      .doc(user.id)
-                      .get()
-                      .then(function(doc) {
-                        commit('setUserInfo', doc.data())
-                      })
-                  })
-                commit('setRoom', doc.data())
-              })
-          })
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-  },
-  joinRoom({ commit }, { user, roomId }) {
-    roomsRef
-      .doc(roomId)
-      .update({
-        joinedUserList: firebase.firestore.FieldValue.arrayUnion({
-          id: user.id,
-          name: user.name,
-        }),
-        rouletteList: firebase.firestore.FieldValue.arrayUnion({
-          id: user.id,
-          name: user.name,
-        }),
-      })
-      .then(() => {
-        roomsRef
-          .doc(roomId)
-          .get()
-          .then(function(doc) {
-            const room = doc.data()
-            usersRef
-              .doc(user.id)
-              .update({
-                joinedRoomList: firebase.firestore.FieldValue.arrayUnion({
-                  id: room.id,
-                  name: room.name,
-                  to: '/rooms/' + room.id + '/players/' + user.id + '/bingo-card',
-                }),
-              })
-              .then(() => {
-                usersRef
-                  .doc(user.id)
-                  .get()
-                  .then(function(doc) {
-                    commit('setUserInfo', doc.data())
-                  })
-              })
-            commit('setRoom', doc.data())
-          })
-      })
-  },
-  updateResult({ commit }, { result, roomId }) {
-    roomsRef
-      .doc(roomId)
-      .update({
-        result: result,
-      })
-      .then(function(doc) {
-        roomsRef
-          .doc(roomId)
-          .get()
-          .then(function(doc) {
-            commit('setRoom', doc.data())
-          })
-      })
-  },
-  updateResultList({ commit }, { result, roomId }) {
-    roomsRef
-      .doc(roomId)
-      .update({
-        resultList: firebase.firestore.FieldValue.arrayUnion(result),
-      })
-      .then(function(doc) {
-        roomsRef
-          .doc(roomId)
-          .get()
-          .then(function(doc) {
-            commit('setRoom', doc.data())
-          })
-      })
-  },
-  resetResultList({ commit }, { roomId }) {
-    roomsRef
-      .doc(roomId)
-      .update({
-        result: {},
-        resultList: [],
-      })
-      .then(function(doc) {
-        roomsRef
-          .doc(roomId)
-          .get()
-          .then(function(doc) {
-            commit('setRoom', doc.data())
-          })
-      })
-  },
-  fetchUserInfo({ commit }, { authUserId }) {
-    commit('clearUserInfo')
-    usersRef
-      .where("authUserId", "==", authUserId)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          commit('setUserInfo', doc.data())
-        });
-      })
-  },
-  fetchRoom({ commit }, { roomId }) {
-    commit('clearRoom')
-    roomsRef
-      .doc(roomId)
-      .onSnapshot({
-        includeMetadataChanges: true
-      }, (doc) => {
+
+  updateRoom({ commit }, { name, note, roomId }) {
+    roomsRef.doc(roomId).update({ name: name, note: note }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
         commit('setRoom', doc.data())
-      });
+      })
+    })
   },
-  clearRoom({ commit }) {
-    commit('clearRoom')
+
+  async updateSelectList({ commit }, { list, playerId }) {
+    await playersRef.doc(playerId).update({ selectList: list }).then(() => {
+      playersRef.doc(playerId).get().then(function(doc) {
+        commit('setPlayer', doc.data())
+      })
+    })
+  },
+
+  async updatePlayerInfo({ commit }, { name, note, profile, playerId }) {
+    await playersRef.doc(playerId).update({ name: name, note: note, profile: profile }).then(() => {
+      playersRef.doc(playerId).get().then(function(doc) {
+        commit('setPlayer', doc.data())
+      })
+    })
+  },
+
+  async updatePlayerHit({ commit }, { isHit, playerId }) {
+    await playersRef.doc(playerId).update({ isHit: isHit }).then(() => {
+      playersRef.doc(playerId).get().then(function(doc) {
+        commit('setPlayer', doc.data())
+      })
+    })
+  },
+
+  async fetchRoom({ commit }, { roomId }) {
+    await commit('clearRoom')
+    await roomsRef.doc(roomId).get().then((doc) => {
+      commit('setRoom', doc.data())
+    });
+  },
+
+  async fetchPlayerList({ commit }, { roomId }) {
+    await commit('clearPlayerList')
+    await playersRef.where("roomId", "==", roomId).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        commit('setPlayerList', doc.data())
+      });
+    })
+  },
+
+  async fetchPlayer({ commit }, { roomId, authId }) {
+    await commit('clearPlayer')
+    await playersRef.where("roomId", "==", roomId).where("authId", "==", authId).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        commit('setPlayer', doc.data())
+      });
+    })
+  },
+
+  async fetchAccountInfo({ commit }, { authId }) {
+    await commit('clearAccountInfo')
+    await playersRef.where("authId", "==", authId).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        commit('setAccountInfo', doc.data())
+      });
+    })
   }
 }

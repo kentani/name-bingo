@@ -63,18 +63,18 @@
         <v-card-text>
           <v-row>
             <v-col
-              v-for="(item, i) in room.joinedUserList"
+              v-for="(player, i) in joinedList"
               :key="i"
               cols="3"
               sm="2"
               md="1"
               class="pa-1">
               <v-card
-                :flat="!room.resultList.some(el => el.id === item.id)"
-                :class="[ room.resultList.some(el => el.id === item.id) ? 'yellow accent-4' : 'white']"
-                height="60">
-                <v-card-title class="overline py-1" style="line-height:15px">
-                  {{ item.name }}
+                :flat="!player.isHit"
+                :class="[ !player.isHit ? 'white' : 'yellow accent-4' ]"
+                height="80">
+                <v-card-title class="overline pa-1" style="line-height:15px">
+                  {{ player.name }}
                 </v-card-title>
               </v-card>
             </v-col>
@@ -107,33 +107,37 @@
         ],
       }
     },
-    created () {
-      this.$store.dispatch('onAuth')
-      this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
-      this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+    async created () {
+      await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+      await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
     },
     computed: {
+      authId() {
+        return this.$store.getters.getAuthId
+      },
       loggedIn() {
         return this.$store.getters.getLoggedIn
       },
-      authUserId() {
-        return this.$store.getters.getAuthUserId
-      },
-      userInfo() {
-        return this.$store.getters.getUserInfo
+      room() {
+        return this.$store.getters.getRoom
       },
       roomId() {
         return this.$route.params.roomId
       },
-      room() {
-        return this.$store.getters.getRoom
-      }
+      playerList() {
+        return this.$store.getters.getPlayerList
+      },
+      joinedList() {
+        return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+      },
     },
     methods: {
       start () {
-        const randomID = parseInt(Math.floor(Math.random() * this.room.rouletteList.length));
+        const rouletteList = this.joinedList.filter(v => !v.isHit ) 
+        const randomID = parseInt(Math.floor(Math.random() * rouletteList.length));
         this.starting = true
-        this.result = this.room.rouletteList[randomID]
+        this.result = rouletteList[randomID]
         setTimeout(this.run, 80);
       },
       stop () {
@@ -143,29 +147,14 @@
         if (this.starting) {
           this.start()
         } else {
-          this.$store.dispatch('updateResult', { result: this.result, roomId: this.roomId })
-          this.$store.dispatch('updateResultList', { result: this.result, roomId: this.roomId })
-          this.$store.dispatch('updateBingoList', { result: this.result, roomId: this.roomId })
-          this.$store.dispatch('updateReachList', { result: this.result, roomId: this.roomId })
+          this.$store.dispatch('updatePlayerHit', { isHit: true, playerId: this.result.id })
         }
       },
       reset() {
-        this.$store.dispatch('resetResultList', { roomId: this.roomId })
-        this.result = { id: '', name: '？？' }
-      },
-      reachCheck() {
-        let returnVal = false
-        this.checkList.forEach(function(list) {
-          let ary = list.filter((val) => {
-            return winItemList.indexOf(val) !== -1
-          })
-          if (ary.length === 3) {
-            this.isReach = true
-          }
+        this.playerList.forEach((player) => {
+          this.$store.dispatch('updatePlayerHit', { isHit: false, playerId: player.id })
         })
-      },
-      startGame() {
-
+        this.result = { id: '', name: '？？' }
       }
     }
   }

@@ -9,26 +9,26 @@
             text
             rounded
             color="deep-purple"
-            :disabled="!room.adminList.some(el => el.id === this.userInfo.id)"
+            :disabled="!player.isAdmin"
             :to="'/rooms/' + this.roomId + '/admin/settings'"
             :ripple="false">
             <span class="font-weight-bold">管理画面</span>
           </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
-        <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
+        <v-card-title class="title font-weight-bold" :class="[ room.note ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
+        <v-card-text style="white-space: pre-line;">{{ room.note }}</v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">
           <v-badge
             offset-y="17"
             offset-x="-5"
             color="deep-purple"
-            :content="room.joinedUserList ? room.joinedUserList.length : 0">
+            :content="joinedList ? joinedList.length : 0">
             参加者
           </v-badge>
         </v-card-subtitle>
         <v-card-text>
-          <chip-list :items="room.joinedUserList" />
+          <chip-list :items="joinedList" />
         </v-card-text>
         <v-divider class="mx-4" />
         <v-card-text class="py-0">
@@ -59,48 +59,39 @@
       ]
       }
     },
-    created () {
-      this.$store.dispatch('onAuth')
-      this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
-      this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+    async created () {
+      await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
+      await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
     },
     computed: {
+      authId() {
+        return this.$store.getters.getAuthId
+      },
       loggedIn() {
         return this.$store.getters.getLoggedIn
-      },
-      authUserId() {
-        return this.$store.getters.getAuthUserId
-      },
-      userInfo() {
-        return this.$store.getters.getUserInfo
-      },
-      roomId() {
-        return this.$route.params.roomId
       },
       room() {
         return this.$store.getters.getRoom
       },
+      roomId() {
+        return this.$route.params.roomId
+      },
+      player() {
+        return this.$store.getters.getPlayer
+      },
       playerId() {
         return this.$route.params.playerId
       },
-      isCreater() {
-        return this.room.adminList.some(el => el.id === this.playerId)
+      playerList() {
+        return this.$store.getters.getPlayerList
       },
-      isJoinedRoom() {
-        let val = false
-        if (this.room.joinedUserList) {
-          val = this.room.joinedUserList.filter(v => v).some(el => el.id === this.userInfo.id)
-        }
-        return val
-      },
+      joinedList() {
+        return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+      }
     },
     methods: {
-      handleJoinButtonClick() {
-        this.$store.dispatch('joinRoom', { user: this.userInfo, roomId: this.roomId })
-      },
-      unJoin() {
-        
-      }
     }
   }
 </script>

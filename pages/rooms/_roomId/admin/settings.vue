@@ -34,7 +34,7 @@
                       filled
                       label="メッセージ"
                       color="deep-purple"
-                      v-model="inputMessage" />
+                      v-model="inputNote" />
                   </v-card-text>
                 </v-card>
               </v-card-text>
@@ -74,8 +74,8 @@
           </v-switch>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold" :class="[ room.message ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
-        <v-card-text style="white-space: pre-line;">{{ room.message }}</v-card-text>
+        <v-card-title class="title font-weight-bold" :class="[ room.note ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
+        <v-card-text style="white-space: pre-line;">{{ room.note }}</v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">この部屋の招待リンク</v-card-subtitle>
         <v-card-text>
           <v-text-field
@@ -91,19 +91,19 @@
         </v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">管理者</v-card-subtitle>
         <v-card-text>
-          <chip-list :items="room.adminList" />
+          <chip-list :items="adminList" />
         </v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">
           <v-badge
             offset-y="17"
             offset-x="-5"
             color="deep-purple"
-            :content="room.joinedUserList ? room.joinedUserList.length : 0">
+            :content="joinedList ? joinedList.length : 0">
             参加者
           </v-badge>
         </v-card-subtitle>
         <v-card-text>
-          <chip-list :items="room.joinedUserList" />
+          <chip-list :items="joinedList" />
         </v-card-text>
       </v-card>
     </v-col>
@@ -118,56 +118,52 @@ export default {
       dialog: false,
       switch1: false,
       inputName: '',
-      inputMessage: '',
+      inputNote: '',
       local: process.env.BASEURL,
     }
   },
-  created () {
-    this.$store.dispatch('onAuth')
-    this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
-    this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+  async created () {
+    await this.$store.dispatch('onAuth')
+    await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+    await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
   },
   mounted () {
   },
   computed: {
+    authId() {
+      return this.$store.getters.getAuthId
+    },
     loggedIn() {
       return this.$store.getters.getLoggedIn
-    },
-    authUserId() {
-      return this.$store.getters.getAuthUserId
-    },
-    userInfo() {
-      return this.$store.getters.getUserInfo
-    },
-    roomId() {
-      return this.$route.params.roomId
     },
     room() {
       return this.$store.getters.getRoom
     },
-    isJoinedRoom() {
-      let val = false
-      if (this.room.joinedUserList) {
-        val = this.room.joinedUserList.filter(v => v).some(el => el.id === this.userInfo.id)
-      }
-      return val
-    }
+    roomId() {
+      return this.$route.params.roomId
+    },
+    playerList() {
+      return this.$store.getters.getPlayerList
+    },
+    adminList() {
+      return this.playerList.length > 0 ? this.playerList.filter(v => v.isAdmin ) : this.playerList
+    },
+    joinedList() {
+      return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+    },
   },
   methods: {
-    handleJoinButtonClick() {
-      this.$store.dispatch('joinRoom', { user: this.userInfo, roomId: this.roomId })
-    },
     editStart() {
       this.inputName = this.room.name
-      this.inputMessage = this.room.message
+      this.inputNote = this.room.note
     },
     resetUserInfo() {
       this.inputName = ''
-      this.inputMessage = ''
+      this.inputNote = ''
       this.dialog = false
     },
     editEnd() {
-      this.$store.dispatch('setRoomInfo', { roomId: this.roomId, name: this.inputName, message: this.inputMessage })
+      this.$store.dispatch('updateRoom', { name: this.inputName, note: this.inputNote, roomId: this.roomId })
       this.dialog = false
     },
     setUserInfo() {

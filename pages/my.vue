@@ -20,19 +20,8 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('onAuth')
-    this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
   },
   computed: {
-    loggedIn() {
-      return this.$store.getters.getLoggedIn
-    },
-    authUserId() {
-      return this.$store.getters.getAuthUserId
-    },
-    userInfo() {
-      return this.$store.getters.getUserInfo
-    }
   },
   methods: {
   }

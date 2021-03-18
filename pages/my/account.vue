@@ -3,6 +3,7 @@
     <v-col cols="12" md="9">
       <v-card flat>
         <v-card-actions class="mx-2">
+          <v-spacer />
           <v-dialog
             v-model="dialog"
             scrollable
@@ -10,68 +11,87 @@
             width="900">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                icon
+                nuxt
+                text
+                rounded
                 v-bind="attrs"
                 v-on="on"
+                color="deep-purple"
                 :ripple="false"
-                @click="editStart">
-                <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
+                @click="dialog = true">
+                <span class="font-weight-bold">部屋を作成</span>
               </v-btn>
             </template>
             <v-card>
-              <v-card-title class="font-weight-bold">Edit</v-card-title>
-              <v-divider />
+              <v-card-title class="font-weight-bold">Add new</v-card-title>
+              <v-divider class="mx-4" />
               <v-card-text class="pa-2">
                 <v-card flat>
                   <v-card-text>
                     <v-text-field
                       filled
-                      label="なまえ"
+                      label="部屋の名前"
+                      :disabled="finished"
                       color="deep-purple"
-                      v-model="inputName" />
+                      v-model="inputRoomName" />
+                    <v-textarea
+                      filled
+                      label="メッセージ"
+                      :disabled="finished"
+                      color="deep-purple"
+                      v-model="inputNote" />
+                    <v-text-field
+                    filled
+                    label="あなたの名前"
+                    :disabled="finished"
+                    color="deep-purple"
+                    v-model="inputPlayerName" />
                   </v-card-text>
                 </v-card>
               </v-card-text>
-              <v-divider />
+              <v-divider class="mx-4" />
               <v-card-actions>
                 <v-spacer />
-                <v-btn
-                  text
-                  rounded
-                  @click="resetUserInfo">
-                  Close
-                </v-btn>
-                <v-btn
-                  rounded
-                  dark
-                  color="deep-purple"
-                  @click="editEnd">
-                  Save
-                </v-btn>
+                <div v-if="!finished">
+                  <v-btn
+                    text
+                    nuxt
+                    rounded
+                    @click="dialog = false">
+                    Close
+                  </v-btn>
+                  <v-btn
+                    rounded
+                    dark
+                    color="deep-purple"
+                    @click="addRoom">
+                    Save
+                  </v-btn>
+                </div>
+                <div v-else>
+                  <v-btn
+                    rounded
+                    text
+                    nuxt
+                    color="deep-purple"
+                    :to="'/rooms/' + room.id + '/admin/settings'">
+                    <span class="font-weight-bold">部屋に入る</span>
+                  </v-btn>
+                </div>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-spacer />
-          <v-btn
-            nuxt
-            text
-            rounded
-            color="deep-purple"
-            :to="'/add-room'"
-            :ripple="false">
-            <span class="font-weight-bold">部屋を作成</span>
-          </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold pb-0">{{ userInfo.name }}</v-card-title>
+        <v-card-title class="title font-weight-bold pb-0">ゲストユーザー</v-card-title>
         <v-card-text class="caption" style="white-space: pre-line;">{{ loggedIn ? 'ゲストユーザーとしてログイン中' : ''}}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ userInfo.createdRoomList.length > 0 ? 'pb-1' : 'pb-3' ]">作成履歴</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ [].length > 0 ? 'pb-1' : 'pb-3' ]">管理履歴</v-card-subtitle>
         <v-card-text class="py-0">
-          <link-list :items="userInfo.createdRoomList" />
+          <link-list :items="[]" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ userInfo.joinedRoomList.length > 0 ? 'pb-1' : 'pb-3' ]">参加履歴</v-card-subtitle>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ [].length > 0 ? 'pb-1' : 'pb-3' ]">参加履歴</v-card-subtitle>
         <v-card-text class="py-0">
-          <link-list :items="userInfo.joinedRoomList" />
+          <link-list :items="[]" />
         </v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">このサイトについて</v-card-subtitle>
         <v-card-text class="py-0">
@@ -103,7 +123,10 @@ export default {
   data () {
     return {
       dialog: false,
-      inputName: '',
+      finished: false,
+      inputRoomName: '',
+      inputNote: '',
+      inputPlayerName: '',
       appItems: [
         {
           icon: 'mdi-apps',
@@ -113,51 +136,50 @@ export default {
         {
           icon: 'mdi-note',
           name: '利用規約',
-          to: '/'
+          to: '/rooms/322fKsJpAWIbpo5zpp6b/invite'
         },
         {
           icon: 'mdi-github',
           name: 'ソースコード',
-          to: '/'
+          to: '/rooms/322fKsJpAWIbpo5zpp6b/admin/settings'
         },
       ]
     }
   },
-  created () {
-    this.$store.dispatch('onAuth')
-    this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
+  async created () {
+    await this.$store.dispatch('onAuth')
+    await this.$store.dispatch('fetchAccountInfo', { authId: this.authId })
   },
   mounted () {
   },
   computed: {
+    authId() {
+      return this.$store.getters.getAuthId
+    },
     loggedIn() {
       return this.$store.getters.getLoggedIn
     },
-    authUserId() {
-      return this.$store.getters.getAuthUserId
+    accountInfo() {
+      return this.$store.getters.getAccountInfo
     },
-    userInfo() {
-      return this.$store.getters.getUserInfo
-    }
+    adminList() {
+      return this.accountInfo.length > 0 ? this.accountInfo.filter(v => v.isAdmin ) : this.accountInfo
+    },
+    joinedList() {
+      return this.accountInfo.length > 0 ? this.accountInfo.filter(v => v.isJoined ) : this.accountInfo
+    },
+    room() {
+      return this.$store.getters.getRoom
+    },
   },
   methods: {
+    addRoom () {
+      this.$store.dispatch('createRoom', { roomName: this.inputRoomName, note: this.inputNote, playerName: this.inputPlayerName, authId: this.authId })
+      this.finished = true
+    },
     logout() {
       this.$store.dispatch('logout')
     },
-    editStart() {
-      this.inputName = this.userInfo.name
-    },
-    resetUserInfo() {
-      this.inputName = ''
-      this.dialog = false
-    },
-    editEnd() {
-      this.$store.dispatch('setUserInfo2', { userId: this.userInfo.id, name: this.inputName })
-      this.dialog = false
-    },
-    setUserInfo() {
-
-    }
   }
 }
 </script>

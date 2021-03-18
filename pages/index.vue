@@ -19,7 +19,7 @@
               x-large
               color="deep-purple"
               :ripple="false"
-              @click="login2">
+              @click="login">
               ユーザー登録なしで利用する
             </v-btn>
             <v-btn
@@ -98,22 +98,16 @@ export default {
   mounted () {
   },
   computed: {
-    authUser () {
-      return this.$store.getters.getAuthUser
-    },
     loggedIn () {
       return this.$store.getters.getLoggedIn
     },
-    authUserId () {
-      return this.$store.getters.getAuthUserId
+    authId () {
+      return this.$store.getters.getAuthId
     }
   },
   methods: {
-    handleCreateButtonClick (args) {
-      this.$store.dispatch('login', { name: args.name })
-    },
-    login2 (args) {
-      this.$store.dispatch('login', { name: 'ゲストユーザー' })
+    login () {
+      this.$store.dispatch('login')
     },
   }
 }

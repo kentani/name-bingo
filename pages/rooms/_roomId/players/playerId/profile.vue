@@ -38,7 +38,7 @@
                       filled
                       label="ひとこと"
                       color="deep-purple"
-                      v-model="inputMessage" />
+                      v-model="inputNote" />
                     <v-textarea
                       filled
                       label="プロフィール"
@@ -60,7 +60,7 @@
                   rounded
                   dark
                   color="deep-purple"
-                  @click="editEnd">
+                  @click="updatePlayerInfo">
                   Save
                 </v-btn>
               </v-card-actions>
@@ -83,10 +83,10 @@
           </v-switch>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <v-card-title class="title font-weight-bold" :class="[ userInfo.message ? 'pb-1' : 'pb-3' ]">{{ userInfo.name }}</v-card-title>
-        <v-card-text style="white-space: pre-line;">{{ userInfo.message }}</v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ userInfo.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
-        <v-card-text style="white-space: pre-line;">{{ userInfo.profile }}</v-card-text>
+        <v-card-title class="title font-weight-bold" :class="[ player.note ? 'pb-1' : 'pb-3' ]">{{ player.name }}</v-card-title>
+        <v-card-text style="white-space: pre-line;">{{ player.note }}</v-card-text>
+        <v-card-subtitle class="body-2 font-weight-bold pt-0" :class="[ player.profile ? 'pb-1' : 'pb-3' ]">プロフィール</v-card-subtitle>
+        <v-card-text style="white-space: pre-line;">{{ player.profile }}</v-card-text>
       </v-card>
     </v-col>
   </v-row>
@@ -101,49 +101,49 @@
         switch1: false,
         inputName: '',
         inputProfile: '',
-        inputMessage: '',
+        inputNote: '',
       }
     },
-    created () {
-      this.$store.dispatch('onAuth')
-      this.$store.dispatch('fetchUserInfo', { authUserId: this.authUserId })
-      this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+    async created () {
+      await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
     },
     computed: {
+      authId() {
+        return this.$store.getters.getAuthId
+      },
       loggedIn() {
         return this.$store.getters.getLoggedIn
       },
-      authUserId() {
-        return this.$store.getters.getAuthUserId
-      },
-      userInfo() {
-        return this.$store.getters.getUserInfo
+      room() {
+        return this.$store.getters.getRoom
       },
       roomId() {
         return this.$route.params.roomId
       },
-      room() {
-        return this.$store.getters.getRoom
+      player() {
+        return this.$store.getters.getPlayer
+      },
+      playerId() {
+        return this.$route.params.playerId
       }
     },
     methods: {
       editStart() {
-        this.inputName = this.userInfo.name
-        this.inputMessage = this.userInfo.message
-        this.inputProfile = this.userInfo.profile
+        this.inputName = this.player.name
+        this.inputNote = this.player.note
+        this.inputProfile = this.player.profile
       },
       resetUserInfo() {
         this.inputName = ''
-        this.inputMessage = ''
+        this.inputNote = ''
         this.inputProfile = ''
         this.dialog = false
       },
-      editEnd() {
-        this.$store.dispatch('setUserInfo', { userId: this.userInfo.id, name: this.inputName, message: this.inputMessage, profile: this.inputProfile })
+      updatePlayerInfo() {
+        this.$store.dispatch('updatePlayerInfo', { name: this.inputName, note: this.inputNote, profile: this.inputProfile, playerId: this.playerId })
         this.dialog = false
-      },
-      setUserInfo() {
-
       }
     }
   }

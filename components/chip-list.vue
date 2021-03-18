@@ -5,7 +5,7 @@
       :key="i"
       label
       class="grey lighten-4 ma-2">
-      {{ item.name }}
+      {{ item.name || 'ゲストユーザー' }}
     </v-chip>
   </div>
 </template>
