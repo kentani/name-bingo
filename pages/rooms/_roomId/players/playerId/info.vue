@@ -49,46 +49,45 @@
         inputName: '',
         inputProfile: '',
         inputMessage: '',
-        items: [
-        {
-          icon: 'mdi-arrow-right',
-          name: '参加をやめる',
-          to: '/rooms/' + this.roomId + '/invite',
-          disabled: false
-        },
-      ]
       }
     },
     async created () {
       await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
       await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
-      await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
+      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, playerId: this.playerId })
     },
     computed: {
-      authId() {
-        return this.$store.getters.getAuthId
-      },
-      loggedIn() {
-        return this.$store.getters.getLoggedIn
-      },
-      room() {
-        return this.$store.getters.getRoom
-      },
       roomId() {
         return this.$route.params.roomId
-      },
-      player() {
-        return this.$store.getters.getPlayer
       },
       playerId() {
         return this.$route.params.playerId
       },
-      playerList() {
-        return this.$store.getters.getPlayerList
+      playerListMap() {
+        return this.$store.getters.getPlayerListMap
+      },
+      room() {
+        return this.$store.getters.getRoom
       },
       joinedList() {
-        return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+        if (!this.room.joinedList) return []
+        return this.room.joinedList.map((v) =>{
+          return this.playerListMap[v]
+        })
+      },
+      player() {
+        return this.$store.getters.getPlayer
+      },
+      items() {
+        return [
+          {
+            icon: 'mdi-arrow-right',
+            name: '参加をやめる',
+            to: '/rooms/' + this.roomId + '/invite',
+            disabled: false
+          },
+        ]
       }
     },
     methods: {

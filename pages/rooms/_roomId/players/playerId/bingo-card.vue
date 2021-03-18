@@ -45,7 +45,7 @@
                       class="my-1"
                       color="deep-purple"
                       :disabled="switch1"
-                      :value="item">
+                      :value="item.id">
                       <template v-slot:label>
                         <span
                           class="overline font-weight-bold">
@@ -102,13 +102,13 @@
             @start="setSelected"
             @end="updateSelectList">
             <v-col
-              v-for="(item, i) in player.selectList"
+              v-for="(item, i) in selectList"
               :key="i"
               cols="3"
               class="pa-1">
               <v-card
-                :flat="!item.isHit"
-                :class="[ !item.isHit ? 'grey lighten-4' : 'yellow accent-4' ]"
+                :flat="!room.hitList.includes(item.id)"
+                :class="[ !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                 height="100">
                 <v-card-title class="overline pa-1" style="line-height:15px">
                   {{ item.name }}
@@ -146,39 +146,47 @@
           [0,5,10,15],
           [3,6,9,12],
         ],
-        isReach: false
       }
     },
     async created () {
       await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
       await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
-      await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
+      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, playerId: this.playerId })
     },
     computed: {
-      authId() {
-        return this.$store.getters.getAuthId
-      },
-      loggedIn() {
-        return this.$store.getters.getLoggedIn
-      },
-      room() {
-        return this.$store.getters.getRoom
-      },
       roomId() {
         return this.$route.params.roomId
-      },
-      player() {
-        return this.$store.getters.getPlayer
       },
       playerId() {
         return this.$route.params.playerId
       },
-      playerList() {
-        return this.$store.getters.getPlayerList
+      playerListMap() {
+        return this.$store.getters.getPlayerListMap
+      },
+      room() {
+        return this.$store.getters.getRoom
+      },
+      adminList() {
+        if (!this.room.adminList) return []
+        return this.room.adminList.map((v) =>{
+          return this.playerListMap[v]
+        })
       },
       joinedList() {
-        return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+        if (!this.room.joinedList) return []
+        return this.room.joinedList.map((v) =>{
+          return this.playerListMap[v]
+        })
+      },
+      player() {
+        return this.$store.getters.getPlayer
+      },
+      selectList() {
+        if (!this.player.selectList) return []
+        return this.player.selectList.map((v) =>{
+          return this.playerListMap[v]
+        })
       }
     },
     methods: {
@@ -189,11 +197,11 @@
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       },
-      updateSelectList() {
-        this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
+      async updateSelectList() {
+        await this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
-      }
+      },
     }
   }
 </script>

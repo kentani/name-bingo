@@ -70,8 +70,8 @@
               md="1"
               class="pa-1">
               <v-card
-                :flat="!player.isHit"
-                :class="[ !player.isHit ? 'white' : 'yellow accent-4' ]"
+                :flat="!ishit(player.id)"
+                :class="[ !ishit(player.id) ? 'white' : 'yellow accent-4' ]"
                 height="80">
                 <v-card-title class="overline pa-1" style="line-height:15px">
                   {{ player.name }}
@@ -109,35 +109,37 @@
     },
     async created () {
       await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
       await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-      await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
     },
     computed: {
-      authId() {
-        return this.$store.getters.getAuthId
+      roomId() {
+        return this.$route.params.roomId
       },
-      loggedIn() {
-        return this.$store.getters.getLoggedIn
+      playerListMap() {
+        return this.$store.getters.getPlayerListMap
       },
       room() {
         return this.$store.getters.getRoom
       },
-      roomId() {
-        return this.$route.params.roomId
-      },
-      playerList() {
-        return this.$store.getters.getPlayerList
-      },
       joinedList() {
-        return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
+        if (!this.room.adminList) return []
+        return this.room.joinedList.map((v) =>{
+          return this.playerListMap[v]
+        })
       },
+      hitList() {
+        if (!this.room.hitList) return []
+        return this.room.hitList.map((v) =>{
+          return this.playerListMap[v]
+        })
+      }
     },
     methods: {
       start () {
-        const rouletteList = this.joinedList.filter(v => !v.isHit ) 
-        const randomID = parseInt(Math.floor(Math.random() * rouletteList.length));
+        const randomID = parseInt(Math.floor(Math.random() * this.joinedList.length));
         this.starting = true
-        this.result = rouletteList[randomID]
+        this.result = this.joinedList[randomID]
         setTimeout(this.run, 80);
       },
       stop () {
@@ -146,15 +148,17 @@
       run () {
         if (this.starting) {
           this.start()
-        } else {
-          this.$store.dispatch('updatePlayerHit', { isHit: true, playerId: this.result.id })
+        }
+        else {
+          this.$store.dispatch('addHit', { roomId: this.roomId, playerId: this.result.id })
         }
       },
       reset() {
-        this.playerList.forEach((player) => {
-          this.$store.dispatch('updatePlayerHit', { isHit: false, playerId: player.id })
-        })
+        this.$store.dispatch('resetHit', { roomId: this.roomId })
         this.result = { id: '', name: '？？' }
+      },
+      ishit(playerId) {
+        return this.room.hitList.includes(playerId)
       }
     }
   }

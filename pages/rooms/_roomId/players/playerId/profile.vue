@@ -106,27 +106,25 @@
     },
     async created () {
       await this.$store.dispatch('onAuth')
+      await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
       await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
+      await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, playerId: this.playerId })
     },
     computed: {
-      authId() {
-        return this.$store.getters.getAuthId
+      roomId() {
+        return this.$route.params.roomId
       },
-      loggedIn() {
-        return this.$store.getters.getLoggedIn
+      playerId() {
+        return this.$route.params.playerId
+      },
+      playerListMap() {
+        return this.$store.getters.getPlayerListMap
       },
       room() {
         return this.$store.getters.getRoom
       },
-      roomId() {
-        return this.$route.params.roomId
-      },
       player() {
         return this.$store.getters.getPlayer
-      },
-      playerId() {
-        return this.$route.params.playerId
       }
     },
     methods: {

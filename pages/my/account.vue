@@ -136,12 +136,12 @@ export default {
         {
           icon: 'mdi-note',
           name: '利用規約',
-          to: '/'
+          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/admin/bingo'
         },
         {
           icon: 'mdi-github',
           name: 'ソースコード',
-          to: '/'
+          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/players/vgn7TvaiomhKiuYHWyLA/bingo-card'
         },
       ]
     }
@@ -165,7 +165,7 @@ export default {
     adminList() {
       return this.accountInfo.map((v) => {
         if (v.isAdmin) {
-          return { name: v.name, to: '/rooms/' + v.roomId + '/admin/bingo' }
+          return { name: v.name, to: '/rooms/' + v.roomId + '/admin/settings' }
         }
       })
     },

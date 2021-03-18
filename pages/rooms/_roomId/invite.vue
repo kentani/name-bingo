@@ -34,7 +34,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            v-if="player.isJoined"
+            v-if="room.joinedList.includes(player.id)"
             nuxt
             rounded
             text
@@ -69,9 +69,9 @@ export default {
   },
   async created () {
     await this.$store.dispatch('onAuth')
+    await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
     await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-    await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, authId: this.authId })
-    await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
+    await this.$store.dispatch('fetchPlayerByAuth', { roomId: this.roomId, authId: this.authId })
     this.inputPlayerName = this.player.name
   },
   mounted () {
@@ -80,8 +80,8 @@ export default {
     authId() {
       return this.$store.getters.getAuthId
     },
-    loggedIn() {
-      return this.$store.getters.getLoggedIn
+    playerListMap() {
+      return this.$store.getters.getPlayerListMap
     },
     room() {
       return this.$store.getters.getRoom
@@ -89,20 +89,20 @@ export default {
     roomId() {
       return this.$route.params.roomId
     },
+    joinedList() {
+      if (!this.room.joinedList) return []
+      return this.room.joinedList.map((v) =>{
+        return this.playerListMap[v]
+      })
+    },
     player() {
       return this.$store.getters.getPlayer
     },
-    playerList() {
-      return this.$store.getters.getPlayerList
-    },
-    joinedList() {
-      return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
-    }
   },
   methods: {
     joinRoom() {
       if (this.player.id) {
-        this.$store.dispatch('updatePlayerJoin', { isJoined: true, playerId: this.player.id })
+        this.$store.dispatch('creatorJoinRoom', { roomId: this.roomId, playerId: this.player.id })
       }
       else {
         this.$store.dispatch('joinRoom', { roomId: this.roomId, playerName: this.inputPlayerName, authId: this.authId })

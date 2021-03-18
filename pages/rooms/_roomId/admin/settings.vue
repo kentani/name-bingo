@@ -124,33 +124,33 @@ export default {
   },
   async created () {
     await this.$store.dispatch('onAuth')
+    await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
     await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
-    await this.$store.dispatch('fetchPlayerList', { roomId: this.roomId })
   },
   mounted () {
   },
   computed: {
-    authId() {
-      return this.$store.getters.getAuthId
+    roomId() {
+      return this.$route.params.roomId
     },
-    loggedIn() {
-      return this.$store.getters.getLoggedIn
+    playerListMap() {
+      return this.$store.getters.getPlayerListMap
     },
     room() {
       return this.$store.getters.getRoom
     },
-    roomId() {
-      return this.$route.params.roomId
-    },
-    playerList() {
-      return this.$store.getters.getPlayerList
-    },
     adminList() {
-      return this.playerList.length > 0 ? this.playerList.filter(v => v.isAdmin ) : this.playerList
+      if (!this.room.adminList) return []
+      return this.room.adminList.map((v) =>{
+        return this.playerListMap[v]
+      })
     },
     joinedList() {
-      return this.playerList.length > 0 ? this.playerList.filter(v => v.isJoined ) : this.playerList
-    },
+      if (!this.room.joinedList) return []
+      return this.room.joinedList.map((v) =>{
+        return this.playerListMap[v]
+      })
+    }
   },
   methods: {
     editStart() {

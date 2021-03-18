@@ -15,9 +15,10 @@ export const state = () => ({
   authId: '',
   loggedIn: false,
   room: {},
-  playerList: [],
+  playerListMap: {},
   player: {},
   accountInfo: [],
+  roomList: [],
 })
 
 export const getters = {
@@ -30,14 +31,17 @@ export const getters = {
   getRoom(state) {
     return state.room
   },
-  getPlayerList(state) {
-    return state.playerList
+  getPlayerListMap(state) {
+    return state.playerListMap
   },
   getPlayer(state) {
     return state.player
   },
   getAccountInfo(state) {
     return state.accountInfo
+  },
+  getRoomList(state) {
+    return state.roomList
   },
 }
 
@@ -60,11 +64,11 @@ export const mutations = {
     state.room = Object.assign({}, state.room, {})
   },
 
-  setPlayerList(state, player) {
-    state.playerList.push(player)
+  setPlayerListMap(state, player) {
+    state.playerListMap[player.id] = player
   },
-  clearPlayerList(state) {
-    state.playerList = []
+  clearPlayerListMap(state) {
+    state.player = Object.assign({}, state.player, {})
   },
 
   setPlayer(state, player) {
@@ -79,6 +83,13 @@ export const mutations = {
   },
   clearAccountInfo(state) {
     state.accountInfo = []
+  },
+
+  setRoomList(state, room) {
+    state.roomList.push(room)
+  },
+  clearRoomList(state) {
+    state.roomList = []
   },
 }
 
@@ -137,48 +148,59 @@ export const actions = {
   },
 
   async logout({ commit }) {
-    firebase.auth().signOut().then(()=>{
+    firebase.auth().signOut().then(() => {
       Cookies.remove('__session');
       commit('clearAuth')
       console.log("ログアウトしました")
     })
     .catch( (error)=>{
       Cookies.remove('__session');
-      commit('clearAuth')
+      // commit('clearAuth')
       console.log(`ログアウト時にエラーが発生しました (${error})`)
     });
   },
 
   async createRoom({ commit }, { roomName, note, playerName, authId }) {
-    roomsRef.add({ name: roomName, note: note }).then((roomRef) => {
+
+    const roomArgs = {
+      name: roomName,
+      note: note,
+      adminList: [],
+      creatorList: [],
+      joinedList: [],
+      hitList: [],
+      reachList: [],
+      bingoList: [],
+    }
+
+    roomsRef.add(roomArgs).then((roomRef) => {
       
       roomsRef.doc(roomRef.id).update({ id: roomRef.id }).then(() => {
 
-        const args = {
+        const playerArgs = {
           authId: authId,
           roomId: roomRef.id,
           name: playerName,
           note: '',
           profile: '',
-          isAdmin: true,
-          isCreator: true,
-          isJoined: false,
-          isHit: false,
-          isReach: false,
-          isBingo: false,
           selectList: [],
         }
   
-        playersRef.add(args).then((playerRef) => {
+        playersRef.add(playerArgs).then((playerRef) => {
   
           playersRef.doc(playerRef.id).update({ id: playerRef.id }).then(() => {
 
-            roomsRef.doc(roomRef.id).get().then(function(doc) {
-              commit('setRoom', doc.data())
-            })
-
             playersRef.doc(playerRef.id).get().then(function(doc) {
               commit('setPlayer', doc.data())
+            })
+
+            roomsRef.doc(roomRef.id).update({
+              adminList: firebase.firestore.FieldValue.arrayUnion(playerRef.id),
+              joinedList: firebase.firestore.FieldValue.arrayUnion(playerRef.id),
+            }).then(() => {
+              roomsRef.doc(roomRef.id).get().then(function(doc) {
+                commit('setRoom', doc.data())
+              })
             })
           })
         })
@@ -193,32 +215,51 @@ export const actions = {
       name: playerName,
       note: '',
       profile: '',
-      isAdmin: false,
-      isCreator: false,
-      isJoined: true,
-      isHit: false,
-      isReach: false,
-      isBingo: false,
       selectList: [],
     }
 
     playersRef.add(args).then((playerRef) => {
-
       playersRef.doc(playerRef.id).update({ id: playerRef.id }).then(() => {
-
-        roomsRef.doc(roomRef.id).get().then(function(doc) {
-          commit('setRoom', doc.data())
-        })
 
         playersRef.doc(playerRef.id).get().then(function(doc) {
           commit('setPlayer', doc.data())
+        })
+
+        roomsRef.doc(roomId).update({ joinedList: firebase.firestore.FieldValue.arrayUnion(playerRef.id) }).then(() => {
+          roomsRef.doc(roomId).get().then(function(doc) {
+            commit('setRoom', doc.data())
+          })
         })
       })
     })
   },
 
-  updateRoom({ commit }, { name, note, roomId }) {
-    roomsRef.doc(roomId).update({ name: name, note: note }).then(() => {
+  async creatorJoinRoom({ commit }, { roomId, playerId }) {
+    await roomsRef.doc(roomId).update({ joinedList: firebase.firestore.FieldValue.arrayUnion(playerId) }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
+  async updateRoom({ commit }, { name, note, roomId }) {
+    await roomsRef.doc(roomId).update({ name: name, note: note }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
+  async addHit({ commit }, { roomId, playerId }) {
+    await roomsRef.doc(roomId).update({ hitList: firebase.firestore.FieldValue.arrayUnion(playerId) }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
+  async resetHit({ commit }, { roomId }) {
+    await roomsRef.doc(roomId).update({ hitList: [] }).then(() => {
       roomsRef.doc(roomId).get().then(function(doc) {
         commit('setRoom', doc.data())
       })
@@ -241,22 +282,6 @@ export const actions = {
     })
   },
 
-  async updatePlayerJoin({ commit }, { isJoined, playerId }) {
-    await playersRef.doc(playerId).update({ isJoined: isJoined }).then(() => {
-      playersRef.doc(playerId).get().then(function(doc) {
-        commit('setPlayer', doc.data())
-      })
-    })
-  },
-
-  async updatePlayerHit({ commit }, { isHit, playerId }) {
-    await playersRef.doc(playerId).update({ isHit: isHit }).then(() => {
-      playersRef.doc(playerId).get().then(function(doc) {
-        commit('setPlayer', doc.data())
-      })
-    })
-  },
-
   async fetchRoom({ commit }, { roomId }) {
     await commit('clearRoom')
     await roomsRef.doc(roomId).get().then((doc) => {
@@ -264,16 +289,25 @@ export const actions = {
     });
   },
 
-  async fetchPlayerList({ commit }, { roomId }) {
-    await commit('clearPlayerList')
+  async fetchPlayerListMap({ commit }, { roomId }) {
+    await commit('clearPlayerListMap')
     await playersRef.where("roomId", "==", roomId).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        commit('setPlayerList', doc.data())
+        commit('setPlayerListMap', doc.data())
       });
     })
   },
 
-  async fetchPlayer({ commit }, { roomId, authId }) {
+  async fetchPlayer({ commit }, { roomId, playerId }) {
+    await commit('clearPlayer')
+    await playersRef.where("roomId", "==", roomId).where("id", "==", playerId).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        commit('setPlayer', doc.data())
+      });
+    })
+  },
+
+  async fetchPlayerByAuth({ commit }, { roomId, authId }) {
     await commit('clearPlayer')
     await playersRef.where("roomId", "==", roomId).where("authId", "==", authId).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -289,5 +323,12 @@ export const actions = {
         commit('setAccountInfo', doc.data())
       });
     })
+  },
+
+  async fetchRoomList({ commit }) {
+    await commit('clearRoomList')
+    await roomsRef.doc(roomId).get().then((doc) => {
+      commit('setRoomList', doc.data())
+    });
   }
 }
