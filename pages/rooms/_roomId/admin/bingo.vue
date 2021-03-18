@@ -126,13 +126,13 @@
         if (!this.room.adminList) return []
         return this.room.joinedList.map((v) =>{
           return this.playerListMap[v]
-        })
+        }).filter(v => v)
       },
       hitList() {
         if (!this.room.hitList) return []
         return this.room.hitList.map((v) =>{
           return this.playerListMap[v]
-        })
+        }).filter(v => v)
       }
     },
     methods: {

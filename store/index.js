@@ -174,7 +174,7 @@ export const actions = {
     }
 
     roomsRef.add(roomArgs).then((roomRef) => {
-      
+
       roomsRef.doc(roomRef.id).update({ id: roomRef.id }).then(() => {
 
         const playerArgs = {
@@ -284,7 +284,7 @@ export const actions = {
 
   async fetchRoom({ commit }, { roomId }) {
     await commit('clearRoom')
-    await roomsRef.doc(roomId).get().then((doc) => {
+    await roomsRef.doc(roomId).onSnapshot({ includeMetadataChanges: true }, (doc) => {
       commit('setRoom', doc.data())
     });
   },

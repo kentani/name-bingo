@@ -143,13 +143,13 @@ export default {
       if (!this.room.adminList) return []
       return this.room.adminList.map((v) =>{
         return this.playerListMap[v]
-      })
+      }).filter(v => v)
     },
     joinedList() {
       if (!this.room.joinedList) return []
       return this.room.joinedList.map((v) =>{
         return this.playerListMap[v]
-      })
+      }).filter(v => v)
     }
   },
   methods: {

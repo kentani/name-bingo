@@ -107,8 +107,8 @@
               cols="3"
               class="pa-1">
               <v-card
-                :flat="!room.hitList.includes(item.id)"
-                :class="[ !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
+                :flat="room.hitList && !room.hitList.includes(item.id)"
+                :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                 height="100">
                 <v-card-title class="overline pa-1" style="line-height:15px">
                   {{ item.name }}
@@ -171,13 +171,13 @@
         if (!this.room.adminList) return []
         return this.room.adminList.map((v) =>{
           return this.playerListMap[v]
-        })
+        }).filter(v => v)
       },
       joinedList() {
         if (!this.room.joinedList) return []
         return this.room.joinedList.map((v) =>{
           return this.playerListMap[v]
-        })
+        }).filter(v => v)
       },
       player() {
         return this.$store.getters.getPlayer
@@ -186,7 +186,7 @@
         if (!this.player.selectList) return []
         return this.player.selectList.map((v) =>{
           return this.playerListMap[v]
-        })
+        }).filter(v => v)
       }
     },
     methods: {

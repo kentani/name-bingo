@@ -74,7 +74,7 @@
         if (!this.room.joinedList) return []
         return this.room.joinedList.map((v) =>{
           return this.playerListMap[v]
-        })
+        }).filter(v => v)
       },
       player() {
         return this.$store.getters.getPlayer
