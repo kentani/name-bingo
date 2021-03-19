@@ -31,7 +31,7 @@
           </v-switch>
         </v-card-actions>
         <p
-          class="py-2 my-0 display-4 font-weight-bold text-center"
+          class="py-2 my-0 display-3 font-weight-bold text-center"
           style="text-shadow:0px 0px 1px #FFF, 2px 2px 4px rgba(0,0,0,0.3)">
           {{ result.name }}
         </p>
@@ -64,12 +64,12 @@
           <v-row justify="center" class="mb-3 mt-1">
             <v-card flat color="grey lighten-4">
               <v-card-text class="title font-weight-bold">
-                リーチ：{{ reach.length }}
+                リーチ：{{ room.reachList.length }}
               </v-card-text>
             </v-card>
             <v-card flat color="grey lighten-4">
               <v-card-text class="title font-weight-bold">
-                ビンゴ：{{ bingo.length }}
+                ビンゴ：{{ room.bingoList.length }}
               </v-card-text>
             </v-card>
           </v-row>

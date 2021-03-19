@@ -95,6 +95,7 @@ export const mutations = {
 
 export const actions = {
   async nuxtServerInit ({ commit }, { req }) {
+    if (!req) return
     if (!req.headers.cookie) return
     try {
       const idToken = await cookieparser.parse(req.headers.cookie).__session

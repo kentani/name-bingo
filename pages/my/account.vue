@@ -131,7 +131,7 @@ export default {
         {
           icon: 'mdi-apps',
           name: 'ビンゴの始め方',
-          to: '/'
+          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/invite'
         },
         {
           icon: 'mdi-note',

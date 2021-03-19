@@ -95,7 +95,8 @@
         <v-divider class="mx-4"></v-divider>
         <v-card-text>
           <draggable
-            tag="v-row"
+            tag="div"
+            class="row"
             group="cardList"
             v-model="selected"
             v-bind="draggableOptions"
