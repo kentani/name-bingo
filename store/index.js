@@ -85,7 +85,7 @@ export const mutations = {
   setAdminList(state, room) {
     const value = {
       name: room.name,
-      to: '/rooms/' + room.id + '/admin/settings'
+      to: '/rooms/' + room.id + '/admin/bingo'
     }
     state.adminList.push(value)
   },

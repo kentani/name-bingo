@@ -9,8 +9,8 @@
             text
             rounded
             color="deep-purple"
-            :disabled="!player.isAdmin"
-            :to="'/rooms/' + this.roomId + '/admin/settings'"
+            :disabled="!isAdmin"
+            :to="'/rooms/' + this.roomId + '/admin/bingo'"
             :ripple="false">
             <span class="font-weight-bold">管理画面</span>
           </v-btn>
@@ -78,6 +78,9 @@
       },
       player() {
         return this.$store.getters.getPlayer
+      },
+      isAdmin() {
+        return this.room.adminList.includes(this.playerId) ? true : false
       },
       items() {
         return [

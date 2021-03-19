@@ -58,20 +58,16 @@
             </v-card>
           </v-dialog>
           <v-spacer />
-          <v-switch
-            v-model="switch1"
-            inset
-            hide-details
-            class="my-2"
-            color="deep-purple">
-            <template v-slot:label>
-              <span
-                class="overline font-weight-bold"
-                :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
-                ゲーム開始
-              </span>
-            </template>
-          </v-switch>
+          <v-btn
+            nuxt
+            text
+            rounded
+            color="deep-purple"
+            :disabled="!isJoined"
+            :to="'/rooms/' + this.roomId + '/players/' + player.id + '/bingo-card'"
+            :ripple="false">
+            <span class="font-weight-bold">プレイヤー画面</span>
+          </v-btn>
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold" :class="[ room.note ? 'pb-1' : 'pb-3' ]">{{ room.name }}</v-card-title>
@@ -126,10 +122,14 @@ export default {
     await this.$store.dispatch('onAuth')
     await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
     await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
+    await this.$store.dispatch('fetchPlayerByAuth', { roomId: this.roomId, authId: this.authId })
   },
   mounted () {
   },
   computed: {
+    authId() {
+      return this.$store.getters.getAuthId
+    },
     roomId() {
       return this.$route.params.roomId
     },
@@ -150,7 +150,13 @@ export default {
       return this.room.joinedList.map((v) =>{
         return this.playerListMap[v]
       }).filter(v => v)
-    }
+    },
+    player() {
+      return this.$store.getters.getPlayer
+    },
+    isJoined() {
+      return this.room.joinedList.includes(this.player.id) ? true : false
+    },
   },
   methods: {
     editStart() {
