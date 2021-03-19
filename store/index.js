@@ -17,7 +17,8 @@ export const state = () => ({
   room: {},
   playerListMap: {},
   player: {},
-  accountInfo: [],
+  adminList: [],
+  joinedList: [],
   roomList: [],
 })
 
@@ -37,8 +38,11 @@ export const getters = {
   getPlayer(state) {
     return state.player
   },
-  getAccountInfo(state) {
-    return state.accountInfo
+  getAdminList(state) {
+    return state.adminList
+  },
+  getJoinedList(state) {
+    return state.joinedList
   },
   getRoomList(state) {
     return state.roomList
@@ -78,11 +82,31 @@ export const mutations = {
     state.player = Object.assign({}, state.player, {})
   },
 
-  setAccountInfo(state, player) {
-    state.accountInfo.push(player)
+  setAdminList(state, room) {
+    const value = {
+      name: room.name,
+      to: '/rooms/' + room.id + '/admin/settings'
+    }
+    state.adminList.push(value)
   },
-  clearAccountInfo(state) {
-    state.accountInfo = []
+  clearAdminList(state) {
+    state.adminList = []
+  },
+
+  setJoinedList(state, { room, playerIds }) {
+    let value = {}
+    playerIds.forEach((id) => {
+      if (room.joinedList.includes(id)) {
+        value = {
+          name: room.name,
+          to: '/rooms/' + room.id + '/players/' + id + '/bingo-card',
+        }
+      }
+    })
+    state.joinedList.push(value)
+  },
+  clearJoinedList(state) {
+    state.joinedList = []
   },
 
   setRoomList(state, room) {
@@ -334,11 +358,27 @@ export const actions = {
   },
 
   async fetchAccountInfo({ commit }, { authId }) {
-    await commit('clearAccountInfo')
+    await commit('clearAdminList')
+    await commit('clearJoinedList')
+
+    let playerIds = []
+
     await playersRef.where("authId", "==", authId).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        commit('setAccountInfo', doc.data())
+        playerIds.push(doc.data().id)
       });
+    })
+
+    await roomsRef.where('adminList', 'array-contains-any', playerIds).get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        commit('setAdminList', doc.data())
+      })
+    })
+
+    await roomsRef.where('joinedList', 'array-contains-any', playerIds).get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        commit('setJoinedList', { room: doc.data(), playerIds: playerIds })
+      })
     })
   },
 

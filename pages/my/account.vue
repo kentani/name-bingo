@@ -131,17 +131,17 @@ export default {
         {
           icon: 'mdi-apps',
           name: 'ビンゴの始め方',
-          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/invite'
+          to: '/'
         },
         {
           icon: 'mdi-note',
           name: '利用規約',
-          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/admin/bingo'
+          to: '/'
         },
         {
           icon: 'mdi-github',
           name: 'ソースコード',
-          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/players/vgn7TvaiomhKiuYHWyLA/bingo-card'
+          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/invite'
         },
       ]
     }
@@ -159,22 +159,11 @@ export default {
     loggedIn() {
       return this.$store.getters.getLoggedIn
     },
-    accountInfo() {
-      return this.$store.getters.getAccountInfo
-    },
     adminList() {
-      return this.accountInfo.map((v) => {
-        if (v.isAdmin) {
-          return { name: v.name, to: '/rooms/' + v.roomId + '/admin/settings' }
-        }
-      })
+      return this.$store.getters.getAdminList
     },
     joinedList() {
-      return this.accountInfo.map((v) => {
-        if (v.isJoined) {
-          return { name: v.name, to: '/rooms/' + v.roomId + '/players/' + v.id + '/bingo-card' }
-        }
-      })
+      return this.$store.getters.getJoinedList
     },
     room() {
       return this.$store.getters.getRoom
