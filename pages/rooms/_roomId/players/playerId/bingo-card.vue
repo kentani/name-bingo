@@ -17,6 +17,7 @@
                 icon
                 v-bind="attrs"
                 v-on="on"
+                :disabled="isReady"
                 :ripple="false"
                 @click="setSelected">
                 <v-icon color="deep-purple">mdi-account-plus</v-icon>
@@ -52,7 +53,7 @@
                       hide-details
                       class="my-1"
                       color="deep-purple"
-                      :disabled="switch1 || (!selected.includes(item.id) && selected.length === 16)"
+                      :disabled="isReady || (!selected.includes(item.id) && selected.length === 16)"
                       :value="item.id">
                       <template v-slot:label>
                         <span
@@ -76,10 +77,10 @@
                 </v-btn>
                 <v-btn
                   rounded
-                  :dark="selected.length <= 16 && !switch1"
-                  :text="selected.length > 16 || switch1"
+                  :dark="selected.length <= 16 && !isReady"
+                  :text="selected.length > 16 || isReady"
                   color="deep-purple"
-                  :disabled="selected.length > 16 || switch1"
+                  :disabled="selected.length > 16 || isReady"
                   @click="updateSelectList">
                   Save
                 </v-btn>
@@ -88,21 +89,22 @@
           </v-dialog>
           <v-spacer />
           <v-switch
-            v-model="switch1"
+            v-model="isReady"
             inset
             hide-details
+            :disabled="selectList.length !== 16"
             class="my-2"
             color="deep-purple">
             <template v-slot:label>
               <span
                 class="overline font-weight-bold"
-                :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                :class="[ isReady ? 'deep-purple--text' : 'grey--text' ]">
                 準備完了
               </span>
             </template>
           </v-switch>
         </v-card-actions>
-        <v-divider class="mx-4"></v-divider>
+        <v-divider class="mx-4" />
         <v-card-text>
           <draggable
             tag="div"
@@ -118,7 +120,7 @@
               cols="3"
               class="pa-1">
               <v-card
-                :flat="room.hitList && !room.hitList.includes(item.id)"
+                :flat="isReady && room.hitList && !room.hitList.includes(item.id)"
                 :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                 height="100">
                 <v-card-title class="overline pa-1" style="line-height:15px">
@@ -158,7 +160,6 @@
         dialogm1: '',
         dialog: false,
         selected: [],
-        switch1: false,
         snackbar: true,
         text: 'リーチ！',
         timeout: 4000,
@@ -170,6 +171,7 @@
       await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
       await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
       await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, playerId: this.playerId })
+      this.isReady = this.player.isReady
     },
     computed: {
       roomId() {
@@ -205,6 +207,16 @@
           return this.playerListMap[v]
         }).filter(v => v)
       },
+      isReady: {
+        // getter 関数
+        get: function () {
+          return this.player.isReady ? true : false
+        },
+        // setter 関数
+        set: function (val) {
+          this.changeStatus(val)
+        }
+      }
     },
     methods: {
       setSelected() {
@@ -219,6 +231,9 @@
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       },
+      changeStatus(status) {
+        this.$store.dispatch('updateReady', { status: status, playerId: this.playerId })
+      }
     }
   }
 </script>

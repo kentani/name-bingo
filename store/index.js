@@ -323,6 +323,14 @@ export const actions = {
     })
   },
 
+  async updateReady({ commit }, { status, playerId }) {
+    await playersRef.doc(playerId).update({ isReady: status }).then(() => {
+      playersRef.doc(playerId).get().then(function(doc) {
+        commit('setPlayer', doc.data())
+      })
+    })
+  },
+
   async fetchRoom({ commit }, { roomId }) {
     await commit('clearRoom')
     await roomsRef.doc(roomId).onSnapshot({ includeMetadataChanges: true }, (doc) => {
@@ -369,6 +377,8 @@ export const actions = {
       });
     })
 
+    if (playerIds.length === 0) return
+    
     await roomsRef.where('adminList', 'array-contains-any', playerIds).get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         commit('setAdminList', doc.data())

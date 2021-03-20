@@ -6,7 +6,7 @@
           class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
           PROFILE CARD
         </p>
-        <v-card-actions class="py-0 mx-2">
+        <v-card-actions class="mx-2">
           <v-dialog
             v-model="dialog"
             scrollable

@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col cols="12" md="9">
       <v-card flat>
-        <v-card-actions class="py-3 mx-2">
+        <v-card-actions class="mx-2">
           <v-spacer />
           <v-btn
             nuxt
