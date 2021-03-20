@@ -13,7 +13,7 @@
                 icon
                 v-bind="attrs"
                 v-on="on"
-                :disabled="switch1"
+                :disabled="room.isReady"
                 :ripple="false"
                 @click="editStart">
                 <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
@@ -112,7 +112,6 @@ export default {
   data () {
     return {
       dialog: false,
-      switch1: false,
       inputName: '',
       inputNote: '',
       local: process.env.BASEURL,
