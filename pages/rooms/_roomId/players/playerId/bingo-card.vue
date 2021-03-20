@@ -19,12 +19,20 @@
                 v-on="on"
                 :ripple="false"
                 @click="setSelected">
-                <v-icon color="deep-purple">mdi-account-multiple</v-icon>
+                <v-icon color="deep-purple">mdi-account-plus</v-icon>
               </v-btn>
             </template>
             <v-card>
               <v-card-title class="font-weight-bold">参加者一覧</v-card-title>
-              <v-card-text>参加者：{{ joinedList ? joinedList.length : 0 }}　　選択中：{{ selected.length }}</v-card-text>
+              <v-card-subtitle v-if="selected.length === 0" class="pb-2">
+                カードに加える人を <span class="title font-weight-bold deep-purple--text">16</span> 人選択してください
+              </v-card-subtitle>
+              <v-card-subtitle v-else-if="selected.length < 16" class="pb-2">
+                あと <span class="title font-weight-bold deep-purple--text">{{ 16 - selected.length }}</span> 人選択してください
+              </v-card-subtitle>
+              <v-card-subtitle v-else-if="selected.length === 16" class="pb-2">
+                <v-icon color="deep-purple">mdi-check</v-icon><span class="title font-weight-bold deep-purple--text"></span>
+              </v-card-subtitle>
               <v-divider />
               <v-card-text class="pa-2">
                 <v-card
@@ -62,12 +70,14 @@
                 <v-btn
                   text
                   rounded
+                  :disabled="selected.length > 16"
                   @click="resetSelected">
                   Close
                 </v-btn>
                 <v-btn
                   rounded
-                  dark
+                  :dark="selected.length <= 16 && !switch1"
+                  :text="selected.length > 16 || switch1"
                   color="deep-purple"
                   :disabled="selected.length > 16 || switch1"
                   @click="updateSelectList">
