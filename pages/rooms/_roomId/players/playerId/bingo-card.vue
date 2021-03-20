@@ -38,10 +38,7 @@
               </template>
               <v-card>
                 <v-card-title class="font-weight-bold">参加者一覧</v-card-title>
-                <v-card-subtitle v-if="selected.length === 0" class="pb-2">
-                  カードに加える人を <span class="title font-weight-bold deep-purple--text">16</span> 人選択してください
-                </v-card-subtitle>
-                <v-card-subtitle v-else-if="selected.length < 16" class="pb-2">
+                <v-card-subtitle v-if="selected.length < 16" class="pb-2">
                   あと <span class="title font-weight-bold deep-purple--text">{{ 16 - selected.length }}</span> 人選択してください
                 </v-card-subtitle>
                 <v-card-subtitle v-else-if="selected.length === 16" class="pb-2">
@@ -177,9 +174,6 @@
         dialogm1: '',
         dialog: false,
         selected: [],
-        snackbar: true,
-        text: 'リーチ！',
-        timeout: 4000,
         draggableOptions: { animation: 500, delay: 100 },
       }
     },
