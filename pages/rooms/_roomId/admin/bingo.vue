@@ -116,7 +116,7 @@
               md="1"
               class="pa-1">
               <v-card
-                :flat=" (!ishit(player.id) && player.isReady) || room.isReady"
+                :flat="setFlat(player.id)"
                 :class="[ !ishit(player.id) ? 'white' : 'yellow accent-4' ]"
                 height="80">
                 <v-card-title class="overline pa-1" style="line-height:15px">
@@ -170,7 +170,7 @@
         return this.$store.getters.getRoom
       },
       joinedList() {
-        if (!this.room.adminList) return []
+        if (!this.room.joinedList) return []
         return this.room.joinedList.map((v) =>{
           return this.playerListMap[v]
         }).filter(v => v)
@@ -187,6 +187,9 @@
         },
         set: function (val) {
           this.changeStatus(val)
+          if (!val) {
+            this.reset()
+          }
         }
       }
     },
@@ -257,6 +260,15 @@
       },
       changeStatus(status) {
         this.$store.dispatch('updateRoomReady', { status: status, roomId: this.roomId })
+      },
+      setFlat(playerId) {
+        if (this.ishit(playerId)) {
+          return false
+        } else if (this.room.isReady || (this.room.readyList && this.room.readyList.includes(playerId))) {
+          return true
+        } else {
+          return false
+        }
       }
     }
   }
