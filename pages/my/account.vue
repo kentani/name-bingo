@@ -99,6 +99,10 @@
         </v-card-text>
         <v-divider class="mx-4" />
         <v-card-text class="py-0">
+          <link-list :with-icon="true" :items="appItems2" />
+        </v-card-text>
+        <v-divider class="mx-4" />
+        <v-card-text class="py-0">
           <v-list dense>
             <v-list-item-group color="deep-purple">
               <v-list-item @click="logout">
@@ -141,7 +145,19 @@ export default {
         {
           icon: 'mdi-github',
           name: 'ソースコード',
+          to: '/'
+        },
+      ],
+      appItems2: [
+        {
+          icon: 'mdi-apps',
+          name: '招待リンク',
           to: '/rooms/fW80FMoyLnCtWbCJiQ5f/invite'
+        },
+        {
+          icon: 'mdi-apps',
+          name: '管理画面',
+          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/admin/bingo'
         },
       ]
     }

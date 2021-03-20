@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  layout: 'top',
+  layout: 'protected',
   data () {
     return {
     }

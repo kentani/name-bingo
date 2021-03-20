@@ -64,12 +64,12 @@
           <v-row justify="center" class="mb-3 mt-1">
             <v-card flat color="grey lighten-4">
               <v-card-text class="title font-weight-bold">
-                リーチ：{{ room.reachList.length }}
+                リーチ：{{ room.reachList && room.reachList.length }}
               </v-card-text>
             </v-card>
             <v-card flat color="grey lighten-4">
               <v-card-text class="title font-weight-bold">
-                ビンゴ：{{ room.bingoList.length }}
+                ビンゴ：{{ room.reachList && room.bingoList.length }}
               </v-card-text>
             </v-card>
           </v-row>
@@ -99,7 +99,7 @@
 
 <script>
   export default {
-    layout: 'room',
+    layout: 'protected',
     data () {
       return {
         switch1: false,

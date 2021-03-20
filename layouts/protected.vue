@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: 'top',
+  name: 'protected',
   middleware: 'authenticated',
   data () {
     return {

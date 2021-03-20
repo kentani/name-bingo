@@ -141,7 +141,7 @@
 <script>
   import draggable from 'vuedraggable'
   export default {
-    layout: 'room',
+    layout: 'protected',
     components: { draggable },
     data () {
       return {

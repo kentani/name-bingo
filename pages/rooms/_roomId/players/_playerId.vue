@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  layout: 'room',
+  layout: 'protected',
   data () {
     return {
     }

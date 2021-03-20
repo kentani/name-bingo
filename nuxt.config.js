@@ -38,7 +38,10 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/dotenv',
+    [
+      '@nuxtjs/dotenv',
+      { filename: process.env.NODE_ENV !== 'production' ? ".env.dev" : ".env.prod" },
+    ],
     'nuxt-clipboard2',
   ],
 
