@@ -142,8 +142,9 @@
               group="cardList"
               v-model="selected"
               v-bind="draggableOptions"
-              @start="setSelected"
-              @end="updateSelectList">
+              @start="handleDragStart"
+              :move="handleMove"
+              @end="handleDragEnd">
               <v-col
                 v-for="(item, i) in selectList"
                 :key="i"
@@ -179,7 +180,7 @@
         snackbar: true,
         text: 'リーチ！',
         timeout: 4000,
-        draggableOptions: { animation: 300, delay: 0 },
+        draggableOptions: { animation: 500, delay: 100 },
       }
     },
     async created () {
@@ -247,6 +248,27 @@
         await this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
+      },
+      handleDragStart() {
+        this.setSelected()
+      },
+      handleMove(e) {
+        const { index, futureIndex } = e.draggedContext
+        this.movingIndex = index
+        this.futureIndex = futureIndex
+        return false // disable sort
+      },
+      async handleDragEnd() {
+        this.futureItem = this.selected[this.futureIndex]
+        this.movingItem = this.selected[this.movingIndex]
+        const _items = Object.assign([], this.selected)
+        _items[this.futureIndex] = this.movingItem
+        _items[this.movingIndex] = this.futureItem
+
+        this.selected = _items
+
+        await this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
+        this.selected = Object.assign([], this.selected, [])
       },
       addReadyList() {
         if (this.room.readyList && this.room.readyList.includes(this.playerId)) return
