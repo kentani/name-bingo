@@ -152,7 +152,11 @@
         this.$store.dispatch('addEditProfileList', { roomId: this.roomId, playerId: this.playerId })
       },
       setColor() {
-        if (this.room.isReady) {
+        if (this.room.bingoList && this.room.bingoList.includes(this.playerId)) {
+          return 'yellow accent-4'
+        } else if (this.room.reachList && this.room.reachList.includes(this.playerId)) {
+          return 'deep-purple'
+        } else if (this.room.isReady) {
           return 'deep-purple'
         } else if (this.isEditFinished) {
           return 'grey'
@@ -161,7 +165,11 @@
         }
       },
       setText() {
-        if (this.room.isReady) {
+        if (this.room.bingoList && this.room.bingoList.includes(this.playerId)) {
+          return 'ビンゴ!!!'
+        } else if (this.room.reachList && this.room.reachList.includes(this.playerId)) {
+          return 'リーチ!!!'
+        } else if (this.room.isReady) {
           return 'ビンゴ開催中'
         } else if (this.isEditFinished) {
           return 'ビンゴの開催を待ってください'
