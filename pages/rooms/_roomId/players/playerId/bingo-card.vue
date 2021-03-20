@@ -92,7 +92,7 @@
             v-model="isReady"
             inset
             hide-details
-            :disabled="selectList.length !== 16"
+            :disabled="selectList.length !== 16 || room.isReady"
             class="my-2"
             color="deep-purple">
             <template v-slot:label>
@@ -225,11 +225,9 @@
         }).filter(v => v)
       },
       isReady: {
-        // getter 関数
         get: function () {
           return this.player.isReady ? true : false
         },
-        // setter 関数
         set: function (val) {
           this.changeStatus(val)
         }
@@ -254,46 +252,3 @@
     }
   }
 </script>
-
-<style scoped>
-.ribbon19-wrapper {
-  display: block;
-  position: relative;
-  margin: 15px auto;
-  padding: 10px 0;
-  width: 300px;
-  height: 150px;
-  background: #f1f1f1;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.14);
-  box-sizing: border-box;
-}
-
-.ribbon19-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 85px;
-  height: 85px;
-  overflow: hidden;
-  }
-
-.ribbon19 {
-  display: inline-block;
-  position: absolute;
-  padding: 5px 0;
-  left: -24px;
-  top: 20px;
-  width: 160px;
-  text-align: center;
-  font-size: 18px;
-  line-height: 16px;
-  background: #39c3d4;
-  color: #fff;
-  letter-spacing: 0.05em;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-  box-shadow: 0 0 0 2px rgb(57, 195, 212);
-  border-top: dashed 1px rgba(255, 255, 255, 0.65);
-  border-bottom: dashed 1px rgba(255, 255, 255, 0.65);
-}
-</style>

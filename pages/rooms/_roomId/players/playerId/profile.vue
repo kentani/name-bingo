@@ -18,7 +18,7 @@
                 v-bind="attrs"
                 v-on="on"
                 :ripple="false"
-                :disabled="switch1"
+                :disabled="room.isReady"
                 @click="editStart">
                 <v-icon color="deep-purple">mdi-square-edit-outline</v-icon>
               </v-btn>
@@ -83,7 +83,6 @@
     data () {
       return {
         dialog: false,
-        switch1: false,
         inputName: '',
         inputProfile: '',
         inputNote: '',

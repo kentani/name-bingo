@@ -7,7 +7,7 @@
               text
               rounded
               color="red darken-4"
-              :disabled="switch1"
+              :disabled="isReady"
               :ripple="false"
               @click="reset">
               <span class="body-2 font-weight-bold">
@@ -16,7 +16,7 @@
             </v-btn>
           <v-spacer />
           <v-switch
-            v-model="switch1"
+            v-model="isReady"
             inset
             hide-details
             class="my-2"
@@ -24,7 +24,7 @@
             <template v-slot:label>
               <span
                 class="body-2 font-weight-bold"
-                :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
+                :class="[ isReady ? 'deep-purple--text' : 'grey--text' ]">
                 ゲーム開始
               </span>
             </template>
@@ -36,7 +36,7 @@
           {{ result.name }}
         </p>
         <v-card-actions class="py-2 mx-2">
-          <v-row justify="center" class="my-3">
+          <v-row v-if="room.isReady" justify="center" class="my-3">
             <v-btn
               v-if="!starting"
               color="deep-purple"
@@ -57,6 +57,16 @@
               :ripple="false"
               @click="stop">
               STOP
+            </v-btn>
+          </v-row>
+          <v-row v-else justify="center" class="my-3">
+            <v-btn
+              text
+              x-large
+              rounded
+              disabled
+              :ripple="false">
+              準備中...
             </v-btn>
           </v-row>
         </v-card-actions>
@@ -107,7 +117,6 @@
     layout: 'protected',
     data () {
       return {
-        switch1: false,
         starting: false,
         result: { id: '', name: '？？' },
         checkList: [
@@ -152,6 +161,14 @@
         return this.room.hitList.map((v) =>{
           return this.playerListMap[v]
         }).filter(v => v)
+      },
+      isReady: {
+        get: function () {
+          return this.room.isReady ? true : false
+        },
+        set: function (val) {
+          this.changeStatus(val)
+        }
       }
     },
     methods: {
@@ -218,6 +235,9 @@
         if (this.bingo.length != 0) {
           this.$store.dispatch('addBingo', { roomId: this.roomId, bingoList: this.bingo })
         }
+      },
+      changeStatus(status) {
+        this.$store.dispatch('updateRoomReady', { status: status, roomId: this.roomId })
       }
     }
   }

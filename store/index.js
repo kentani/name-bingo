@@ -331,6 +331,14 @@ export const actions = {
     })
   },
 
+  async updateRoomReady({ commit }, { status, roomId }) {
+    await roomsRef.doc(roomId).update({ isReady: status }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
   async fetchRoom({ commit }, { roomId }) {
     await commit('clearRoom')
     await roomsRef.doc(roomId).onSnapshot({ includeMetadataChanges: true }, (doc) => {
