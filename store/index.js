@@ -199,6 +199,7 @@ export const actions = {
       adminList: [],
       creatorList: [],
       joinedList: [],
+      readyList: [],
       hitList: [],
       reachList: [],
       bingoList: [],
@@ -214,7 +215,6 @@ export const actions = {
           name: playerName,
           note: '',
           profile: '',
-          isReady: false,
           selectList: [],
         }
   
@@ -247,7 +247,6 @@ export const actions = {
       name: playerName,
       note: '',
       profile: '',
-      isReady: false,
       selectList: [],
     }
 
@@ -315,6 +314,22 @@ export const actions = {
     })
   },
 
+  async addReadyList({ commit }, { roomId, playerId }) {
+    await roomsRef.doc(roomId).update({ readyList: firebase.firestore.FieldValue.arrayUnion(playerId) }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
+  async removeReadyList({ commit }, { roomId, playerId }) {
+    await roomsRef.doc(roomId).update({ readyList: firebase.firestore.FieldValue.arrayRemove(playerId) }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
+      })
+    })
+  },
+
   async updateSelectList({ commit }, { list, playerId }) {
     await playersRef.doc(playerId).update({ selectList: list }).then(() => {
       playersRef.doc(playerId).get().then(function(doc) {
@@ -323,16 +338,16 @@ export const actions = {
     })
   },
 
-  async updatePlayerInfo({ commit }, { name, note, profile, playerId }) {
-    await playersRef.doc(playerId).update({ name: name, note: note, profile: profile }).then(() => {
-      playersRef.doc(playerId).get().then(function(doc) {
-        commit('setPlayer', doc.data())
+  async addEditProfileList({ commit }, { roomId, playerId }) {
+    await roomsRef.doc(roomId).update({ editProfileList: firebase.firestore.FieldValue.arrayUnion(playerId) }).then(() => {
+      roomsRef.doc(roomId).get().then(function(doc) {
+        commit('setRoom', doc.data())
       })
     })
   },
 
-  async updateReady({ commit }, { status, playerId }) {
-    await playersRef.doc(playerId).update({ isReady: status }).then(() => {
+  async updatePlayerInfo({ commit }, { name, note, profile, playerId }) {
+    await playersRef.doc(playerId).update({ name: name, note: note, profile: profile }).then(() => {
       playersRef.doc(playerId).get().then(function(doc) {
         commit('setPlayer', doc.data())
       })

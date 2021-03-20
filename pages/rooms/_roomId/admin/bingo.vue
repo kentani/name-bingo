@@ -97,13 +97,13 @@
 
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
-                <v-icon>mdi-square-edit-outline</v-icon> {{ room.joinedList && readyList && room.joinedList.length - readyList.length }}
+                <v-icon>mdi-square-edit-outline</v-icon> {{ room.joinedList && room.readyList && room.joinedList.length - room.readyList.length }}
               </v-card-text>
             </v-card>
 
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
-                <v-icon>mdi-check</v-icon> {{ readyList && readyList.length }}
+                <v-icon>mdi-check</v-icon> {{ room.readyList && room.readyList.length }}
               </v-card-text>
             </v-card>
           </v-row>
@@ -180,13 +180,6 @@
         return this.room.hitList.map((v) =>{
           return this.playerListMap[v]
         }).filter(v => v)
-      },
-      readyList() {
-        const boolList = Object.values(this.playerListMap).map((player) => {
-          return player.isReady ? true : false
-        }).filter(v => v)
-
-        return boolList
       },
       isReady: {
         get: function () {

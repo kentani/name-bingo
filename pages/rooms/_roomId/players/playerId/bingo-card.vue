@@ -162,21 +162,6 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <!-- <v-snackbar
-        v-model="snackbar"
-        :timeout="timeout"
-        centered
-        color="grey">
-        <span class="title font-weight-bold">{{ text }}</span>
-        <template v-slot:action="{ attrs }">
-          <v-btn
-            text
-            v-bind="attrs"
-            @click="snackbar = false">
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar> -->
     </v-row>
   </div>
 </template>
@@ -239,10 +224,14 @@
       },
       isReady: {
         get: function () {
-          return this.player.isReady ? true : false
+          return this.room.readyList && this.room.readyList.includes(this.playerId) ? true : false
         },
         set: function (val) {
-          this.changeStatus(val)
+          if (val) {
+            this.addReadyList()
+          } else {
+            this.removeReadyList()
+          }
         }
       }
     },
@@ -259,13 +248,18 @@
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
       },
-      changeStatus(status) {
-        this.$store.dispatch('updateReady', { status: status, playerId: this.playerId })
+      addReadyList() {
+        if (this.room.readyList && this.room.readyList.includes(this.playerId)) return
+        this.$store.dispatch('addReadyList', { roomId: this.roomId, playerId: this.playerId })
+      },
+      removeReadyList() {
+        if (this.room.readyList && !this.room.readyList.includes(this.playerId)) return
+        this.$store.dispatch('removeReadyList', { roomId: this.roomId, playerId: this.playerId })
       },
       setColor() {
         if (this.room.isReady) {
           return 'deep-purple'
-        } else if (this.player.isReady) {
+        } else if (this.isReady) {
           return 'grey'
         } else {
           return 'red darken-4'
@@ -274,7 +268,7 @@
       setText() {
         if (this.room.isReady) {
           return 'ビンゴ開催中'
-        } else if (this.player.isReady) {
+        } else if (this.isReady) {
           return 'ビンゴの開催を待ってください'
         } else {
           return 'カードの準備をしてください'
