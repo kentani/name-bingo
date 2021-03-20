@@ -190,6 +190,7 @@ export const actions = {
     const roomArgs = {
       name: roomName,
       note: note,
+      isReady: false,
       adminList: [],
       creatorList: [],
       joinedList: [],
@@ -208,6 +209,7 @@ export const actions = {
           name: playerName,
           note: '',
           profile: '',
+          isReady: false,
           selectList: [],
         }
   
@@ -240,6 +242,7 @@ export const actions = {
       name: playerName,
       note: '',
       profile: '',
+      isReady: false,
       selectList: [],
     }
 
