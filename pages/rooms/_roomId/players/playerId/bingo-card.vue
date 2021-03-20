@@ -149,6 +149,7 @@
                 class="pa-1">
                 <v-card
                   :flat="setFlat(item.id)"
+                  class="handle"
                   :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                   height="100">
                   <v-card-title class="overline pa-1" style="line-height:15px">
@@ -174,7 +175,7 @@
         dialogm1: '',
         dialog: false,
         selected: [],
-        draggableOptions: { animation: 500, delay: 100 },
+        draggableOptions: { animation: 500, delay: 100, handle: '.handle' },
       }
     },
     async created () {
@@ -263,6 +264,7 @@
 
         await this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
         this.selected = Object.assign([], this.selected, [])
+
       },
       addReadyList() {
         if (this.room.readyList && this.room.readyList.includes(this.playerId)) return
@@ -310,3 +312,9 @@
     }
   }
 </script>
+
+<style scoped>
+.handle {
+  cursor: move;
+}
+</style>
