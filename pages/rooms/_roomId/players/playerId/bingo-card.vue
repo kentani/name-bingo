@@ -106,7 +106,24 @@
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-text>
+          <v-row v-if="isReady">
+            <v-col
+              v-for="(item, i) in selectList"
+              :key="i"
+              cols="3"
+              class="pa-1">
+              <v-card
+                :flat="isReady && room.hitList && !room.hitList.includes(item.id)"
+                :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
+                height="100">
+                <v-card-title class="overline pa-1" style="line-height:15px">
+                  {{ item.name }}
+                </v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
           <draggable
+            v-else
             tag="div"
             class="row"
             group="cardList"
