@@ -17,7 +17,7 @@
                 icon
                 v-bind="attrs"
                 v-on="on"
-                :disabled="isReady"
+                :disabled="isReady || room.isReady"
                 :ripple="false"
                 @click="setSelected">
                 <v-icon color="deep-purple">mdi-account-plus</v-icon>
@@ -77,10 +77,10 @@
                 </v-btn>
                 <v-btn
                   rounded
-                  :dark="selected.length <= 16 && !isReady"
-                  :text="selected.length > 16 || isReady"
                   color="deep-purple"
-                  :disabled="selected.length > 16 || isReady"
+                  :dark="selected.length <= 16 && !isReady && !room.isReady"
+                  :text="selected.length > 16 || isReady || room.isReady"
+                  :disabled="selected.length > 16 || isReady || room.isReady"
                   @click="updateSelectList">
                   Save
                 </v-btn>
@@ -188,7 +188,6 @@
       await this.$store.dispatch('fetchPlayerListMap', { roomId: this.roomId })
       await this.$store.dispatch('fetchRoom', { roomId: this.roomId })
       await this.$store.dispatch('fetchPlayer', { roomId: this.roomId, playerId: this.playerId })
-      this.isReady = this.player.isReady
     },
     computed: {
       roomId() {

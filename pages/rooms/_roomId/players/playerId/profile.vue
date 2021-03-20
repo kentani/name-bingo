@@ -58,8 +58,10 @@
                 </v-btn>
                 <v-btn
                   rounded
-                  dark
                   color="deep-purple"
+                  :dark="!room.isReady"
+                  :text="room.isReady"
+                  :disabled="room.isReady"
                   @click="updatePlayerInfo">
                   Save
                 </v-btn>
