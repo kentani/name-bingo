@@ -97,7 +97,7 @@
         <v-card-text class="py-0">
           <link-list :with-icon="true" :items="appItems" />
         </v-card-text>
-        <v-divider class="mx-4" />
+        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">暫定対応</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :with-icon="true" :items="appItems2" />
         </v-card-text>

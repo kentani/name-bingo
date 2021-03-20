@@ -63,13 +63,18 @@
         <v-card-text>
           <v-row justify="center" class="mb-3 mt-1">
             <v-card flat color="grey lighten-4">
-              <v-card-text class="title font-weight-bold">
+              <v-card-text class="subtitle-1 font-weight-bold">
+                参加者：{{ room.joinedList && room.joinedList.length }}
+              </v-card-text>
+            </v-card>
+            <v-card flat color="grey lighten-4">
+              <v-card-text class="subtitle-1 font-weight-bold">
                 リーチ：{{ room.reachList && room.reachList.length }}
               </v-card-text>
             </v-card>
             <v-card flat color="grey lighten-4">
-              <v-card-text class="title font-weight-bold">
-                ビンゴ：{{ room.reachList && room.bingoList.length }}
+              <v-card-text class="subtitle-1 font-weight-bold">
+                ビンゴ：{{ room.bingoList && room.bingoList.length }}
               </v-card-text>
             </v-card>
           </v-row>
