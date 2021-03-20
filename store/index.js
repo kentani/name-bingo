@@ -139,8 +139,13 @@ export const actions = {
   async onAuth({ commit }) {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        commit('setAuthId', user.uid)
-        commit('changeLoginStatus', user.uid ? true : false)
+        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
+          Cookies.set('__session', idToken)
+          commit('setAuthId', user.uid)
+          commit('changeLoginStatus', user.uid ? true : false)
+        })
+        .catch(function(error) {
+        })
       }
     })
   },
