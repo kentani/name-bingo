@@ -74,7 +74,7 @@
           <v-row v-if="room.isReady" justify="center" class="mb-3 mt-1">
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
-                参加者：{{ room.joinedList && room.joinedList.length }}
+                <v-icon>mdi-account-multiple</v-icon> {{ room.joinedList && room.joinedList.length }}
               </v-card-text>
             </v-card>
             <v-card flat color="grey lighten-4">
@@ -91,17 +91,19 @@
           <v-row v-else justify="center" class="mb-3 mt-1">
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
-                参加者：{{ room.joinedList && room.joinedList.length }}
+                <v-icon>mdi-account-multiple</v-icon> {{ room.joinedList && room.joinedList.length }}
               </v-card-text>
             </v-card>
+
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
-                準備中：{{ room.joinedList && readyList && room.joinedList.length - readyList.length }}
+                <v-icon>mdi-square-edit-outline</v-icon> {{ room.joinedList && readyList && room.joinedList.length - readyList.length }}
               </v-card-text>
             </v-card>
+
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
-                準備完了：{{ readyList && readyList.length }}
+                <v-icon>mdi-check</v-icon> {{ readyList && readyList.length }}
               </v-card-text>
             </v-card>
           </v-row>
