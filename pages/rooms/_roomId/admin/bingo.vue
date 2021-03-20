@@ -71,7 +71,7 @@
           </v-row>
         </v-card-actions>
         <v-card-text>
-          <v-row justify="center" class="mb-3 mt-1">
+          <v-row v-if="room.isReady" justify="center" class="mb-3 mt-1">
             <v-card flat color="grey lighten-4">
               <v-card-text class="subtitle-1 font-weight-bold">
                 参加者：{{ room.joinedList && room.joinedList.length }}
@@ -88,6 +88,23 @@
               </v-card-text>
             </v-card>
           </v-row>
+          <v-row v-else justify="center" class="mb-3 mt-1">
+            <v-card flat color="grey lighten-4">
+              <v-card-text class="subtitle-1 font-weight-bold">
+                参加者：{{ room.joinedList && room.joinedList.length }}
+              </v-card-text>
+            </v-card>
+            <v-card flat color="grey lighten-4">
+              <v-card-text class="subtitle-1 font-weight-bold">
+                準備中：{{ room.joinedList && readyList && room.joinedList.length - readyList.length }}
+              </v-card-text>
+            </v-card>
+            <v-card flat color="grey lighten-4">
+              <v-card-text class="subtitle-1 font-weight-bold">
+                準備完了：{{ readyList && readyList.length }}
+              </v-card-text>
+            </v-card>
+          </v-row>
           <v-row>
             <v-col
               v-for="(player, i) in joinedList"
@@ -97,7 +114,7 @@
               md="1"
               class="pa-1">
               <v-card
-                :flat="!ishit(player.id)"
+                :flat=" (!ishit(player.id) && player.isReady) || room.isReady"
                 :class="[ !ishit(player.id) ? 'white' : 'yellow accent-4' ]"
                 height="80">
                 <v-card-title class="overline pa-1" style="line-height:15px">
@@ -161,6 +178,13 @@
         return this.room.hitList.map((v) =>{
           return this.playerListMap[v]
         }).filter(v => v)
+      },
+      readyList() {
+        const boolList = Object.values(this.playerListMap).map((player) => {
+          return player.isReady ? true : false
+        }).filter(v => v)
+
+        return boolList
       },
       isReady: {
         get: function () {

@@ -137,7 +137,7 @@
               cols="3"
               class="pa-1">
               <v-card
-                :flat="isReady && room.hitList && !room.hitList.includes(item.id)"
+                :flat="isReady && room.hitList && !room.hitList.includes(item.id) || room.isReady"
                 :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                 height="100">
                 <v-card-title class="overline pa-1" style="line-height:15px">
