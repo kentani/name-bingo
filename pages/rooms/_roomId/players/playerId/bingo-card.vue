@@ -52,7 +52,7 @@
                       hide-details
                       class="my-1"
                       color="deep-purple"
-                      :disabled="switch1"
+                      :disabled="switch1 || (!selected.includes(item.id) && selected.length === 16)"
                       :value="item.id">
                       <template v-slot:label>
                         <span
