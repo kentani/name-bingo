@@ -66,21 +66,6 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-spacer />
-          <v-switch
-            v-model="switch1"
-            inset
-            hide-details
-            class="my-2"
-            color="deep-purple">
-            <template v-slot:label>
-              <span
-                class="overline font-weight-bold"
-                :class="[ switch1 ? 'deep-purple--text' : 'grey--text' ]">
-                準備完了
-              </span>
-            </template>
-          </v-switch>
         </v-card-actions>
         <v-divider class="mx-4" />
         <v-card-title class="title font-weight-bold" :class="[ player.note ? 'pb-1' : 'pb-3' ]">{{ player.name }}</v-card-title>

@@ -6,7 +6,7 @@
       color="deep-purple"
       class="mb-6">
       <v-tabs-slider color="deep-purple"></v-tabs-slider>
-      <v-tab class="font-weight-bold" :to="'/my/account'">Account</v-tab>
+      <v-tab class="font-weight-bold" :to="'/my/dashboard'">Dashboard</v-tab>
     </v-tabs>
     <nuxt-child />
   </div>

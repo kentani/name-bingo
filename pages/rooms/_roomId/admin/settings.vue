@@ -155,7 +155,7 @@ export default {
       return this.$store.getters.getPlayer
     },
     isJoined() {
-      return this.room.joinedList.includes(this.player.id) ? true : false
+      return this.room.joinedList && this.room.joinedList.includes(this.player.id) ? true : false
     },
   },
   methods: {

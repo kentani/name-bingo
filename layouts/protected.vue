@@ -16,8 +16,8 @@
         nuxt
         :disabled="!loggedIn"
         :ripple="false"
-        to="/my/account">
-        <v-icon>mdi-cog</v-icon>
+        to="/my/dashboard">
+        <v-icon>mdi-view-dashboard</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>

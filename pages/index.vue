@@ -30,8 +30,8 @@
               x-large
               color="deep-purple"
               :ripple="false"
-              to="/my/account">
-              <span class="font-weight-bold">アカウント設定</span>
+              to="/my/dashboard">
+              <span class="font-weight-bold">ダッシュボード</span>
             </v-btn>
           </v-row>
         </v-card-actions>

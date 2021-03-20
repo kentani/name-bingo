@@ -34,7 +34,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            v-if="room.joinedList && room.joinedList.includes(player.id)"
+            v-if="isJoined"
             nuxt
             rounded
             text
@@ -97,6 +97,9 @@ export default {
     },
     player() {
       return this.$store.getters.getPlayer
+    },
+    isJoined() {
+      return this.room.joinedList && this.room.joinedList.includes(this.player.id) ? true : false
     },
   },
   methods: {

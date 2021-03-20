@@ -80,7 +80,7 @@
         return this.$store.getters.getPlayer
       },
       isAdmin() {
-        return this.room.adminList.includes(this.playerId) ? true : false
+        return this.room.adminList && this.room.adminList.includes(this.playerId) ? true : false
       },
       items() {
         return [
