@@ -2,23 +2,28 @@
   <div>
     <v-row justify="center">
       <v-col cols="12" sm="9" md="6">
-        <v-alert
-          dense
-          text
-          elevation="9"
-          :color="setColor()"
-          class="mb-0 text-center">
-          <span class="font-weight-bold">{{ setText() }}</span>
-        </v-alert>
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="12" sm="9" md="6">
         <v-card elevation="18">
           <p
-            class="py-2 my-0 grey lighten-2 display-1 font-weight-bold text-center">
+            class="display-1 py-2 my-0 font-weight-bold text-center grey lighten-2">
             PROFILE CARD
           </p>
+          <p
+            class="subtitle-1 py-0 my-0 font-weight-bold text-center white--text"
+            :class="setColor()">
+            {{ setText() }}
+          </p>
+          <div class="text-center">
+            <div v-if="room.isReady" class="subtitle-2 font-weight-bold">
+              <span class="mx-1">参加者：{{ room.joinedList && room.joinedList.length }}</span>
+              <span class="mx-1">リーチ：{{ room.reachList && room.reachList.length }}</span>
+              <span class="mx-1">ビンゴ：{{ room.bingoList && room.bingoList.length }}</span>
+            </div>
+            <div v-else class="subtitle-2 font-weight-bold">
+              <span class="mx-1">参加者：{{ room.joinedList && room.joinedList.length }}</span>
+              <span class="mx-1">準備中：{{ room.joinedList && room.readyList && room.joinedList.length - room.readyList.length }}</span>
+              <span class="mx-1">準備完：{{ room.readyList && room.readyList.length }}</span>
+            </div>
+          </div>
           <v-card-actions class="mx-2">
             <v-dialog
               v-model="dialog"
@@ -172,7 +177,7 @@
         } else if (this.room.isReady) {
           return 'ビンゴ開催中'
         } else if (this.isEditFinished) {
-          return 'ビンゴの開催を待ってください'
+          return 'プロフィール編集済み'
         } else {
           return 'プロフィールを編集してください'
         }

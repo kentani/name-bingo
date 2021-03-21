@@ -4,7 +4,9 @@
       v-for="(item, i) in items.filter(v => v)"
       :key="i"
       label
-      class="grey lighten-4 ma-2">
+      :dark="accent"
+      :class="[ accent ? 'deep-purple' : 'grey lighten-4' ]"
+      class="ma-1">
       {{ item.name || 'ゲストユーザー' }}
     </v-chip>
   </div>
@@ -16,6 +18,10 @@ export default {
     items: {
       type: Array,
       default: () => ([])
+    },
+    accent: {
+      type: Boolean,
+      default: false
     },
   }
 }

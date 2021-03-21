@@ -70,43 +70,24 @@
             </v-btn>
           </v-row>
         </v-card-actions>
+        <v-alert
+          dense
+          text
+          flat
+          color="grey lighten-4"
+          class="text-center">
+          <div v-if="room.isReady" class="subtitle-1 font-weight-bold black--text">
+            <span class="mx-1">参加者：{{ room.joinedList && room.joinedList.length }}</span>
+            <span class="mx-1">リーチ：{{ room.reachList && room.reachList.length }}</span>
+            <span class="mx-1">ビンゴ：{{ room.bingoList && room.bingoList.length }}</span>
+          </div>
+          <div v-else class="subtitle-1 font-weight-bold grey--text">
+            <span class="mx-1">参加者：{{ room.joinedList && room.joinedList.length }}</span>
+            <span class="mx-1">準備中：{{ room.joinedList && room.readyList && room.joinedList.length - room.readyList.length }}</span>
+            <span class="mx-1">準備完：{{ room.readyList && room.readyList.length }}</span>
+          </div>
+        </v-alert>
         <v-card-text>
-          <v-row v-if="room.isReady" justify="center" class="mb-3 mt-1">
-            <v-card flat color="grey lighten-4">
-              <v-card-text class="subtitle-1 font-weight-bold">
-                <v-icon>mdi-account-multiple</v-icon> {{ room.joinedList && room.joinedList.length }}
-              </v-card-text>
-            </v-card>
-            <v-card flat color="grey lighten-4">
-              <v-card-text class="subtitle-1 font-weight-bold">
-                リーチ：{{ room.reachList && room.reachList.length }}
-              </v-card-text>
-            </v-card>
-            <v-card flat color="grey lighten-4">
-              <v-card-text class="subtitle-1 font-weight-bold">
-                ビンゴ：{{ room.bingoList && room.bingoList.length }}
-              </v-card-text>
-            </v-card>
-          </v-row>
-          <v-row v-else justify="center" class="mb-3 mt-1">
-            <v-card flat color="grey lighten-4">
-              <v-card-text class="subtitle-1 font-weight-bold">
-                <v-icon>mdi-account-multiple</v-icon> {{ room.joinedList && room.joinedList.length }}
-              </v-card-text>
-            </v-card>
-
-            <v-card flat color="grey lighten-4">
-              <v-card-text class="subtitle-1 font-weight-bold">
-                <v-icon>mdi-square-edit-outline</v-icon> {{ room.joinedList && room.readyList && room.joinedList.length - room.readyList.length }}
-              </v-card-text>
-            </v-card>
-
-            <v-card flat color="grey lighten-4">
-              <v-card-text class="subtitle-1 font-weight-bold">
-                <v-icon>mdi-check</v-icon> {{ room.readyList && room.readyList.length }}
-              </v-card-text>
-            </v-card>
-          </v-row>
           <v-row>
             <v-col
               v-for="(player, i) in joinedList"
