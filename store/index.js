@@ -1,8 +1,8 @@
 import firebase from '~/plugins/firebase'
 import Cookies from 'js-cookie'
+import cookieparser from 'cookieparser'
 
-const cookieparser = process.server ? require('cookieparser') : undefined
-const admin = process.server ? require('~/plugins/firebaseAdmin').default : undefined
+const admin = require('~/plugins/firebaseAdmin').default
 const db = firebase.firestore();
 const usersRef = db.collection('users');
 const roomsRef = db.collection('rooms');
@@ -85,7 +85,7 @@ export const mutations = {
   setAdminList(state, room) {
     const value = {
       name: room.name,
-      to: '/rooms/' + room.id + '/admin/bingo'
+      to: '/operation/bingo-field?roomId=' + room.id
     }
     state.adminList.push(value)
   },
@@ -99,7 +99,7 @@ export const mutations = {
       if (room.joinedList.includes(id)) {
         value = {
           name: room.name,
-          to: '/rooms/' + room.id + '/players/' + id + '/bingo-card',
+          to: '/player/bingo-card?roomId=' + room.id + '&playerId=' + id,
         }
       }
     })
@@ -137,6 +137,7 @@ export const actions = {
   },
 
   async onAuth({ commit }) {
+    console.log("onAuth")
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {

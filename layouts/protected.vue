@@ -43,7 +43,8 @@ export default {
       title: 'Name Bingo',
     }
   },
-  created () {
+  async created () {
+    await this.$store.dispatch('onAuth')
   },
   mounted () {
   },

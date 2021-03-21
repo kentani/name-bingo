@@ -79,18 +79,6 @@ export default {
   layout: 'default',
   data () {
     return {
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'root',
-          to: '/'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'イベント1',
-          to: '/rooms/IxkeDXeR97ono2Y3tsnA/admin/bingo'
-        },
-      ]
     }
   },
   created () {

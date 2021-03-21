@@ -39,7 +39,7 @@
             rounded
             text
             color="deep-purple"
-            :to="'/rooms/' + roomId + '/players/' + player.id + '/bingo-card'"
+            :to="{ path: '/player/bingo-card', query: { roomId: roomId, playerId: player.id } }"
             :ripple="false">
             <span class="font-weight-bold">部屋に入る</span>
           </v-btn>
@@ -87,7 +87,7 @@ export default {
       return this.$store.getters.getRoom
     },
     roomId() {
-      return this.$route.params.roomId
+      return this.$route.query.roomId
     },
     joinedList() {
       if (!this.room.joinedList) return []

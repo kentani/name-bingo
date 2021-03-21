@@ -19,7 +19,8 @@ export default {
     return {
     }
   },
-  created () {
+  async created () {
+    await this.$store.dispatch('onAuth')
   },
   computed: {
   },
