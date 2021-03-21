@@ -37,13 +37,26 @@
                 </v-btn>
               </template>
               <v-card>
-                <v-card-title class="font-weight-bold">参加者一覧</v-card-title>
-                <v-card-subtitle v-if="selected.length < 16" class="pb-2">
-                  あと <span class="title font-weight-bold deep-purple--text">{{ 16 - selected.length }}</span> 人選択してください
-                </v-card-subtitle>
-                <v-card-subtitle v-else-if="selected.length === 16" class="pb-2">
-                  <v-icon color="deep-purple">mdi-check</v-icon><span class="title font-weight-bold deep-purple--text"></span>
-                </v-card-subtitle>
+                <v-card-title class="font-weight-bold pb-0">参加者一覧</v-card-title>
+                <v-card-actions class="py-0">
+                  <v-card-subtitle v-if="selected.length < 16" class="py-0 px-2">
+                    あと <span class="title font-weight-bold deep-purple--text">{{ 16 - selected.length }}</span> 人選択してください
+                  </v-card-subtitle>
+                  <v-card-subtitle v-else-if="selected.length === 16" class="py-0 px-2">
+                    <v-icon color="deep-purple" class="pb-1">mdi-check</v-icon><span class="title font-weight-bold deep-purple--text"></span> 選択完了
+                  </v-card-subtitle>
+                  <v-spacer />
+                  <v-btn
+                    rounded
+                    dark
+                    text
+                    color="deep-purple"
+                    class="pt-1"
+                    :disabled="selected.length > 16"
+                    @click="randomSelect">
+                    <span class="font-weight-bold">ランダム</span>
+                  </v-btn>
+                </v-card-actions>
                 <v-divider />
                 <v-card-text class="pa-2">
                   <v-card
@@ -243,6 +256,16 @@
         await this.$store.dispatch('updateSelectList', { list: this.selected, playerId: this.playerId })
         this.selected = Object.assign([], this.selected, [])
         this.dialog = false
+      },
+      randomSelect() {
+        const list = Object.assign([], list, this.room.joinedList)
+        const randomList = []
+        for (let i = 0; i < 16; i++) {
+          let randomID = parseInt(Math.floor(Math.random() * list.length));
+          randomList.push(list[randomID])
+          list.splice(randomID, 1);
+        }
+        this.selected = randomList
       },
       handleDragStart() {
         this.setSelected()
