@@ -22,7 +22,35 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <nuxt />
+        <nuxt v-if="loggedIn" />
+        <div v-else>
+          <v-dialog
+            v-model="dialog"
+            scrollable
+            persistent
+            width="900">
+            <v-card>
+              <v-card-title class="font-weight-bold">Invalid</v-card-title>
+              <v-divider class="mx-4" />
+              <v-card-text class="title font-weight-bold text-center py-6">ログインしてご利用ください</v-card-text>
+              <v-card-actions>
+                <v-row justify="center" class="my-3">
+                  <v-btn
+                    v-if="!starting"
+                    color="deep-purple"
+                    dark
+                    x-large
+                    rounded
+                    :ripple="false"
+                    to="/"
+                    nuxt>
+                    トップ画面
+                  </v-btn>
+                </v-row>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
       </v-container>
     </v-main>
     <v-footer
@@ -37,20 +65,23 @@
 <script>
 export default {
   name: 'protected',
-  middleware: 'authenticated',
+  // middleware: 'authenticated',
   data () {
     return {
       title: 'Name Bingo',
     }
   },
   async created () {
-    await this.$store.dispatch('onAuth')
+    this.$store.dispatch('onAuth')
   },
   mounted () {
   },
   computed: {
-    loggedIn () {
+    loggedIn() {
       return this.$store.getters.getLoggedIn
+    },
+    dialog() {
+      return !this.loggedIn
     }
   },
   methods: {

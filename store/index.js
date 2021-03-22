@@ -1,15 +1,11 @@
 import firebase from '~/plugins/firebase'
-import Cookies from 'js-cookie'
-import cookieparser from 'cookieparser'
+// import Cookies from 'js-cookie'
+// import cookieparser from 'cookieparser'
 
-const admin = require('~/plugins/firebaseAdmin').default
+// const admin = require('~/plugins/firebaseAdmin').default
 const db = firebase.firestore();
-const usersRef = db.collection('users');
 const roomsRef = db.collection('rooms');
 const playersRef = db.collection('players');
-
-// firebase.firestore.FieldValue.arrayUnion
-// onSnapshot({ includeMetadataChanges: true }
 
 export const state = () => ({
   authId: '',
@@ -118,30 +114,29 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit ({ commit }, { req }) {
-    if (!req) return
-    if (!req.headers.cookie) return
-    try {
-      const idToken = await cookieparser.parse(req.headers.cookie).__session
-      if (!idToken) return
-      await admin.auth().verifyIdToken(idToken).then((decodedToken) => {
-        commit('setAuthId', decodedToken.uid)
-        commit('changeLoginStatus', decodedToken.uid ? true : false)
-      })
-      .catch((error) => {
-        console.log("invalidToken", error)
-      })
-    } catch (err) {
-      console.log("error", err)
-    }
-  },
+  // async nuxtServerInit ({ commit }, { req }) {
+  //   if (!req) return
+  //   if (!req.headers.cookie) return
+  //   try {
+  //     const idToken = await cookieparser.parse(req.headers.cookie).__session
+  //     if (!idToken) return
+  //     await admin.auth().verifyIdToken(idToken).then((decodedToken) => {
+  //       commit('setAuthId', decodedToken.uid)
+  //       commit('changeLoginStatus', decodedToken.uid ? true : false)
+  //     })
+  //     .catch((error) => {
+  //       console.log("invalidToken", error)
+  //     })
+  //   } catch (err) {
+  //     console.log("error", err)
+  //   }
+  // },
 
   async onAuth({ commit }) {
-    console.log("onAuth")
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
-          Cookies.set('__session', idToken)
+          // Cookies.set('__session', idToken)
           commit('setAuthId', user.uid)
           commit('changeLoginStatus', user.uid ? true : false)
         })
@@ -157,7 +152,7 @@ export const actions = {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
-              Cookies.set('__session', idToken)
+              // Cookies.set('__session', idToken)
               commit('setAuthId', user.uid)
               commit('changeLoginStatus', user.uid ? true : false)
             })
@@ -180,13 +175,13 @@ export const actions = {
 
   async logout({ commit }) {
     firebase.auth().signOut().then(() => {
-      Cookies.remove('__session');
+      // Cookies.remove('__session');
       commit('clearAuth')
       console.log("ログアウトしました")
     })
     .catch( (error)=>{
-      Cookies.remove('__session');
-      // commit('clearAuth')
+      // Cookies.remove('__session');
+      commit('clearAuth')
       console.log(`ログアウト時にエラーが発生しました (${error})`)
     });
   },

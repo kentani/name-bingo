@@ -35,6 +35,9 @@
             </v-btn>
           </v-row>
         </v-card-actions>
+        <v-row justify="center">
+            <div v-if="!loggedIn" class="subtitle-2">ゲストユーザーとしてログインします</div>
+        </v-row>
       </v-card>
     </v-col>
     <v-col cols="12">
