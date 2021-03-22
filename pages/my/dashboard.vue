@@ -74,7 +74,7 @@
                     text
                     nuxt
                     color="deep-purple"
-                    :to="'/rooms/' + room.id + '/admin/settings'">
+                    :to="{ path: '/operation/bingo-field', query: { roomId: room.id } }">
                     <span class="font-weight-bold">部屋に入る</span>
                   </v-btn>
                 </div>
@@ -152,12 +152,12 @@ export default {
         {
           icon: 'mdi-apps',
           name: '招待リンク',
-          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/invite'
+          to: { path: '/invite', query: { roomId: 'fW80FMoyLnCtWbCJiQ5f' } }
         },
         {
           icon: 'mdi-apps',
           name: '管理画面',
-          to: '/rooms/fW80FMoyLnCtWbCJiQ5f/admin/bingo'
+          to: { path: '/operation/bingo-field', query: { roomId: 'fW80FMoyLnCtWbCJiQ5f' } }
         },
       ]
     }

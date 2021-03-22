@@ -10,7 +10,7 @@
             rounded
             color="deep-purple"
             :disabled="!isAdmin"
-            :to="'/rooms/' + this.roomId + '/admin/bingo'"
+            :to="{ path: '/operation/bingo-field', query: { roomId: roomId } }"
             :ripple="false">
             <span class="font-weight-bold">管理画面</span>
           </v-btn>
@@ -59,10 +59,10 @@
     },
     computed: {
       roomId() {
-        return this.$route.params.roomId
+        return this.$route.query.roomId
       },
       playerId() {
-        return this.$route.params.playerId
+        return this.$route.query.playerId
       },
       playerListMap() {
         return this.$store.getters.getPlayerListMap
@@ -87,7 +87,7 @@
           {
             icon: 'mdi-arrow-right',
             name: '参加をやめる',
-            to: '/rooms/' + this.roomId + '/invite',
+            to: { path: '/invite', query: { roomId: this.roomId } },
             disabled: false
           },
         ]

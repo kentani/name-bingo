@@ -5,10 +5,41 @@
   },
   "hosting": {
     "public": "dist",
+    "trailingSlash": false,
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/my/dashboard",
+        "destination": "/my/dashboard.html"
+      },
+      {
+        "source": "/invite",
+        "destination": "/invite.html"
+      },
+      {
+        "source": "/operation/bingo-field",
+        "destination": "/operation/bingo-field.html"
+      },
+      {
+        "source": "/operation/settings",
+        "destination": "/operation/settings.html"
+      },
+      {
+        "source": "/player/bingo-card",
+        "destination": "/player/bingo-card.html"
+      },
+      {
+        "source": "/player/profile-card",
+        "destination": "/player/profile-card.html"
+      },
+      {
+        "source": "/player/info",
+        "destination": "/player/info.html"
+      }
     ]
   },
   "emulators": {

@@ -6,8 +6,8 @@
       color="deep-purple"
       class="mb-6">
       <v-tabs-slider color="deep-purple"></v-tabs-slider>
-      <v-tab class="font-weight-bold" :to="'/rooms/' + roomId + '/admin/bingo'">Bingo</v-tab>
-      <v-tab class="font-weight-bold" :to="'/rooms/' + roomId + '/admin/settings'">Settings</v-tab>
+      <v-tab class="font-weight-bold" :to="{ path: '/operation/bingo-field', query: { roomId: roomId } }">Bingo</v-tab>
+      <v-tab class="font-weight-bold" :to="{ path: '/operation/settings', query: { roomId: roomId } }">Settings</v-tab>
     </v-tabs>
     <nuxt-child />
   </div>
@@ -20,14 +20,12 @@ export default {
     return {
     }
   },
-  created () {
+  async created () {
+    await this.$store.dispatch('onAuth')
   },
   computed: {
     roomId() {
-      return this.$route.params.roomId
-    },
-    room() {
-      return this.$store.getters.getRoom
+      return this.$route.query.roomId
     },
   },
   methods: {

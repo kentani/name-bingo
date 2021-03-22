@@ -68,5 +68,9 @@ export default {
   build: {
   },
   
-  target: 'static'
+  target: 'static',
+
+  generate: {
+    subFolders: false
+  }
 }

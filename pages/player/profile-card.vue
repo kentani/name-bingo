@@ -117,10 +117,10 @@
     },
     computed: {
       roomId() {
-        return this.$route.params.roomId
+        return this.$route.query.roomId
       },
       playerId() {
-        return this.$route.params.playerId
+        return this.$route.query.playerId
       },
       playerListMap() {
         return this.$store.getters.getPlayerListMap

@@ -64,7 +64,7 @@
             rounded
             color="deep-purple"
             :disabled="!isJoined"
-            :to="'/rooms/' + this.roomId + '/players/' + player.id + '/bingo-card'"
+            :to="{ path: '/player/bingo-card', query: { roomId: roomId, playerId: player.id } }"
             :ripple="false">
             <span class="font-weight-bold">プレイヤー画面</span>
           </v-btn>
@@ -82,8 +82,8 @@
             append-icon="mdi-clipboard-text-outline"
             class="mt-2"
             color="deep-purple"
-            :value="local + '/rooms/' + roomId + '/invite'"
-            @click:append="copy(local + '/rooms/' + roomId + '/invite')" />
+            :value="local + '/invite?roomId=' + roomId"
+            @click:append="copy(local + '/invite?roomId=' + roomId)" />
         </v-card-text>
         <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">管理者</v-card-subtitle>
         <v-card-text>
@@ -130,7 +130,7 @@ export default {
       return this.$store.getters.getAuthId
     },
     roomId() {
-      return this.$route.params.roomId
+      return this.$route.query.roomId
     },
     playerListMap() {
       return this.$store.getters.getPlayerListMap

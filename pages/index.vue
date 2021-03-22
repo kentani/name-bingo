@@ -35,6 +35,9 @@
             </v-btn>
           </v-row>
         </v-card-actions>
+        <v-row justify="center">
+            <div v-if="!loggedIn" class="subtitle-2">ゲストユーザーとしてログインします</div>
+        </v-row>
       </v-card>
     </v-col>
     <v-col cols="12">
@@ -79,18 +82,6 @@ export default {
   layout: 'default',
   data () {
     return {
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'root',
-          to: '/'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'イベント1',
-          to: '/rooms/IxkeDXeR97ono2Y3tsnA/admin/bingo'
-        },
-      ]
     }
   },
   created () {
