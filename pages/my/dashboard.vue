@@ -97,15 +97,15 @@
         <v-card-text class="py-0">
           <link-list :with-icon="true" :items="appItems" />
         </v-card-text>
-        <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">暫定対応</v-card-subtitle>
+        <!-- <v-card-subtitle class="body-2 font-weight-bold pt-0 pb-1">暫定対応</v-card-subtitle>
         <v-card-text class="py-0">
           <link-list :with-icon="true" :items="appItems2" />
         </v-card-text>
-        <v-divider class="mx-4" />
+        <v-divider class="mx-4" /> -->
         <v-card-text class="py-0">
           <v-list dense>
             <v-list-item-group color="deep-purple">
-              <v-list-item @click="logout">
+              <v-list-item disabled @click="logout">
                 <v-list-item-icon>
                   <v-icon v-text="'mdi-arrow-right'"></v-icon>
                 </v-list-item-icon>
@@ -135,17 +135,20 @@ export default {
         {
           icon: 'mdi-apps',
           name: 'ビンゴの始め方',
-          to: '/'
+          to: '/',
+          disabled: true
         },
         {
           icon: 'mdi-note',
           name: '利用規約',
-          to: '/'
+          to: '/',
+          disabled: true
         },
         {
           icon: 'mdi-github',
           name: 'ソースコード',
-          to: '/'
+          to: '/',
+          disabled: true
         },
       ],
       appItems2: [

@@ -88,7 +88,7 @@
             icon: 'mdi-arrow-right',
             name: '参加をやめる',
             to: { path: '/invite', query: { roomId: this.roomId } },
-            disabled: false
+            disabled: true
           },
         ]
       }

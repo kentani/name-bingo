@@ -4,14 +4,36 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - name-bingo',
-    title: 'name-bingo',
+    title: 'Name Bingo',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '名前ビンゴゲームを開催できる無料のウェブアプリです。ユーザー登録なしで利用できます。' },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: 'Name Bingo'
+      },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: 'https://name-bingo-2b836.web.app'
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: '名前ビンゴゲームを開催できる無料のウェブアプリです。ユーザー登録なしで利用できます。'
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: '/static/title.png'
+      },
+      { hid: 'og:site_name', name: 'og:site_name', content: 'Name Bingo' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
