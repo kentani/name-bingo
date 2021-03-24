@@ -48,7 +48,7 @@
         </p>
       </v-card>
     </v-col>
-    <v-col cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" lg="4">
       <v-card flat>
         <p
           class="py-2 my-0 yellow accent-4 title font-weight-bold text-center">
@@ -61,7 +61,7 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" lg="4">
       <v-card flat>
         <p
           class="py-2 my-0 yellow accent-4 title font-weight-bold text-center">

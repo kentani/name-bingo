@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" md="9">
+    <v-col cols="12" md="8">
       <v-card flat>
         <v-card-actions class="py-0 mx-2">
           <v-dialog

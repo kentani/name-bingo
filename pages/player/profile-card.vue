@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col cols="12" sm="9" md="6">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
         <v-card elevation="18">
           <p
             class="display-1 py-2 my-0 font-weight-bold text-center grey lighten-2">

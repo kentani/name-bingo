@@ -100,6 +100,13 @@
                 :flat="setFlat(player.id)"
                 :class="[ !ishit(player.id) ? 'white' : 'yellow accent-4' ]"
                 height="80">
+                <v-badge
+                  v-if="setText(player.id)"
+                  offset-y=""
+                  offset-x=""
+                  color="deep-purple"
+                  :content="setText(player.id)">
+                </v-badge>
                 <v-card-title class="overline pa-1" style="line-height:15px">
                   {{ player.name }}
                 </v-card-title>
@@ -250,7 +257,14 @@
         } else {
           return false
         }
-      }
+      },
+      setText(playerId) {
+        if (this.room.bingoList && this.room.bingoList.includes(playerId)) {
+          return 'ビンゴ'
+        } else if (this.room.reachList && this.room.reachList.includes(playerId)) {
+          return 'リーチ'
+        }
+      },
     }
   }
 </script>
