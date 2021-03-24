@@ -15,7 +15,7 @@
           <div class="text-center">
             <div v-if="room.isReady" class="subtitle-2 font-weight-bold">
               <span class="mx-1">参加者：{{ room.joinedList && room.joinedList.length }}</span>
-              <span class="mx-1">リーチ：{{ room.reachList && room.reachList.length }}</span>
+              <span class="mx-1">リーチ：{{ room.reachList && room.bingoList && room.reachList.length - room.bingoList.length }}</span>
               <span class="mx-1">ビンゴ：{{ room.bingoList && room.bingoList.length }}</span>
             </div>
             <div v-else class="subtitle-2 font-weight-bold">
