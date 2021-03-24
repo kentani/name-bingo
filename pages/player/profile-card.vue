@@ -49,7 +49,7 @@
                     <v-card-text>
                       <v-text-field
                         filled
-                        label="なまえ"
+                        label="名前"
                         color="deep-purple"
                         v-model="inputName" />
                       <v-text-field

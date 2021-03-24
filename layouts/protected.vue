@@ -36,7 +36,6 @@
               <v-card-actions>
                 <v-row justify="center" class="my-3">
                   <v-btn
-                    v-if="!starting"
                     color="deep-purple"
                     dark
                     x-large

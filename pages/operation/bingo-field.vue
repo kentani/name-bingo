@@ -31,7 +31,7 @@
           </v-switch>
         </v-card-actions>
         <p
-          class="py-2 my-0 display-3 font-weight-bold text-center"
+          class="py-2 my-0 display-3 font-weight-bold text-center text-truncate"
           style="text-shadow:0px 0px 1px #FFF, 2px 2px 4px rgba(0,0,0,0.3)">
           {{ result.name }}
         </p>
@@ -78,7 +78,7 @@
           class="text-center">
           <div v-if="room.isReady" class="subtitle-1 font-weight-bold black--text">
             <span class="mx-1">参加者：{{ room.joinedList && room.joinedList.length }}</span>
-            <span class="mx-1">リーチ：{{ room.reachList && room.reachList.length }}</span>
+            <span class="mx-1">リーチ：{{ room.reachList && room.bingoList && room.reachList.length - room.bingoList.length }}</span>
             <span class="mx-1">ビンゴ：{{ room.bingoList && room.bingoList.length }}</span>
           </div>
           <div v-else class="subtitle-1 font-weight-bold grey--text">
@@ -102,12 +102,10 @@
                 height="80">
                 <v-badge
                   v-if="setText(player.id)"
-                  offset-y=""
-                  offset-x=""
-                  color="deep-purple"
+                  :color="setColor(player.id)"
                   :content="setText(player.id)">
                 </v-badge>
-                <v-card-title class="overline pa-1" style="line-height:15px">
+                <v-card-title class="overline pa-1" style="line-height:15px; text-transform: none">
                   {{ player.name }}
                 </v-card-title>
               </v-card>
@@ -175,9 +173,9 @@
         },
         set: function (val) {
           this.changeStatus(val)
-          if (!val) {
-            this.reset()
-          }
+          // if (!val) {
+          //   this.reset()
+          // }
         }
       }
     },
@@ -263,6 +261,13 @@
           return 'ビンゴ'
         } else if (this.room.reachList && this.room.reachList.includes(playerId)) {
           return 'リーチ'
+        }
+      },
+      setColor(playerId) {
+        if (this.room.bingoList && this.room.bingoList.includes(playerId)) {
+          return 'deep-purple'
+        } else if (this.room.reachList && this.room.reachList.includes(playerId)) {
+          return 'grey'
         }
       },
     }

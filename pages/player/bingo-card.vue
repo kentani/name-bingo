@@ -134,17 +134,17 @@
           </v-card-actions>
           <v-divider class="mx-4" />
           <v-card-text>
-            <v-row v-if="isReady">
+            <v-row v-if="room.isReady || isReady">
               <v-col
                 v-for="(item, i) in selectList"
                 :key="i"
                 cols="3"
                 class="pa-1">
                 <v-card
-                  :flat="isReady && room.hitList && !room.hitList.includes(item.id)"
+                  :flat="setFlat(item.id)"
                   :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                   height="100">
-                  <v-card-title class="overline pa-1" style="line-height:15px">
+                  <v-card-title class="overline pa-1" style="line-height:15px; text-transform: none">
                     {{ item.name }}
                   </v-card-title>
                 </v-card>
@@ -170,7 +170,7 @@
                   class="handle"
                   :class="[ room.hitList && !room.hitList.includes(item.id)? 'grey lighten-4' : 'yellow accent-4' ]"
                   height="100">
-                  <v-card-title class="overline pa-1" style="line-height:15px">
+                  <v-card-title class="overline pa-1" style="line-height:15px; text-transform: none">
                     {{ item.name }}
                   </v-card-title>
                 </v-card>
